@@ -33,6 +33,45 @@ const Dashboard = () => {
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
             Categories
           </div>
+
+          <div className="text-white py-3 px-4 mt-4 rounded-lg bg-gradient-to-r from-[#FFFFFF30] via-[#9b59b630] to-[#FFFFFF30] border border-gray-500">
+            All Categories
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            Payments
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            Blinks
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            All Categories
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            Consumer Dapps
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            NFTs
+          </div>
+          <div className="text-white py-3 px-4 mt-4">
+            Mobile
+          </div>
+          <div className="text-white py-3 px-4 mt-4">
+            Depin
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            Defi
+          </div>
+
+          <div className="text-white py-3 px-4 mt-4">
+            All Categories
+          </div>
+
         </div>
 
         <div className="w-3/4 border border-gray-500 rounded-lg mt-4 mb-4 mr-4 pt-6 px-8">
