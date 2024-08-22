@@ -11,7 +11,7 @@ import { useAnimation, motion } from 'framer-motion';
 import useFonts from "@/components/hooks/useFonts";
 import dynamic from 'next/dynamic';
 import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
-
+import Dashboard from '@/components/Dashboard';
 
 
 export default function Home() {
@@ -149,12 +149,12 @@ export default function Home() {
           <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link href="/" class="flex items-center">
               <img
-                src="/snllogo.png"
+                src="https://media3.giphy.com/media/SOb4AcaDitenU4XKdC/giphy.gif?cid=6c09b952ay7ttj24dpj0m92zo0jap80u7htlljkwc7yw4y8i&ep=v1_gifs_search&rid=giphy.gif&ct=g"
                 class="mr-3 h-6 sm:h-9"
-                alt="Flowbite Logo"
+                alt=""
               />
               <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white" style={righteous.style}>
-                Snakes N Ladders
+                ShareTos
               </span>
             </Link>
             <div class="flex items-center lg:order-2">
@@ -311,91 +311,10 @@ Games with Ease
               </motion.div>
             </div>
 
-          {/* <div id="features" className="mt-16 lg:flex md:flex gap-10" ref={ref}>
-            <motion.div
-                animate={animation}
-                transition={{ type: "tween", duration: 1 }}
-              className="lg:w-1/2 md:w-1/2 text-lg"
-            >
-              <div
-                className="rounded-2xl px-4 py-4 text-black"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at top left, #F7418F 10%, #FFE6E6 40%)',
-                }}
-              >
-                <div
-                  className="font-bold text-end"
-                  style={{ color: '#F7418F' }}
-                >
-                  Dynamic Learning Experience
-                </div>
-                <div
-                  className="w-4/5 mt-4 text-end flex ml-auto"
-                  style={{ fontSize: 16 }}
-                >
-                  Whether you are ascending ladders or descending snakes, each
-                  interaction with the board presents a new opportunity to
-                  absorb valuable information.
-                </div>
-              </div>
-              <div
-                className="rounded-2xl px-4 py-4 mt-6 text-black"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at bottom right, #5AB2FF 10%, #FFE6E6 40%)',
-                }}
-              >
-                <div className="font-bold" style={{ color: '#8576FF' }}>
-                  Personalized Learning Path
-                </div>
-                <div className="w-4/5 mt-4" style={{ fontSize: 16 }}>
-                  Customize your learning path with our JSON file upload
-                  feature, ensuring an educational and entertaining journey
-                  awaits.
-                </div>
-              </div>
+        </div>
+        </div>
 
-              <div
-                className="rounded-2xl px-4 py-4 mt-6 text-black"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at top left, #AD88C6 10%, #FFE6E6 40%)',
-                }}
-              >
-                <div
-                  className="font-bold text-end"
-                  style={{ color: '#86469C' }}
-                >
-                  Educational Content Integration
-                </div>
-                <div
-                  className="w-4/5 mt-4 text-end flex ml-auto"
-                  style={{ fontSize: 16 }}
-                >
-                  Whether its tackling challenging questions or delving into
-                  informative topics, every step you take on the board brings
-                  you closer to enhancing your understanding.
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-                animate={animation2}
-                transition={{ type: "tween", duration: 1 }}
-              >
-              <div
-                className="w-1/2 rounded-2xl px-60 h-full lg:mt-0 md:mt-0 mt-10"
-                style={{
-                  backgroundImage: "url('/diceroll.gif')",
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              ></div>
-            </motion.div>
-          </div> */}
-        </div>
-        </div>
+        <Dashboard />
     </>
   );
 }
