@@ -138,7 +138,7 @@ const Navbar = () => {
   return (
     <div>
       {!wallet && !activeAccount && (
-<button onClick={()=>{setloginbox(true)}} className="px-4 text-white font-bold">Login</button>
+<button onClick={()=>{setloginbox(true)}} className="px-4 text-white font-bold">Connect Wallet</button>
       )}
     { wallet && (
       <div className="flex gap-4">
@@ -208,7 +208,7 @@ const Navbar = () => {
             </div>
   )}
 
-{ loginbox && (<animated.div style={modalProps} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+{ loginbox && (<animated.div style={modalProps} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20">
       <div className="bg-white p-16 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
         <h2 className="text-2xl font-bold mb-4">Login Options</h2>
 

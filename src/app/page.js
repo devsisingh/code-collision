@@ -1,13 +1,10 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Cookies from 'js-cookie';
 import { useState, useEffect , useRef} from 'react';
-import { Link as ScrollLink } from 'react-scroll';
-import { Zoom } from 'react-reveal';
 import { useInView } from 'react-intersection-observer';
-import { useAnimation, motion } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import useFonts from "@/components/hooks/useFonts";
 import dynamic from 'next/dynamic';
 import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
@@ -16,9 +13,6 @@ import Dashboard from '@/components/Dashboard';
 
 export default function Home() {
   const [wallet, setwallet] = useState('');
-  const [isHovered, setIsHovered] = useState(false);
-  const [isHovered2, setIsHovered2] = useState(false);
-
   
   const { righteous } = useFonts();
 
@@ -157,6 +151,19 @@ export default function Home() {
                 ShareTos
               </span>
             </Link>
+
+            <div className="flex gap-10">
+
+            {/* Move the "Create Idea" button before the Navbar */}
+            <div className="flex items-center lg:order-1">
+              <Link
+                href="/launch"
+                className="block py-2 pr-4 pl-3 text-gray-700 font-bold border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                Create Idea
+              </Link>
+            </div>
+
             <div class="flex items-center lg:order-2">
               <Navbar />
               <NoSSRComponent />
@@ -194,125 +201,26 @@ export default function Home() {
                 </svg>
               </button>
             </div>
-            <div
+
+            </div>
+            {/* <div
               class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 z-10"
               id="mobile-menu-2"
             >
              <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-      <li>
-        <Link
-           href={isAccountDataAvailable ? "/explore" : ""}
-          className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-  
-          onClick={handleExploreClick}
-        >
-          Explore
-        </Link>
-      </li>
-      <li>
-        <Link
-            href={isAccountDataAvailable ? "/launch" : ""}
-          className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-          onClick={handleExploreClick}
-        >
-          Launch
-        </Link>
-      </li>
-    </ul>
-            </div>
+                <li>
+                  <Link
+                      href="/launch"
+                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Create Idea
+                  </Link>
+                </li>
+              </ul>
+            </div> */}
           </div>
         </nav>
       </header>
-
-      <main
-        className="flex min-h-screen flex-col items-center justify-between"
-        // style={{
-        //   backgroundImage:
-        //     'radial-gradient(circle at bottom left, #040819 10%, #0162FF 40% , #1D73FF, #5696FF, #8EB9FF, #AACBFF)',
-        // }}
-        style={{backgroundImage: 'url(/snlbg.png)'}}
-      >
-        <div className="pt-60 flex">
-          <div className="my-auto">
-            <div className="text-7xl text-white font-bold mb-10 text-center w-2/3 leading-normal mx-auto uppercase" style={righteous.style}>
-            Your Onchain 
-Learning   Adventure
-            </div>
-            <div className="text-center text-white">
-            Experience Classic Fun and Earn Unique NFTs for Your Achievements
-            </div>
-          </div>
-          {/* <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className={`pb-8 border border-gray-500 rounded-3xl transition-transform duration-300 mt-20 lg:mt-0 md:mt-0 ${
-              isHovered
-                ? 'transform scale-125 shadow-2xl'
-                : 'transform scale-110 shadow-lg'
-            }`}
-          >
-            <Link href="/explore">
-              <Image
-                src="/snake1.png"
-                width={300}
-                height={300}
-                className="rounded-t-3xl w-full"
-              />
-              <div className="text-center text-white mx-auto text-xl py-4">
-                SNAKE N LADDER
-              </div>
-              <div className="text-center text-white text-xs">
-                Discover something new and receive an <br></br>NFT to show off
-                your achievement.
-              </div>
-            </Link>
-          </div> */}
-        </div>
-      </main>
-
-<div style={{backgroundColor:'#232C12'}} ref={ref}>
-        <div className="flex flex-col items-center justify-center min-h-screen text-white max-w-5xl mx-auto py-20">
-        <motion.div
-              animate={animation3}
-              transition={{ duration: 1.5 }}
-              className="text-center"
-              >
-            <h1 className="lg:text-4xl font-bold mb-8 text-2xl w-2/3 mx-auto tracking-wider uppercase leading-relaxed" style={righteous.style}>
-              Launch and Play Board 
-Games with Ease
-            </h1>
-            {/* <div className="lg:text-2xl font-bold mb-8 text-lg">
-              Launch and Play Board Games with Ease!
-            </div> */}
-            </motion.div>
-
-            <div>
-            <motion.div
-                animate={animation}
-                transition={{ type: "tween", duration: 1 }}
-                >
-              <div className="flex gap-2">
-                  <div className="w-60 h-60"><img src="/landing1.png"/></div>
-                  <div style={{backgroundColor:'#11D9C5'}} className="w-60 h-60"><img src="/landing2.png" className='-mt-14'/></div>
-                  <div style={{backgroundColor:'#7C75FF'}} className="w-60 h-60 pt-20 text-2xl p-4">Dynamic Learning Experience</div>
-                  <div className="w-60 h-60"></div>
-              </div>
-              </motion.div>
-              <motion.div
-                animate={animation2}
-                transition={{ type: "tween", duration: 1 }}
-              >
-              <div className="flex gap-2 mt-2">
-                  <div className="w-60 h-60"></div>
-                  <div style={{backgroundColor:'#FFE072'}} className="w-60 h-60"></div>
-                  <div style={{backgroundColor:'#E6007A'}} className="w-60 h-60 pt-16 text-2xl p-4">Educational Content Integration</div>
-                  <div className="w-60 h-60" style={{backgroundColor:'#38FF70'}}><img src="/landing3.png" className='ml-10 mt-4'/></div>
-              </div>
-              </motion.div>
-            </div>
-
-        </div>
-        </div>
 
         <Dashboard />
     </>
