@@ -138,11 +138,16 @@ const Navbar = () => {
   return (
     <div>
       {!wallet && !activeAccount && (
-<button onClick={()=>{setloginbox(true)}} className="px-4 text-white font-bold">Connect Wallet</button>
+<button 
+// onClick={()=>{setloginbox(true)}} 
+onClick={connectToPetra}
+className="px-4 text-white font-bold">Connect Wallet</button>
       )}
     { wallet && (
       <div className="flex gap-4">
-      <Link href="/profile">{avatarUrl && <img src={avatarUrl} alt="Avatar" style={{width: 40}}/>} </Link>
+      {/* <Link href="/profile"> */}
+      {avatarUrl && <img src={avatarUrl} alt="Avatar" style={{width: 40}}/>} 
+      {/* </Link> */}
       <div>
       <div className="rounded-lg text-sm font-semibold text-center text-white">
         {wallet.slice(0, 4)}...{wallet.slice(-4)}

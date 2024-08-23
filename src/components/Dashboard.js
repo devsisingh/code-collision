@@ -93,11 +93,19 @@ const Dashboard = () => {
       <div className="text-white text-lg font-semibold mb-4">
         Web3 GoFundMe - Transparent Donation Matching
       </div>
-      <div className="text-gray-300 text-sm">
+
+      <div className='flex justify-between text-white'>
+        <div style={{fontSize:'12px'}}>Twitter Id</div>
+        <div className="px-2 py-1 rounded -mt-2" style={{fontSize:'12px'}}>Category</div>
+        <div className="uppercase px-2 py-1 rounded -mt-2" style={{fontSize:'11px', backgroundColor:'#22577A', color:'#5DEBD7'}}>Status</div>
+      </div>
+
+      <div className="text-gray-300 text-sm mt-6">
         Allowing donors to maximize their impact without the hassle of manual
         reconciliation. Existing fundraising platforms do not offer a seamless,
-        crypto-powered solution that simplifies the matching process.
+        crypto-powered solution that simplifies the matching process...
       </div>
+
     </div>
 
 
