@@ -11,7 +11,7 @@ import useAptos from "../../context/useAptos";
 import {Account} from '@aptos-labs/ts-sdk';
 
 const Navbar = () => {
-  const wallet = Cookies.get("bingo_wallet");
+  const wallet = Cookies.get("idea_wallet");
 
   const { aptos, moduleAddress } = useAptos();
 
@@ -59,7 +59,7 @@ const Navbar = () => {
         const res = await aptosWallet.signMessage(payload);
         // signing message
 
-        Cookies.set("bingo_wallet", response.address, { expires: 7 });
+        Cookies.set("idea_wallet", response.address, { expires: 7 });
         window.location.reload();
       } else {
         alert(`Switch to Mainnet in your Petra wallet`);
@@ -87,7 +87,7 @@ const Navbar = () => {
   }, []);
 
   const handleDeleteCookie = () => {
-    Cookies.remove("bingo_wallet");
+    Cookies.remove("idea_wallet");
     window.location.href = "/";
   };
 
