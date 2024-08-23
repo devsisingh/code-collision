@@ -12,7 +12,8 @@ export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
 
   const [ideatitle, setideatitle] = useState('');
-  const [ideacategory, setideacategory] = useState('');
+  const [authorname, setauthorname] = useState('');
+  const [ideacategories, setideacategories] = useState([]);
   const [twitterid, settwitterid] = useState('');
   const [twitterlink, settwitterlink] = useState('');
  
@@ -21,6 +22,44 @@ export default function Dashboard() {
   const [resources, setResources] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
+
+
+  const categories = [
+    "Technology",
+    "Health",
+    "Education",
+    "Finance",
+    "Environment",
+    "Entertainment",
+    "Sports",
+    "Art",
+    "Science",
+    "Travel"
+  ];
+
+  const categoryColors = {
+    Technology: "#B3E5FC", // Pastel Blue
+    Health: "#FFB3B3", // Pastel Coral
+    Education: "#C5CAE9", // Pastel Lavender
+    Finance: "#B9E4C9", // Pastel Sage
+    Environment: "#D5AAFF", // Pastel Purple
+    Entertainment: "#FFE3B3", // Pastel Peach
+    Sports: "#B3E0E5", // Pastel Aqua
+    Art: "#E2A3E0", // Pastel Lemon
+    Science: "#D0F4DE", // Pastel Mint
+    Travel: "#F9E2AE" // Pastel Lilac
+  };
+
+  const handleCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setideacategories([...ideacategories, value]);
+    } else {
+      setideacategories(
+        ideacategories.filter((category) => category !== value)
+      );
+    }
+  };
 
 
   async function saveIdea(snlData) {
@@ -48,6 +87,7 @@ export default function Dashboard() {
 
         let snlData = {
           title: ideatitle,
+          author: authorname,
           category: ideacategory,
           twitterid: twitterid,
           twitterlink: twitterlink,
@@ -209,12 +249,12 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <div className='text-white mb-4 text-lg'>Idea Title</div>
+                <div className='text-white mb-4 text-lg'>Author Name</div>
               <input
                 type="text"
-                placeholder="Idea Category"
-                value={ideacategory}
-                onChange={(e) => setideacategory(e.target.value)}
+                placeholder="Author Name"
+                value={authorname}
+                onChange={(e) => setauthorname(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
                 style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
               />
@@ -226,7 +266,7 @@ export default function Dashboard() {
               <div className="lg:w-1/2 md:w-1/2 mt-10">
 
               <div>
-              <div className='text-white mb-4 text-lg'>Tweeter ID</div>
+              <div className='text-white mb-4 text-lg'>Twitter ID (optional)</div>
               <input
                 type="text"
                 placeholder="Twitter ID"
@@ -238,10 +278,10 @@ export default function Dashboard() {
               </div>
 
 <div>
-<div className='text-white mb-4 text-lg'>Tweeter Link</div>
+<div className='text-white mb-4 text-lg'>Twitter Post Link (optional)</div>
 <input
                 type="text"
-                placeholder="Tweeter Link"
+                placeholder="Tweeter Post Link"
                 value={twitterlink}
                 onChange={(e) => settwitterlink(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
@@ -252,6 +292,24 @@ export default function Dashboard() {
               </div>
               
               </div>
+
+              <div className='text-white mb-4 text-lg'>Choose Categories for Your Idea</div>
+              
+              <div className="categories-list mb-10 flex flex-wrap gap-10">
+              {categories.map((category, index) => (
+                <div key={index}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={category}
+                      onChange={handleCategoryChange}
+                      checked={ideacategories.includes(category)}
+                    />
+                    <span className="ml-3 rounded-full px-3 py-1" style={{ backgroundColor: categoryColors[category], fontSize:'12px' }}>{category}</span>
+                  </label>
+                </div>
+              ))}
+            </div>
 
               <div className='text-white mb-4 text-lg'>Idea Description</div>
 
@@ -305,10 +363,10 @@ export default function Dashboard() {
 
               <div className="p-4 space-y-4 pt-10">
                 <p className="text-3xl text-center font-bold text-green-500">
-                  Successfully Created!!
+                  Successfully Submitted!!
                 </p>
                 <p className="text-sm text-center pt-4 pb-20">
-                  Redirecting you to Explore page to view your created game.
+                  Redirecting you back to view your submitted idea.
                 </p>
               </div>
             </div>
