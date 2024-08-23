@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
-import { NFTStorage } from "nft.storage";
-const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDFFODE2RTA3RjBFYTg4MkI3Q0I0MDQ2QTg4NENDQ0Q0MjA4NEU3QTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3MzI0NTEzNDc3MywibmFtZSI6Im5mdCJ9.vP9_nN3dQHIkN9cVQH5KvCLNHRk3M2ZO4x2G99smofw" });
-import 'react-datepicker/dist/react-datepicker.css';
 import useFonts from "@/components/hooks/useFonts";
+import MdEditor from 'react-markdown-editor-lite';
+import MarkdownIt from 'markdown-it';
+import 'react-markdown-editor-lite/lib/index.css';
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
@@ -22,6 +22,24 @@ export default function Dashboard() {
   const [resources, setResources] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
+
+
+  const [description, setDescription] = useState(
+    `## Problem Solved\n\n` +
+    `Describe the problem...\n\n\n` +
+    `## Possible Solution\n\n` +
+    `Describe the possible solution...\n\n\n` +
+    `## Resources\n\n` +
+    `List any resources...\n\n\n`+
+    `## Additional\n\n` +
+    `Anything else you want to share...\n`
+  );
+    
+      const mdParser = new MarkdownIt();
+    
+      const handleEditorChange = ({ text }) => {
+        setDescription(text);
+      };
 
 
   const categories = [
@@ -313,31 +331,15 @@ export default function Dashboard() {
 
               <div className='text-white mb-4 text-lg'>Idea Description</div>
 
-              <textarea
-  value={`Problem Solved:\n${problemSolved}\n\nPossible Solution:\n${possibleSolution}\n\nResources:\n${resources}`}
-  onChange={(e) => {
-    const value = e.target.value;
 
-    // Use regex to capture each section's content
-    const problemSolvedMatch = value.match(/Problem Solved:\n([\s\S]*?)\n\nPossible Solution:/);
-    const possibleSolutionMatch = value.match(/Possible Solution:\n([\s\S]*?)\n\nResources:/);
-    const resourcesMatch = value.match(/Resources:\n([\s\S]*)/);
-
-    setProblemSolved(problemSolvedMatch ? problemSolvedMatch[1].trim() : '');
-    setPossibleSolution(possibleSolutionMatch ? possibleSolutionMatch[1].trim() : '');
-    setResources(resourcesMatch ? resourcesMatch[1].trim() : '');
-  }}
-  className="mb-10 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-  style={{
-    border: "1px solid #75E2FF",
-    color: 'black',
-    backgroundColor: '#41C9E2',
-    height: '180px', 
-    resize: 'vertical', 
-    overflowY: 'scroll'
-  }}
-/>
-
+              <div className="editor-container mb-10">
+                <MdEditor
+                  value={description}
+                  style={{ height: '500px' }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={handleEditorChange}
+                />
+              </div>
 
               <button
                 onClick={creategame}
