@@ -16,10 +16,6 @@ export default function Dashboard() {
   const [ideacategories, setideacategories] = useState([]);
   const [twitterid, settwitterid] = useState('');
   const [twitterlink, settwitterlink] = useState('');
- 
-  const [problemSolved, setProblemSolved] = useState('');
-  const [possibleSolution, setPossibleSolution] = useState('');
-  const [resources, setResources] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
 
@@ -106,12 +102,10 @@ export default function Dashboard() {
         let snlData = {
           title: ideatitle,
           author: authorname,
-          category: ideacategory,
+          category: ideacategories,
           twitterid: twitterid,
           twitterlink: twitterlink,
-          problemSolved: problemSolved,
-          possibleSolution: possibleSolution,
-          resources: resources,
+          description: description,
           creatorWalletAddress: wallet,
         };
 
