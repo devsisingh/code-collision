@@ -17,8 +17,9 @@ function CallbackPage() {
               window.history.replaceState({}, document.title, window.location.pathname);
                 await switchKeylessAccount(idToken);
             } catch (error) {
-
-            }
+                // Handle the error or log it for debugging purposes
+                console.error("Failed to switch keyless account:", error);
+            }            
         }
 
         if (idToken) {
