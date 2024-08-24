@@ -17,6 +17,18 @@ Our goal is to create a space where creativity thrives through `real-time commun
 5. **Categorization & Filtering**:
    ShareTos organizes ideas into categories like DeFi, NFTs, tokens, bridges, aggregators, and more, allowing users to easily search for and explore ideas relevant to their interests. This categorization simplifies discovery and enhances user experience.
 
+## User Journey
+
+- Users land on the dashboard and see all ideas fetched from the backend API.
+- To submit an idea or upvote an idea, users need to connect their wallet, which results in the creation of a user account in the database.
+- Once an idea is submitted, it is added to the database. The database ID is then submitted to the smart contract with a vote count of 0.
+- Users can upgrade or edit their ideas, and only database changes are made.
+- A backend process can be run to fetch data from the smart contract and update the idea vote count.
+
+**Advance Feature**
+- Users can collaborate on a particular idea by creating chat rooms.
+- Twitter or Google verification can be used for a verified checkmark.
+
 ## Summary
 **ShareTos** is more than just an idea-sharing platform; it’s a community where users can bring their ideas to life in a decentralized and collaborative environment. 
 Whether you’re contributing a new concept or helping to develop an existing one, ShareTos empowers users to turn ideas into action while engaging with a vibrant community of innovators.
