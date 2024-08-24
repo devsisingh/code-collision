@@ -1,7 +1,7 @@
 # ShareTos
 The Web3 Idea Sharing and Collaboration Platform
 
-## overview
+## Overview
 **ShareTos** is an innovative Web3 platform designed to enable users to share, vote, and collaborate on groundbreaking ideas in a decentralized environment. 
 Our goal is to create a space where creativity thrives through real-time communication, transparent development, and community-driven collaboration.
 
