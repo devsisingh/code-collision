@@ -1,3 +1,3 @@
-# SNL
-YOUR ONCHAIN LEARNING ADVENTURE <br/>
-Experience Classic Fun and Earn Unique NFTs for Your Achievements
+# ShareTos
+IDEA SHARING PLATFORM <br/>
+Share your idea with the community
