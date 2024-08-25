@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/76c8b373-fb24-4b74-af60-966fafa6e42a)
+
 # ShareTos
 The Web3 Idea Sharing and Community Platform
 
