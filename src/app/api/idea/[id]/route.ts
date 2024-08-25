@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/db';
-
 import {z} from 'zod';
+import { verifyJWT } from '@/app/api/backendUtils';
 
 const updateIdeaSchema = z.object({
   title:z.string(),
@@ -21,6 +21,11 @@ export async function PATCH(request:NextRequest){
   const ideaId = searchParams[searchParams.length-1];
   const body = await request.json();
   const parsedBody = updateIdeaSchema.safeParse(body)
+  try {
+    verifyJWT()
+  }catch (err){
+    return NextResponse.json({message:'Not Authorised'}, {status:403})
+  }
 
   if (!parsedBody.success) {
     return NextResponse.json({msg: 'Invalid Inputs'}, {status: 411})
