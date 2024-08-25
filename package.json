@@ -20,6 +20,7 @@
     "@openzeppelin/contracts": "^4.8.0",
     "@polymedia/suits": "^0.0.42",
     "@polymedia/webutils": "^0.0.53",
+    "@prisma/client": "5.18.0",
     "@supabase/ssr": "^0.3.0",
     "@tailwindcss/forms": "^0.5.7",
     "@types/node": "20.3.1",
@@ -47,6 +48,7 @@
     "pino-pretty": "^10.2.3",
     "postcss": "8.4.24",
     "prettier": "^2.8.8",
+    "prisma": "^5.18.0",
     "react": "18.2.0",
     "react-datepicker": "^6.3.0",
     "react-dom": "18.2.0",
@@ -58,7 +60,7 @@
     "react-spring": "^9.7.3",
     "tailwindcss": "3.3.2",
     "web3": "^1.7.0",
-    "zod": "^3.22.4",
+    "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
