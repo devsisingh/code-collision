@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Category } from '@prisma/client';
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
@@ -12,6 +12,8 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+export type category_type = Category;
 
 export default prisma;
 

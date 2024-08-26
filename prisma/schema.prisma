@@ -14,23 +14,31 @@ datasource db {
 }
 
 model Idea {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   title       String
   description String
   vote_count  Int      @default(0)
   category    Category
   user        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  userId      String
 }
 
 enum Category {
-  Defi
+  Payment
+  ConsumerDapp
+  Nft
+  DeFi
   DePin
   Gaming
+  Social
+  Ai
+  Content
+  DeveloperTooling
+  Community
 }
 
 model User {
-  id               Int     @id @default(autoincrement())
+  id               String  @id @default(uuid())
   wallet_address   String  @unique
   password         String
   avatar_image_url String  @unique
