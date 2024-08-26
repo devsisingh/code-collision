@@ -256,7 +256,7 @@ export default function Dashboard() {
                 value={ideatitle}
                 onChange={(e) => setideatitle(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
 
@@ -268,7 +268,7 @@ export default function Dashboard() {
                 value={authorname}
                 onChange={(e) => setauthorname(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
                                         
@@ -285,7 +285,7 @@ export default function Dashboard() {
                 value={twitterid}
                 onChange={(e) => settwitterid(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
 
@@ -297,7 +297,7 @@ export default function Dashboard() {
                 value={twitterlink}
                 onChange={(e) => settwitterlink(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
                                         
