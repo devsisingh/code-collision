@@ -1,5 +1,6 @@
 "use client"
 import React from 'react';
+import Link from 'next/link';
 
 const Dashboard = () => {
 
@@ -81,8 +82,8 @@ const Dashboard = () => {
 
           <div className="flex flex-row gap-4 my-10">
             
-          <div
-      className="relative border border-gray-500 p-4 rounded-xl"
+          <Link href="/ideas/123"
+      className="relative border border-gray-500 p-4 rounded-xl cursor-pointer"
       style={{
         background: 'radial-gradient(circle at top, #9b59b6, transparent)',
         transition: 'background 0.5s ease-out',
@@ -106,7 +107,7 @@ const Dashboard = () => {
         crypto-powered solution that simplifies the matching process...
       </div>
 
-    </div>
+    </Link>
 
 
     <div
