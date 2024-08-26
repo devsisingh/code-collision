@@ -1,6 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import client from '@/db'
 import {z} from 'zod';
+import { verifyJWT } from '@/app/api/backendUtils';
+
 
 const createIdeaSchema = z.object({
   title:z.string(),
@@ -23,7 +25,13 @@ export async function GET() {
 // Create an Idea
 export async function POST(request:NextRequest){
   const body = await request.json();
-  const parsedBody = createIdeaSchema.safeParse(body)
+  const parsedBody = createIdeaSchema.safeParse(body);
+
+  try {
+     verifyJWT()
+  }catch (err){
+    return NextResponse.json({message:'Not Authorised'}, {status:403})
+  }
 
   if (!parsedBody.success) {
     return NextResponse.json({msg: 'Invalid Inputs'}, {status: 411})
@@ -32,5 +40,4 @@ export async function POST(request:NextRequest){
   const idea =  await client.idea.create({data:{title,  description, category, userId}});
   return NextResponse.json({idea });
 }
-
 
