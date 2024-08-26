@@ -144,13 +144,13 @@ export default function Dashboard() {
           <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link href="/" class="flex items-center">
               <img
-                src="https://media3.giphy.com/media/SOb4AcaDitenU4XKdC/giphy.gif?cid=6c09b952ay7ttj24dpj0m92zo0jap80u7htlljkwc7yw4y8i&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+                src="/sharetos.png"
                 class="mr-3 h-6 sm:h-9"
                 alt=""
               />
-              <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white" style={righteous.style}>
+              {/* <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white" style={righteous.style}>
                 ShareTos
-              </span>
+              </span> */}
             </Link>
 
             <div className="flex gap-10">
@@ -381,7 +381,7 @@ export default function Dashboard() {
             <div className="relative rounded-lg shadow">
               <div className="flex justify-center gap-4">
                 <img
-                  src="/dice_loader.gif"
+                  src="/smallloader.gif"
                   alt="Loading icon"
                 />
               </div>
