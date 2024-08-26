@@ -18,6 +18,12 @@ const Navbar = () => {
   const { activeAccount, disconnectKeylessAccount } = useKeylessAccounts();
   console.log("activeAccount", activeAccount);
 
+  const [password, setpassword] = useState("");
+  const [passwordset, setpasswordset] = useState(false)
+  const [passwordbox, setpasswordbox] = useState(false);
+  const [savedresponse, setsavedresponse] = useState("");
+  const [savedmessage, setsavedmessage] = useState("");
+
   const [hovered, setHovered] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("");
   const [loginbox, setloginbox] = useState(false);
@@ -34,6 +40,17 @@ const Navbar = () => {
     color: hovered ? "red" : "grey",
   };
 
+  const handleSubmit = () => {
+    setpasswordset(true);
+    setpasswordbox(false);
+  };
+
+  const onClose = () => {
+    setpassword("");
+    setpasswordset(false);
+    setpasswordbox(false);
+  };
+
   const getAptosWallet = () => {
     if ("aptos" in window) {
       return window.aptos;
@@ -47,27 +64,59 @@ const Navbar = () => {
     try {
       const response = await aptosWallet.connect();
       console.log(response); // { address: string, publicKey: string }
+      setsavedresponse(response);
       // Check the connected network
       const network = await aptosWallet.network();
-      if (network === "Mainnet") {
+      if (network === "Devnet") {
 
         // signing message
         const payload = {
-          message: "Hello from VirtueGaming",
+          message: "Hello from Sharetos",
           nonce: Math.random().toString(16),
         };
-        const res = await aptosWallet.signMessage(payload);
+        const signedMessage = await aptosWallet.signMessage(payload);
         // signing message
+        setsavedmessage(signedMessage);
 
-        Cookies.set("idea_wallet", response.address, { expires: 7 });
-        window.location.reload();
-      } else {
-        alert(`Switch to Mainnet in your Petra wallet`);
+        setpasswordbox(true);
+    }
+      else {
+        alert(`Switch to Devnet in your Petra wallet`);
       }
     } catch (error) {
       console.error(error); // { code: 4001, message: "User rejected the request."}
     }
   };
+
+
+  useEffect(() => {
+    const loginAPI = async() => {
+
+      const res = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wallet_address: savedresponse.address,
+          password: password,
+        }),
+      });
+
+      const data = await res.json();
+      console.log("login data", data);
+      if (res.ok) {
+        Cookies.set("idea_wallet", response.address, { expires: 7 });
+        window.location.reload();
+      } 
+      else {
+        alert(data.message);
+      }
+    }
+
+    loginAPI();
+  }, [passwordset])
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -226,6 +275,24 @@ className="px-4 text-white font-bold">Connect Wallet</button>
       </div>
     </animated.div>)}
 
+
+    { passwordbox && (<animated.div style={modalProps} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20">
+      <div className="bg-white p-16 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
+        <h2 className="text-2xl font-bold mb-4">Enter Password</h2>
+
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setpassword(e.target.value)}
+          placeholder="Password"
+        />
+        <div className="flex gap-10">
+        <button onClick={handleSubmit}>Submit</button>
+        <button onClick={onClose}>Cancel</button>
+        </div>
+
+      </div>
+    </animated.div>)}
 
     </div>
   );
