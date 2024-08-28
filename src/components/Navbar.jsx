@@ -121,7 +121,7 @@ const Navbar = () => {
               body: JSON.stringify({
                 wallet_address: savedresponse?.address,
                 password: password,
-                avatar_image_url: 'httpsc://example.csom/iamages/avatar1.png', // Optional, adjust as needed
+                avatar_image_url: 'httpsc://examplesdfg.csom/iamages/avatar1.png', // Optional, adjust as needed
               }),
             });
 
