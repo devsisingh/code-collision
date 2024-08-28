@@ -72,22 +72,22 @@ export default function Dashboard() {
     "DePin",
     "Gaming",
     "Social",
-    "Ai",
+    "AI",
     "Content",
     "DeveloperTooling"
   ];
 
   const categoryColors = {
-    Technology: "#B3E5FC", // Pastel Blue
-    Health: "#FFB3B3", // Pastel Coral
-    Education: "#C5CAE9", // Pastel Lavender
-    Finance: "#B9E4C9", // Pastel Sage
-    Environment: "#D5AAFF", // Pastel Purple
-    Entertainment: "#FFE3B3", // Pastel Peach
-    Sports: "#B3E0E5", // Pastel Aqua
-    Art: "#E2A3E0", // Pastel Lemon
-    Science: "#D0F4DE", // Pastel Mint
-    Travel: "#F9E2AE" // Pastel Lilac
+    Payment: "#B3E5FC", // Pastel Blue
+    ConsumerDapp: "#FFB3B3", // Pastel Coral
+    Nft: "#C5CAE9", // Pastel Lavender
+    DeFi: "#B9E4C9", // Pastel Sage
+    DePin: "#D5AAFF", // Pastel Purple
+    Gaming: "#FFE3B3", // Pastel Peach
+    Social: "#B3E0E5", // Pastel Aqua
+    AI: "#E2A3E0", // Pastel Lemon
+    Content: "#D0F4DE", // Pastel Mint
+    DeveloperTooling: "#F9E2AE" // Pastel Lilac
   };
 
   const handleCategoryChange = (event) => {

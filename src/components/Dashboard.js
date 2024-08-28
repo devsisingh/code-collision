@@ -133,7 +133,7 @@ const Dashboard = () => {
       flexWrap: 'wrap',
       gap: '1rem',
     }}>
-            {ideas.map((idea) => (
+            {ideas?.map((idea) => (
               <Link
                 key={idea.id}
                 href={`/ideas/${idea.id}`}
