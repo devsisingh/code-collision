@@ -1,8 +1,25 @@
 "use client"
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 
 const Dashboard = () => {
+
+  const [ideas, setIdeas] = useState([]);
+
+  useEffect(() => {
+    const fetchIdeas = async () => {
+      try {
+        const res = await fetch('/api/idea');
+        const data = await res.json();
+        setIdeas(data.ideas);
+        console.log("ideas fetch", data)
+      } catch (err) {
+        console.error('Failed to fetch ideas:', err);
+      }
+    };
+
+    fetchIdeas();
+  }, []);
 
     const handleMouseMove = (e) => {
         const target = e.currentTarget;
@@ -80,9 +97,9 @@ const Dashboard = () => {
             All Categories
           </div>
 
-          <div className="flex flex-row gap-4 my-10">
+          {/* <div className="flex flex-row gap-4 my-10"> */}
             
-          <Link href="/ideas/123"
+          {/* <Link href="/ideas/123"
       className="relative border border-gray-500 p-4 rounded-xl cursor-pointer"
       style={{
         background: 'radial-gradient(circle at top, #9b59b6, transparent)',
@@ -107,27 +124,47 @@ const Dashboard = () => {
         crypto-powered solution that simplifies the matching process...
       </div>
 
-    </Link>
+    </Link> */}
 
 
-    <div
-      className="relative border border-gray-500 p-4 rounded-xl"
-      style={{
-        background: 'radial-gradient(circle at top, #9b59b6, transparent)',
-        transition: 'background 0.5s ease-out',
-      }}
-    onMouseMove={handleMouseMove}
-    onMouseLeave={handleMouseLeave}
-    >
-      <div className="text-white text-lg font-semibold mb-4">
-        Web3 GoFundMe - Transparent Donation Matching
-      </div>
-      <div className="text-gray-300 text-sm">
-        Allowing donors to maximize their impact without the hassle of manual
-        reconciliation. Existing fundraising platforms do not offer a seamless,
-        crypto-powered solution that simplifies the matching process.
-      </div>
-    </div>
+    <div className="flex flex-wrap gap-4 my-10"
+    style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '1rem',
+    }}>
+            {ideas.map((idea) => (
+              <Link
+                key={idea.id}
+                href={`/ideas/${idea.id}`}
+                className="relative border border-gray-500 p-4 rounded-xl cursor-pointer"
+                style={{
+                  background: 'radial-gradient(circle at top, #9b59b6, transparent)',
+                  transition: 'background 0.5s ease-out',
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="text-white text-lg font-semibold mb-4">
+                  {idea.title}
+                </div>
+
+                <div className='flex justify-between text-white'>
+                  <div style={{ fontSize: '12px' }}>{idea.userId}</div>
+                  <div className="px-2 py-1 rounded -mt-2" style={{ fontSize: '12px' }}>
+                    {idea.category}
+                  </div>
+                  <div className="uppercase px-2 py-1 rounded -mt-2" style={{ fontSize: '11px', backgroundColor: '#22577A', color: '#5DEBD7' }}>
+                    Status
+                  </div>
+                </div>
+
+                <div className="text-gray-300 text-sm mt-6">
+                  {idea.description.substring(0, 100)}...
+                </div>
+              </Link>
+            ))}
+          {/* </div> */}
 
           </div>
         </div>

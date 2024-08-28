@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import useFonts from "@/components/hooks/useFonts";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
@@ -18,6 +19,31 @@ export default function Dashboard() {
   const [twitterlink, settwitterlink] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
+
+  const extractSections = (text) => {
+    const sections = {
+        problemSolved: '',
+        possibleSolution: '',
+        resources: '',
+        additional: ''
+    };
+
+    const sectionsRegex = {
+        problemSolved: /^## Problem Solved\s*([\s\S]*?)(?=##|$)/m,
+        possibleSolution: /^## Possible Solution\s*([\s\S]*?)(?=##|$)/m,
+        resources: /^## Resources\s*([\s\S]*?)(?=##|$)/m,
+        additional: /^## Additional\s*([\s\S]*?)(?=##|$)/m,
+    };
+
+    for (const [key, regex] of Object.entries(sectionsRegex)) {
+        const match = text.match(regex);
+        if (match) {
+            sections[key] = match[1].trim();
+        }
+    }
+
+    return sections;
+};
 
 
   const [description, setDescription] = useState(
@@ -39,16 +65,16 @@ export default function Dashboard() {
 
 
   const categories = [
-    "Technology",
-    "Health",
-    "Education",
-    "Finance",
-    "Environment",
-    "Entertainment",
-    "Sports",
-    "Art",
-    "Science",
-    "Travel"
+    "Payment",
+    "ConsumerDapp",
+    "Nft",
+    "DeFi",
+    "DePin",
+    "Gaming",
+    "Social",
+    "Ai",
+    "Content",
+    "DeveloperTooling"
   ];
 
   const categoryColors = {
@@ -93,9 +119,33 @@ export default function Dashboard() {
     }
   }
   
+  async function postIdea(snlData) {
+    const response = await fetch("/api/idea", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(snlData),
+    });
+  
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Idea Created:", data.idea);
+    } else {
+      console.error("Error saving idea:", await response.json());
+    }
+  }
+  
+  
   const creategame = async () => {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
+
+    if (!ideatitle || !authorname || ideacategories.length === 0) {
+      alert("Please fill out all required fields.");
+      setLoading(false);
+      return;
+    }
 
     try {
 
@@ -109,18 +159,33 @@ export default function Dashboard() {
           creatorWalletAddress: wallet,
         };
 
-        console.log("idea data", snlData);
+        const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId;
+
+        const { problemSolved, possibleSolution, resources, additional } = extractSections(description);
+
+        let postData = {
+          title: ideatitle,            // Make sure ideatitle is defined in your state
+          description: description,    // Make sure description is defined in your state
+          category: ideacategories[0], // Assuming ideacategories is an array and you're taking the first category
+          userId: userId,              // This should match the userId field required by your API
+        };
+
+        console.log("idea data", snlData, postData);
 
       try{
 
         await saveIdea(snlData);
 
-        console.log("game created")
+        await postIdea(postData);
+
+        console.log("idea posted")
         setcreategamedone(true);
   
-        setTimeout(() => {
-          window.location.replace('/');
-        }, 2000);
+        // setTimeout(() => {
+        //   window.location.replace('/');
+        // }, 2000);
 
       }catch (error){
         console.error('Error handling', error);
