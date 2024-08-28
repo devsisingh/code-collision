@@ -106,7 +106,7 @@ const Navbar = () => {
       const data = await res.json();
       console.log("login data", data);
       if (res.ok) {
-        Cookies.set("idea_wallet", response.address, { expires: 7 });
+        Cookies.set("idea_wallet", savedresponse.address, { expires: 7 });
         window.location.reload();
       } 
       else {
