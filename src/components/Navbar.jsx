@@ -90,32 +90,73 @@ const Navbar = () => {
 
 
   useEffect(() => {
-    const loginAPI = async() => {
 
-      const res = await fetch('/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          wallet_address: savedresponse.address,
-          password: password,
-        }),
-      });
+    const handleLoginOrSignup = async () => {
+        try {
+          // First, try to log in the user
+          let res = await fetch('/api/user/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              wallet_address: savedresponse?.address,
+              password: password,
+            }),
+          });
 
-      const data = await res.json();
-      console.log("login data", data);
-      if (res.ok) {
-        Cookies.set("idea_wallet", savedresponse.address, { expires: 7 });
-        window.location.reload();
-      } 
-      else {
-        alert(data.message);
-      }
-    }
+          let data = await res.json();
 
-    loginAPI();
-  }, [passwordset])
+          if (res.ok) {
+            // Successful login
+            Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
+            window.location.reload();
+          } else if (res.status == 404) {
+            // User not found, proceed to sign-up
+            res = await fetch('/api/user', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                wallet_address: savedresponse?.address,
+                password: password,
+                avatar_image_url: '', // Optional, adjust as needed
+              }),
+            });
+
+            data = await res.json();
+            console.log("after user create", data);
+
+            if (res.ok) {
+              // Successful registration, now log in
+              res = await fetch('/api/user/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  wallet_address: savedresponse?.address,
+                  password: password,
+                }),
+              });
+
+              data = await res.json();
+              console.log("done", data);
+              if (res.ok) {
+                Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
+                window.location.reload();
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error during login/signup:', error);
+        }
+      };
+
+      handleLoginOrSignup();
+
+  }, [password]);
   
 
   useEffect(() => {
