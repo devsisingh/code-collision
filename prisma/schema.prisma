@@ -14,13 +14,16 @@ datasource db {
 }
 
 model Idea {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  vote_count  Int      @default(0)
-  category    Category
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
+  id                String   @id @default(uuid())
+  title             String
+  problem_solved    String
+  possible_solution String
+  resources         String[]
+  additional        String
+  vote_count        Int      @default(0)
+  category          Category
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
 }
 
 enum Category {
@@ -31,7 +34,7 @@ enum Category {
   DePin
   Gaming
   Social
-  Ai
+  AI
   Content
   DeveloperTooling
   Community
@@ -41,7 +44,7 @@ model User {
   id               String  @id @default(uuid())
   wallet_address   String  @unique
   password         String
-  avatar_image_url String  @unique
+  avatar_image_url String?
   is_verified      Boolean @default(false)
   ideas            Idea[]
 }

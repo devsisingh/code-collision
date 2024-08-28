@@ -5,7 +5,10 @@ import { verifyJWT } from '@/app/api/backendUtils';
 
 const createIdeaSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  problem_solved: z.string(),
+  possible_solution: z.string(),
+  resources: z.array(z.string()).optional(),
+  additional: z.string(),
   category: z.enum([
     'Payment',
     'ConsumerDapp',
@@ -14,7 +17,7 @@ const createIdeaSchema = z.object({
     'DePin',
     'Gaming',
     'Social',
-    'Ai',
+    'AI',
     'Content',
     'DeveloperTooling',
     'Community',
@@ -27,10 +30,11 @@ export async function GET(request: NextRequest) {
   const category = request.nextUrl.searchParams.get(
     'category'
   ) as category_type;
+  const userId = request.nextUrl.searchParams.get('userId');
   let ideas: any;
   try {
     ideas = await client.idea.findMany({
-      where: { category: category ?? undefined },
+      where: { category: category ?? undefined, userId: userId ?? undefined },
       orderBy: { vote_count: 'desc' },
     });
     return NextResponse.json({ ideas });
@@ -54,9 +58,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ msg: 'Invalid Inputs' }, { status: 411 });
   }
   try {
-    const { title, description, category, userId } = parsedBody.data;
+    const {
+      title,
+      problem_solved,
+      resources,
+      possible_solution,
+      additional,
+      category,
+      userId,
+    } = parsedBody.data;
+
     const idea = await client.idea.create({
-      data: { title, description, category, userId },
+      data: {
+        title,
+        problem_solved,
+        resources,
+        possible_solution,
+        additional,
+        userId,
+        category,
+      },
     });
     return NextResponse.json({ idea });
   } catch (err) {

@@ -5,7 +5,10 @@ import { verifyJWT } from '@/app/api/backendUtils';
 
 const updateIdeaSchema = z.object({
   title: z.string(),
-  description: z.string(),
+  problem_solved: z.string(),
+  possible_solution: z.string(),
+  resources: z.array(z.string()).optional(),
+  additional: z.string(),
 });
 
 export async function GET(request: NextRequest) {
@@ -34,11 +37,18 @@ export async function PATCH(request: NextRequest) {
   if (!parsedBody.success) {
     return NextResponse.json({ msg: 'Invalid Inputs' }, { status: 411 });
   }
-  const { title, description } = parsedBody.data;
+  const { title, resources, possible_solution, problem_solved, additional } =
+    parsedBody.data;
   try {
     const idea = await client.idea.update({
       where: { id: ideaId },
-      data: { title, description },
+      data: {
+        title,
+        possible_solution,
+        problem_solved,
+        additional,
+        resources: resources,
+      },
     });
     return NextResponse.json({ idea });
   } catch (err) {
