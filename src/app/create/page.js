@@ -189,7 +189,7 @@ export default function Dashboard() {
 
         try{
           const mintTransaction = {
-          arguments: [`${data_to_contract.userId}`, "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579"],
+          arguments: [`${data_to_contract.id}`, "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579"],
           function:
             "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::add_idea",
           type: "entry_function_payload",

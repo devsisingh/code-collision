@@ -5,6 +5,7 @@ import Link from 'next/link';
 const Dashboard = () => {
 
   const [ideas, setIdeas] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -35,6 +36,10 @@ const Dashboard = () => {
         e.currentTarget.style.background = 'radial-gradient(circle at top, #9b59b6, transparent)';
       };
 
+      const filteredIdeas = selectedCategory === 'All Categories'
+    ? ideas
+    : ideas.filter((idea) => idea.category === selectedCategory);
+
   return (
     <div
       className="px-40 py-20"
@@ -52,88 +57,31 @@ const Dashboard = () => {
             Categories
           </div>
 
-          <div className="text-white py-3 px-4 mt-4 rounded-lg bg-gradient-to-r from-[#FFFFFF30] via-[#9b59b630] to-[#FFFFFF30] border border-gray-500">
-            All Categories
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            Payments
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            Blinks
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            All Categories
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            Consumer Dapps
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            NFTs
-          </div>
-          <div className="text-white py-3 px-4 mt-4">
-            Mobile
-          </div>
-          <div className="text-white py-3 px-4 mt-4">
-            Depin
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            Defi
-          </div>
-
-          <div className="text-white py-3 px-4 mt-4">
-            All Categories
-          </div>
+          {['All Categories', 'Payment', 'ConsumerDapp', 'Nft', 'DeFi', 'DePin', 'Gaming', 'Social', 'AI', 'Content', 'DeveloperTooling', 'Community'].map((category) => (
+            <div
+              key={category}
+              className={`text-white py-3 px-4 mt-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#9b59b630] to-[#FFFFFF30] border border-gray-500' : ''}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </div>
+          ))}
 
         </div>
 
         <div className="w-3/4 border border-gray-500 rounded-lg mt-4 mb-4 mr-4 pt-6 px-8">
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
-            All Categories
+            {selectedCategory}
           </div>
 
-          {/* <div className="flex flex-row gap-4 my-10"> */}
-            
-          {/* <Link href="/ideas/123"
-      className="relative border border-gray-500 p-4 rounded-xl cursor-pointer"
-      style={{
-        background: 'radial-gradient(circle at top, #9b59b6, transparent)',
-        transition: 'background 0.5s ease-out',
-      }}
-    onMouseMove={handleMouseMove}
-    onMouseLeave={handleMouseLeave}
-    >
-      <div className="text-white text-lg font-semibold mb-4">
-        Web3 GoFundMe - Transparent Donation Matching
-      </div>
-
-      <div className='flex justify-between text-white'>
-        <div style={{fontSize:'12px'}}>Twitter Id</div>
-        <div className="px-2 py-1 rounded -mt-2" style={{fontSize:'12px'}}>Category</div>
-        <div className="uppercase px-2 py-1 rounded -mt-2" style={{fontSize:'11px', backgroundColor:'#22577A', color:'#5DEBD7'}}>Status</div>
-      </div>
-
-      <div className="text-gray-300 text-sm mt-6">
-        Allowing donors to maximize their impact without the hassle of manual
-        reconciliation. Existing fundraising platforms do not offer a seamless,
-        crypto-powered solution that simplifies the matching process...
-      </div>
-
-    </Link> */}
-
-
-    <div className="flex flex-wrap gap-4 my-10"
+    <div className="my-10"
     style={{
       display: 'flex',
       flexWrap: 'wrap',
       gap: '1rem',
+      maxWidth: '100%',
     }}>
-            {ideas?.map((idea) => (
+            {filteredIdeas?.map((idea) => (
               <Link
                 key={idea.id}
                 href={`/ideas/${idea.id}`}
@@ -141,6 +89,8 @@ const Dashboard = () => {
                 style={{
                   background: 'radial-gradient(circle at top, #9b59b6, transparent)',
                   transition: 'background 0.5s ease-out',
+                  width: 'calc(50% - 1rem)', // Adjust width to ensure wrapping
+                  boxSizing: 'border-box',
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
@@ -149,30 +99,30 @@ const Dashboard = () => {
                   {idea.title}
                 </div>
 
-                <div className='flex justify-between text-white'>
-                  <div style={{ fontSize: '12px' }}>{idea.userId}</div>
-                  <div className="px-2 py-1 rounded -mt-2" style={{ fontSize: '12px' }}>
+                <div className='flex justify-between text-white items-center'>
+                  <div style={{ fontSize: '12px' }} className="w-1/3">{idea.userId}</div>
+                  <div className="px-2 py-1 rounded -mt-2 w-1/3 text-center" style={{ fontSize: '12px' }}>
                     {idea.category}
                   </div>
-                  <div className="uppercase px-2 py-1 rounded -mt-2" style={{ fontSize: '11px', backgroundColor: '#22577A', color: '#5DEBD7' }}>
+                  <div className="uppercase px-2 py-1 rounded -mt-2 text-center" style={{ fontSize: '11px', backgroundColor: '#22577A', color: '#5DEBD7' }}>
                     Status
                   </div>
                 </div>
 
                 <div className="text-gray-300 text-sm mt-6">
-                  {idea.problem_solved.substring(0, 100)}...
+                  <span className="font-bold">Problem it solves: </span>{idea.problem_solved.substring(0, 100)}...
                 </div>
 
                 <div className="text-gray-300 text-sm mt-6">
-                  {idea.problem_solved.substring(0, 100)}...
+                <span className="font-bold">Possible solution: </span>{idea.possible_solution.substring(0, 100)}...
                 </div>
 
                 <div className="text-gray-300 text-sm mt-6">
-                  {idea.problem_solved.substring(0, 100)}...
+                <span className="font-bold">Resources: </span>{idea.resources[0].substring(0, 100)}...
                 </div>
 
                 <div className="text-gray-300 text-sm mt-6">
-                  {idea.problem_solved.substring(0, 100)}...
+                <span className="font-bold">Additional: </span>{idea.additional.substring(0, 100)}...
                 </div>
               </Link>
             ))}
