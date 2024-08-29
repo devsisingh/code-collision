@@ -4,18 +4,22 @@ import Link from 'next/link';
 
 const Dashboard = () => {
 
+  const [loading, setloading] = useState(false);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
 
   useEffect(() => {
     const fetchIdeas = async () => {
       try {
+        setloading(true);
         const res = await fetch('/api/idea');
         const data = await res.json();
         setIdeas(data.ideas);
         console.log("ideas fetch", data)
+        setloading(false);
       } catch (err) {
         console.error('Failed to fetch ideas:', err);
+        setloading(false);
       }
     };
 
@@ -127,6 +131,26 @@ const Dashboard = () => {
               </Link>
             ))}
           {/* </div> */}
+
+          {loading && (
+        <div
+          style={{ backgroundColor: "#222944E5" }}
+          className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
+          id="popupmodal"
+        >
+          <div className="relative p-4 w-full max-h-full">
+            <div className="relative rounded-lg">
+              <div className="flex justify-center gap-4">
+                <img
+                  src="/smallloader.gif"
+                  alt="Loading icon"
+                  className='w-20'
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
           </div>
         </div>

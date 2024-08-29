@@ -467,11 +467,12 @@ export default function Dashboard() {
           id="popupmodal"
         >
           <div className="relative p-4 w-full max-h-full">
-            <div className="relative rounded-lg shadow">
+            <div className="relative rounded-lg">
               <div className="flex justify-center gap-4">
                 <img
                   src="/smallloader.gif"
                   alt="Loading icon"
+                  className='w-20'
                 />
               </div>
             </div>
