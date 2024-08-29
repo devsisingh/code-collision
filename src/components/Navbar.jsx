@@ -67,7 +67,7 @@ const Navbar = () => {
       setsavedresponse(response);
       // Check the connected network
       const network = await aptosWallet.network();
-      if (network === "Devnet") {
+      if (network === "Testnet") {
 
         // signing message
         const payload = {
@@ -81,7 +81,7 @@ const Navbar = () => {
         setpasswordbox(true);
     }
       else {
-        alert(`Switch to Devnet in your Petra wallet`);
+        alert(`Switch to Testnet in your Petra wallet`);
       }
     } catch (error) {
       console.error(error); // { code: 4001, message: "User rejected the request."}

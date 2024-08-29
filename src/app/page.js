@@ -62,22 +62,7 @@ export default function Home() {
 
 // ----------------------------------------------------------------------------------
  
-  const accountDataKey = 'zklogin-demo.accounts';
   const [isAccountDataAvailable, setIsAccountDataAvailable] = useState(false);
-  function loadAccounts(){
-    if(typeof window !== 'undefined'){
-    const dataRaw = sessionStorage.getItem(accountDataKey);
-    if (!dataRaw) {
-        return [];
-    }
-    const data = JSON.parse(dataRaw);
-    return data;
-  }
-  }
-  const accounts = useRef(loadAccounts());
-  
-  const userAddr = accounts.current?.length
-  console.log(userAddr)
 
   const { activeAccount, disconnectKeylessAccount } = useKeylessAccounts();
   console.log("activeAccount", activeAccount);

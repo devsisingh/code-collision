@@ -131,6 +131,7 @@ export default function Dashboard() {
     if (response.ok) {
       const data = await response.json();
       console.log("Idea Created:", data.idea);
+      return data.idea;
     } else {
       console.error("Error saving idea:", await response.json());
     }
@@ -182,14 +183,33 @@ export default function Dashboard() {
 
         await saveIdea(snlData);
 
-        await postIdea(postData);
+        const data_to_contract = await postIdea(postData);
 
         console.log("idea posted")
-        setcreategamedone(true);
+
+        try{
+          const mintTransaction = {
+          arguments: [`${data_to_contract.userId}`, "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579"],
+          function:
+            "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::add_idea",
+          type: "entry_function_payload",
+          type_arguments: [],
+          };
+
+          const mintResponse = await window.aptos.signAndSubmitTransaction(
+            mintTransaction
+          );
+
+          console.log('created idea done:', mintResponse);
+          setcreategamedone(true);
   
-        // setTimeout(() => {
-        //   window.location.replace('/');
-        // }, 2000);
+          setTimeout(() => {
+            window.location.replace('/');
+          }, 2000);
+        }
+        catch{
+          console.log("error");
+        }
 
       }catch (error){
         console.error('Error handling', error);
@@ -299,7 +319,7 @@ export default function Dashboard() {
       />
 
       {pagestatus === 'create' && (
-        <div className="w-full z-10 lg:px-60">
+        <div className="w-full z-0 lg:px-60">
           <div
             className="px-10 py-10 rounded-2xl mt-0"
             style={{
