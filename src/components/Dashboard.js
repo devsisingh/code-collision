@@ -69,7 +69,7 @@ const Dashboard = () => {
 
         </div>
 
-        <div className="w-3/4 border border-gray-500 rounded-lg mt-4 mb-4 mr-4 pt-6 px-8">
+        <div className="w-3/4 border border-gray-500 rounded-lg mt-4 mb-4 mr-4 pt-6 px-8" style={{ maxHeight: '850px', overflowY: 'auto' }}>
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
             {selectedCategory}
           </div>
