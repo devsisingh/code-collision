@@ -167,9 +167,13 @@ export default function Dashboard() {
 
         let postData = {
           title: ideatitle,            // Make sure ideatitle is defined in your state
-          description: description,    // Make sure description is defined in your state
+          // description: description,
           category: ideacategories[0], // Assuming ideacategories is an array and you're taking the first category
-          userId: userId,              // This should match the userId field required by your API
+          userId: userId, 
+          problem_solved: problemSolved,
+          possible_solution: possibleSolution,
+          resources: [resources],
+          additional: additional
         };
 
         console.log("idea data", snlData, postData);

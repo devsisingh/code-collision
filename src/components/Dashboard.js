@@ -160,7 +160,19 @@ const Dashboard = () => {
                 </div>
 
                 <div className="text-gray-300 text-sm mt-6">
-                  {idea.description.substring(0, 100)}...
+                  {idea.problem_solved.substring(0, 100)}...
+                </div>
+
+                <div className="text-gray-300 text-sm mt-6">
+                  {idea.problem_solved.substring(0, 100)}...
+                </div>
+
+                <div className="text-gray-300 text-sm mt-6">
+                  {idea.problem_solved.substring(0, 100)}...
+                </div>
+
+                <div className="text-gray-300 text-sm mt-6">
+                  {idea.problem_solved.substring(0, 100)}...
                 </div>
               </Link>
             ))}
