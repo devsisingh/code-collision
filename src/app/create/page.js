@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import useFonts from "@/components/hooks/useFonts";
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
@@ -18,6 +19,31 @@ export default function Dashboard() {
   const [twitterlink, settwitterlink] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
+
+  const extractSections = (text) => {
+    const sections = {
+        problemSolved: '',
+        possibleSolution: '',
+        resources: '',
+        additional: ''
+    };
+
+    const sectionsRegex = {
+        problemSolved: /^## Problem Solved\s*([\s\S]*?)(?=##|$)/m,
+        possibleSolution: /^## Possible Solution\s*([\s\S]*?)(?=##|$)/m,
+        resources: /^## Resources\s*([\s\S]*?)(?=##|$)/m,
+        additional: /^## Additional\s*([\s\S]*?)(?=##|$)/m,
+    };
+
+    for (const [key, regex] of Object.entries(sectionsRegex)) {
+        const match = text.match(regex);
+        if (match) {
+            sections[key] = match[1].trim();
+        }
+    }
+
+    return sections;
+};
 
 
   const [description, setDescription] = useState(
@@ -39,29 +65,29 @@ export default function Dashboard() {
 
 
   const categories = [
-    "Technology",
-    "Health",
-    "Education",
-    "Finance",
-    "Environment",
-    "Entertainment",
-    "Sports",
-    "Art",
-    "Science",
-    "Travel"
+    "Payment",
+    "ConsumerDapp",
+    "Nft",
+    "DeFi",
+    "DePin",
+    "Gaming",
+    "Social",
+    "AI",
+    "Content",
+    "DeveloperTooling"
   ];
 
   const categoryColors = {
-    Technology: "#B3E5FC", // Pastel Blue
-    Health: "#FFB3B3", // Pastel Coral
-    Education: "#C5CAE9", // Pastel Lavender
-    Finance: "#B9E4C9", // Pastel Sage
-    Environment: "#D5AAFF", // Pastel Purple
-    Entertainment: "#FFE3B3", // Pastel Peach
-    Sports: "#B3E0E5", // Pastel Aqua
-    Art: "#E2A3E0", // Pastel Lemon
-    Science: "#D0F4DE", // Pastel Mint
-    Travel: "#F9E2AE" // Pastel Lilac
+    Payment: "#B3E5FC", // Pastel Blue
+    ConsumerDapp: "#FFB3B3", // Pastel Coral
+    Nft: "#C5CAE9", // Pastel Lavender
+    DeFi: "#B9E4C9", // Pastel Sage
+    DePin: "#D5AAFF", // Pastel Purple
+    Gaming: "#FFE3B3", // Pastel Peach
+    Social: "#B3E0E5", // Pastel Aqua
+    AI: "#E2A3E0", // Pastel Lemon
+    Content: "#D0F4DE", // Pastel Mint
+    DeveloperTooling: "#F9E2AE" // Pastel Lilac
   };
 
   const handleCategoryChange = (event) => {
@@ -93,9 +119,34 @@ export default function Dashboard() {
     }
   }
   
+  async function postIdea(snlData) {
+    const response = await fetch("/api/idea", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(snlData),
+    });
+  
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Idea Created:", data.idea);
+      return data.idea;
+    } else {
+      console.error("Error saving idea:", await response.json());
+    }
+  }
+  
+  
   const creategame = async () => {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
+
+    if (!ideatitle || !authorname || ideacategories.length === 0) {
+      alert("Please fill out all required fields.");
+      setLoading(false);
+      return;
+    }
 
     try {
 
@@ -109,18 +160,56 @@ export default function Dashboard() {
           creatorWalletAddress: wallet,
         };
 
-        console.log("idea data", snlData);
+        const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId;
+
+        const { problemSolved, possibleSolution, resources, additional } = extractSections(description);
+
+        let postData = {
+          title: ideatitle,            // Make sure ideatitle is defined in your state
+          // description: description,
+          category: ideacategories[0], // Assuming ideacategories is an array and you're taking the first category
+          userId: userId, 
+          problem_solved: problemSolved,
+          possible_solution: possibleSolution,
+          resources: [resources],
+          additional: additional
+        };
+
+        console.log("idea data", snlData, postData);
 
       try{
 
         await saveIdea(snlData);
 
-        console.log("game created")
-        setcreategamedone(true);
+        const data_to_contract = await postIdea(postData);
+
+        console.log("idea posted")
+
+        try{
+          const mintTransaction = {
+          arguments: [`${data_to_contract.id}`, "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579"],
+          function:
+            "0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::add_idea",
+          type: "entry_function_payload",
+          type_arguments: [],
+          };
+
+          const mintResponse = await window.aptos.signAndSubmitTransaction(
+            mintTransaction
+          );
+
+          console.log('created idea done:', mintResponse);
+          setcreategamedone(true);
   
-        setTimeout(() => {
-          window.location.replace('/');
-        }, 2000);
+          setTimeout(() => {
+            window.location.replace('/');
+          }, 2000);
+        }
+        catch{
+          console.log("error");
+        }
 
       }catch (error){
         console.error('Error handling', error);
@@ -230,7 +319,7 @@ export default function Dashboard() {
       />
 
       {pagestatus === 'create' && (
-        <div className="w-full z-10 lg:px-60">
+        <div className="w-full z-0 lg:px-60">
           <div
             className="px-10 py-10 rounded-2xl mt-0"
             style={{
@@ -256,7 +345,7 @@ export default function Dashboard() {
                 value={ideatitle}
                 onChange={(e) => setideatitle(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
 
@@ -268,7 +357,7 @@ export default function Dashboard() {
                 value={authorname}
                 onChange={(e) => setauthorname(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
                                         
@@ -285,7 +374,7 @@ export default function Dashboard() {
                 value={twitterid}
                 onChange={(e) => settwitterid(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
 
@@ -297,7 +386,7 @@ export default function Dashboard() {
                 value={twitterlink}
                 onChange={(e) => settwitterlink(e.target.value)}
                 className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'#41C9E2'}}
+                style={{border: "1px solid #75E2FF", color:'black', backgroundColor:'white'}}
               />
               </div>
                                         
@@ -378,11 +467,12 @@ export default function Dashboard() {
           id="popupmodal"
         >
           <div className="relative p-4 w-full max-h-full">
-            <div className="relative rounded-lg shadow">
+            <div className="relative rounded-lg">
               <div className="flex justify-center gap-4">
                 <img
                   src="/smallloader.gif"
                   alt="Loading icon"
+                  className='w-20'
                 />
               </div>
             </div>
