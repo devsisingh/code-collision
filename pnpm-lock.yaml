@@ -44,6 +44,9 @@ dependencies:
   '@supabase/ssr':
     specifier: ^0.3.0
     version: 0.3.0(@supabase/supabase-js@2.45.2)
+  '@tabler/icons-react':
+    specifier: ^3.14.0
+    version: 3.14.0(react@18.2.0)
   '@tailwindcss/forms':
     specifier: ^0.5.7
     version: 0.5.7(tailwindcss@3.3.2)
@@ -80,6 +83,9 @@ dependencies:
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
+  clsx:
+    specifier: ^2.1.1
+    version: 2.1.1
   dotenv:
     specifier: ^16.4.5
     version: 16.4.5
@@ -93,7 +99,7 @@ dependencies:
     specifier: ^5.7.2
     version: 5.7.2
   framer-motion:
-    specifier: ^11.2.2
+    specifier: ^11.3.30
     version: 11.3.30(react-dom@18.2.0)(react@18.2.0)
   hardhat:
     specifier: ^2.19.1
@@ -167,6 +173,9 @@ dependencies:
   react-spring:
     specifier: ^9.7.3
     version: 9.7.4(@react-three/fiber@8.17.6)(konva@9.3.14)(react-dom@18.2.0)(react-konva@18.2.10)(react-native@0.75.2)(react-zdog@1.2.2)(react@18.2.0)(three@0.167.1)(zdog@1.1.3)
+  tailwind-merge:
+    specifier: ^2.5.2
+    version: 2.5.2
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2(ts-node@10.9.2)
@@ -4305,6 +4314,19 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       defer-to-connect: 2.0.1
+
+  /@tabler/icons-react@3.14.0(react@18.2.0):
+    resolution: {integrity: sha512-3XdbuyhBNq8aZW0qagR9YL8diACZYSAtaw6VuwcO2l6HzVFPN6N5TDex9WTz/3lf+uktAvOv1kNuuFBjSjN9yw==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      '@tabler/icons': 3.14.0
+      react: 18.2.0
+    dev: false
+
+  /@tabler/icons@3.14.0:
+    resolution: {integrity: sha512-OakKjK1kuDWKoNwdnHHVMt11kTZAC10iZpN/8o/CSYdeBH7S3v5n8IyqAYynFxLI8yBGTyBvljtvWdmWh57zSg==}
+    dev: false
 
   /@tailwindcss/forms@0.5.7(tailwindcss@3.3.2):
     resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
@@ -16503,6 +16525,10 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
     dev: true
+
+  /tailwind-merge@2.5.2:
+    resolution: {integrity: sha512-kjEBm+pvD+6eAwzJL2Bi+02/9LFLal1Gs61+QB7HvTfQQ0aXwC5LGT8PEt1gS0CWKktKe6ysPTAy3cBC5MeiIg==}
+    dev: false
 
   /tailwindcss@3.3.2(ts-node@10.9.2):
     resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}

@@ -9,6 +9,7 @@ import useFonts from "@/components/hooks/useFonts";
 import dynamic from 'next/dynamic';
 import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
 import Dashboard from '@/components/Dashboard';
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 
 export default function Home() {
@@ -175,8 +176,9 @@ export default function Home() {
           </div>
         </nav>
       </header>
-
+      <BackgroundBeamsWithCollision>
         <Dashboard />
+      </BackgroundBeamsWithCollision>
     </>
   );
 }
