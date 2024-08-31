@@ -3,10 +3,15 @@ import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import Navbar from '@/components/Navbar';
+import EmojiConfetti from '@/components/emoji_confetti';
 
-const IdeaPage = () => {
+const IdeaPage = ({ params }) => {
+
+  const id = params?.id;
 
   const [wallet, setwallet] = useState('');
+  const [idea, setIdea] = useState([]);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     const call = () => {
@@ -14,6 +19,24 @@ const IdeaPage = () => {
       setwallet(loggedin);
     };
     call();
+  }, []);
+
+  useEffect(() => {
+    const fetchIdea = async () => {
+      try {
+        setloading(true);
+        const res = await fetch(`/api/idea/${id}`);
+        const data = await res.json();
+        setIdea(data.idea);
+        console.log("ideas fetch", data)
+        setloading(false);
+      } catch (err) {
+        console.error('Failed to fetch ideas:', err);
+        setloading(false);
+      }
+    };
+    
+    fetchIdea();
   }, []);
 
   return (
@@ -27,14 +50,10 @@ const IdeaPage = () => {
                 class="mr-3 h-6 sm:h-9"
                 alt=""
               />
-              {/* <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white" style={righteous.style}>
-                ShareTos
-              </span> */}
             </Link>
 
             <div className="flex gap-10">
 
-            {/* Move the "Create Idea" button before the Navbar */}
             { wallet && (
             <div className="flex items-center lg:order-1">
               <Link
@@ -51,57 +70,42 @@ const IdeaPage = () => {
             </div>
 
             </div>
-            {/* <div
-              class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 z-10"
-              id="mobile-menu-2"
-            >
-             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                <li>
-                  <Link
-                      href="/create"
-                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Create Idea
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
           </div>
         </nav>
       </header>
 
       <div
-        className="px-10 py-20"
+        className="px-10 py-20 min-h-screen"
         style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
       >
         <div
           className="flex gap-6"
         >
-          <div className="w-3/5 border border-gray-500 rounded-xl"
+          <div className="w-4/5 border border-gray-500 rounded-xl"
           style={{
             boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
           }}>
             <div className="flex flex-row gap-4">
               <div
-                className="relative p-10 rounded-xl"
+                className="relative p-10 rounded-xl w-full"
                 style={{
                   background:
                     'radial-gradient(circle at top left, #9b59b6 10%, #312E81 50%, black)',
                   transition: 'background 0.5s ease-out',
                 }}
               >
-                <div className="text-white text-3xl w-2/3 font-semibold mb-10">
-                  Web3 GoFundMe - Transparent Donation Matching
+                <div className="text-white text-3xl font-semibold mb-10">
+                  {idea?.title}
                 </div>
 
                 <div className="flex justify-between text-white">
-                  <div style={{ fontSize: '15px' }}>Twitter Id</div>
+                  <div style={{ fontSize: '15px' }}>{idea?.userId}</div>
                   <div
                     className="px-2 py-1 rounded -mt-2"
                     style={{ fontSize: '15px' }}
                   >
-                    Category
+                    {idea?.category}
                   </div>
                   <div
                     className="uppercase px-2 py-1 rounded -mt-2"
@@ -120,19 +124,16 @@ const IdeaPage = () => {
                       color: '#FFCAD4',
                     }}
                   >
-                    20 ❤️
+                    {idea?.vote_count} ❤️
                   </div>
 
                   <div
-                    className="px-10 py-1 rounded -mt-2"
-                    style={{
-                      fontSize: '14px',
-                      backgroundColor: '#EABF9F',
-                      color: '#A35709',
-                    }}
+                    className="-mt-4"
                   >
-                    Vote 👍🏽
+                   <EmojiConfetti />
                   </div>
+
+                  
 
                 </div>
 
@@ -140,30 +141,28 @@ const IdeaPage = () => {
                   Problem Solve:
                 </div>
                 <div className="text-gray-300 text-md mt-4">
-                  Allowing donors to maximize their impact without the hassle of
-                  manual reconciliation. Existing fundraising platforms do not
-                  offer a seamless, crypto-powered solution that simplifies the
-                  matching process...
+                {idea?.problem_solved}
                 </div>
 
                 <div className="text-gray-300 text-xl mt-10 font-bold">
                   Possible Solution:
                 </div>
                 <div className="text-gray-300 text-md mt-4">
-                  Allowing donors to maximize their impact without the hassle of
-                  manual reconciliation. Existing fundraising platforms do not
-                  offer a seamless, crypto-powered solution that simplifies the
-                  matching process...
+                {idea?.possible_solution}
                 </div>
 
                 <div className="text-gray-300 text-xl mt-10 font-bold">
                   Resources:
                 </div>
                 <div className="text-gray-300 text-md mt-4">
-                  Allowing donors to maximize their impact without the hassle of
-                  manual reconciliation. Existing fundraising platforms do not
-                  offer a seamless, crypto-powered solution that simplifies the
-                  matching process...
+                {idea?.resources}
+                </div>
+
+                <div className="text-gray-300 text-xl mt-10 font-bold">
+                  Additional:
+                </div>
+                <div className="text-gray-300 text-md mt-4">
+                {idea?.additional}
                 </div>
                 
               </div>
@@ -178,6 +177,27 @@ const IdeaPage = () => {
 <div className="text-center text-white text-lg py-4 border-b">Comments</div>
 
           </div>
+
+
+          {loading && (
+        <div
+          style={{ backgroundColor: "#222944E5" }}
+          className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
+          id="popupmodal"
+        >
+          <div className="relative p-4 w-full max-h-full">
+            <div className="relative rounded-lg">
+              <div className="flex justify-center gap-4">
+                <img
+                  src="/smallloader.gif"
+                  alt="Loading icon"
+                  className='w-20'
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
         </div>
       </div>
