@@ -9,6 +9,7 @@ import useFonts from "@/components/hooks/useFonts";
 import dynamic from 'next/dynamic';
 import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
 import Dashboard from '@/components/Dashboard';
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 
 export default function Home() {
@@ -90,7 +91,7 @@ export default function Home() {
 
   useEffect(() => {
     const call = () => {
-      const loggedin = Cookies.get('snl_wallet');
+      const loggedin = Cookies.get('idea_wallet');
       setwallet(loggedin);
     };
     call();
@@ -140,6 +141,7 @@ export default function Home() {
             <div className="flex gap-10">
 
             {/* Move the "Create Idea" button before the Navbar */}
+            { wallet && (
             <div className="flex items-center lg:order-1">
               <Link
                 href="/create"
@@ -148,6 +150,7 @@ export default function Home() {
                 Create Idea
               </Link>
             </div>
+            )}
 
             <div class="flex items-center lg:order-2">
               <Navbar />
@@ -173,8 +176,9 @@ export default function Home() {
           </div>
         </nav>
       </header>
-
+      <BackgroundBeamsWithCollision>
         <Dashboard />
+      </BackgroundBeamsWithCollision>
     </>
   );
 }
