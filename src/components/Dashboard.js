@@ -67,7 +67,7 @@ const Dashboard = () => {
           {['All Categories', 'Payment', 'ConsumerDapp', 'Nft', 'DeFi', 'DePin', 'Gaming', 'Social', 'AI', 'Content', 'DeveloperTooling', 'Community'].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#9b59b630] to-[#FFFFFF30] border border-gray-500' : ''}`}
+              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500' : ''}`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
