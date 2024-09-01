@@ -125,7 +125,11 @@ export default function Home() {
   return (
     <>
       <header>
-        <nav class="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 border-b border-purple-500 h-[9vh]">
+        <nav class="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
+        style={{
+          borderBottom: '2px solid',
+          borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
+        }}>
           <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link href="/" class="flex items-center">
               <img
