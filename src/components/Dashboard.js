@@ -34,7 +34,7 @@ const Dashboard = () => {
         const xPercent = ((clientX - left) / width) * 100;
         const yPercent = ((clientY - top) / height) * 100;
 
-        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #aba564, transparent)`;
+        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, black, transparent)`;
       };
     
       const handleMouseLeave = (e) => {
