@@ -133,21 +133,21 @@ export default function Home() {
                 class="mr-3 h-6 sm:h-9"
                 alt=""
               />
-              {/* <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white" style={righteous.style}>
-                ShareTos
-              </span> */}
             </Link>
 
-            <div className="flex gap-10">
+            <div className="flex gap-6">
 
-            {/* Move the "Create Idea" button before the Navbar */}
             { wallet && (
             <div className="flex items-center lg:order-1">
               <Link
                 href="/create"
-                className="block py-2 pr-4 pl-3 text-gray-700 font-bold border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
               >
-                Create Idea
+                <button className="p-[3px] relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                  <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
+                  Create Idea
+                  </div>
+                </button>
               </Link>
             </div>
             )}
@@ -158,21 +158,6 @@ export default function Home() {
             </div>
 
             </div>
-            {/* <div
-              class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 z-10"
-              id="mobile-menu-2"
-            >
-             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                <li>
-                  <Link
-                      href="/create"
-                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Create Idea
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
           </div>
         </nav>
       </header>
