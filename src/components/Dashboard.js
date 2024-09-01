@@ -33,12 +33,12 @@ const Dashboard = () => {
         const { left, top, width, height } = target.getBoundingClientRect();
         const xPercent = ((clientX - left) / width) * 100;
         const yPercent = ((clientY - top) / height) * 100;
-    
-        target.style.background = `radial-gradient(circle at top, #9b59b6, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, rgba(255, 255, 255, 0.3), transparent)`;
+
+        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #aba564, transparent)`;
       };
     
       const handleMouseLeave = (e) => {
-        e.currentTarget.style.background = 'radial-gradient(circle at top, #9b59b6, transparent)';
+        e.currentTarget.style.background = 'radial-gradient(circle at top, #539b82, transparent)';
       };
 
       const filteredIdeas = selectedCategory === 'All Categories'
@@ -94,7 +94,7 @@ const Dashboard = () => {
                 href={`/ideas/${idea.id}`}
                 className="relative cursor-pointer"
                 style={{
-                  background: 'radial-gradient(circle at top, #9b59b6, transparent)',
+                  background: 'radial-gradient(circle at top, #539b82, transparent)',
                   transition: 'background 0.5s ease-out',
                   width: 'calc(50% - 1rem)', // Adjust width to ensure wrapping
                   boxSizing: 'border-box',
