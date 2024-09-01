@@ -10,6 +10,23 @@ import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
 import useAptos from "../../context/useAptos";
 import {Account} from '@aptos-labs/ts-sdk';
 import reactElementToJSXString from "react-element-to-jsx-string";
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 
 const Navbar = () => {
   const wallet = Cookies.get("idea_wallet");
@@ -340,11 +357,15 @@ className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl sh
     </animated.div>)}
 
 
-    { passwordbox && (<animated.div style={modalProps} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20">
-      <div className="bg-white p-16 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
-        <h2 className="text-2xl font-bold mb-4">Enter Password</h2>
+    { passwordbox && (
+      <>
 
-        <input
+
+      
+      <animated.div style={modalProps} className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20">
+      <div className="bg-black text-white p-10 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
+
+        {/* <input
           type="password"
           value={password}
           onChange={(e) => setpassword(e.target.value)}
@@ -353,10 +374,76 @@ className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl sh
         <div className="flex gap-10">
         <button onClick={handleSubmit}>Submit</button>
         <button onClick={onClose}>Cancel</button>
-        </div>
+        </div> */}
+
+<Tabs defaultValue="register" className="w-[400px]">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="register">Register</TabsTrigger>
+        <TabsTrigger value="login">Login</TabsTrigger>
+      </TabsList>
+      <TabsContent value="register">
+        <Card>
+          <div style={{textAlign:'left', padding:'25px'}}>
+            <div style={{fontSize:'25px', fontWeight:"bold"}}>Register</div>
+            <div style={{fontSize:'15px', color: 'grey'}}>
+              Register in the platform by entering your password.
+            </div>
+          </div>
+          <CardContent className="space-y-2" style={{textAlign:'left'}}>
+            <div className="space-y-1">
+              <Label htmlFor="name">Wallet Address</Label>
+              <Input id="name" defaultValue={`${savedresponse?.address}`} readOnly style={{backgroundColor:'black'}}/>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" placeholder="Password" style={{backgroundColor:'black'}}/>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="confirmpassword">Confirm Password</Label>
+              <Input id="confirmpassword" placeholder="Confirm Password"
+              style={{backgroundColor:'black'}}/>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button style={{backgroundColor:'white', color:'black'}} onClick={onClose}>Cancel</Button>
+            <Button style={{color:'black'}} onClick={handleSubmit}>Sign Up</Button>
+          </CardFooter>
+        </Card>
+      </TabsContent>
+      <TabsContent value="login">
+        <Card>
+          <div style={{textAlign:'left', padding:'25px'}}>
+            <div style={{fontSize:'25px', fontWeight:"bold"}}>Login</div>
+            <div style={{fontSize:'15px', color: 'grey'}}>
+              Login using your entered password.
+            </div>
+          </div>
+          <CardContent className="space-y-2" style={{textAlign:'left'}}>
+            <div className="space-y-1">
+              <Label htmlFor="name">Wallet Address</Label>
+              <Input id="name" defaultValue={`${savedresponse?.address}`} style={{backgroundColor:'black'}}/>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password"
+              value={password}
+              onChange={(e) => setpassword(e.target.value)}
+              placeholder="Your Password"
+              style={{backgroundColor:'black'}}/>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button style={{backgroundColor:'white', color:'black'}} onClick={onClose}>Cancel</Button>
+            <Button style={{color:'black'}} onClick={handleSubmit}>Sign In</Button>
+          </CardFooter>
+        </Card>
+      </TabsContent>
+    </Tabs>
 
       </div>
-    </animated.div>)}
+    </animated.div>
+    </>
+  )}
 
     </div>
   );
