@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className="px-40 py-20"
+      className="px-40 py-20 w-full"
       style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
     >
       <div
