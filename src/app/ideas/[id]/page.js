@@ -84,7 +84,7 @@ const IdeaPage = ({ params }) => {
 
       <div
         className="px-10 py-20 min-h-screen"
-        style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
+        style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       >
         <div
           className="flex gap-6"

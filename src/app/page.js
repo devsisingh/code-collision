@@ -7,7 +7,6 @@ import { useInView } from 'react-intersection-observer';
 import { useAnimation } from 'framer-motion';
 import useFonts from "@/components/hooks/useFonts";
 import dynamic from 'next/dynamic';
-import { useKeylessAccounts } from "@/lib/useKeylessAccounts";
 import Dashboard from '@/components/Dashboard';
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
@@ -60,34 +59,7 @@ export default function Home() {
       });
     }
   }, [inView, animation, animation2]);
-
-// ----------------------------------------------------------------------------------
- 
-  const [isAccountDataAvailable, setIsAccountDataAvailable] = useState(false);
-
-  const { activeAccount, disconnectKeylessAccount } = useKeylessAccounts();
-  console.log("activeAccount", activeAccount);
-  const walletaddr = Cookies.get("bingo_wallet");
-
-  // console.log('sarvesh',accounts.current[0])
-  useEffect(() => {
-    if(activeAccount)
-    {
-      setIsAccountDataAvailable(!!activeAccount);
-    }
-    if(walletaddr)
-    {
-      setIsAccountDataAvailable(!!walletaddr);
-    }
-  }, [activeAccount, walletaddr]);
-
-  const handleExploreClick = () => {
-    if (!isAccountDataAvailable) {
-      alert("Please login to access this page.");
-    }
-  };
   
-
 
   useEffect(() => {
     const call = () => {
@@ -117,10 +89,6 @@ export default function Home() {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [prevScrollY]);
-
-  const NoSSRComponent = dynamic(() => import('@/components/Redirect'), {
-    ssr: false
-  });
   
   return (
     <>
@@ -158,7 +126,6 @@ export default function Home() {
 
             <div class="flex items-center lg:order-2">
               <Navbar />
-              <NoSSRComponent />
             </div>
 
             </div>

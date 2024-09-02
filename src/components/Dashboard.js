@@ -34,7 +34,7 @@ const Dashboard = () => {
         const xPercent = ((clientX - left) / width) * 100;
         const yPercent = ((clientY - top) / height) * 100;
 
-        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, black, transparent)`;
+        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #312E81, transparent)`;
       };
     
       const handleMouseLeave = (e) => {
@@ -48,7 +48,7 @@ const Dashboard = () => {
   return (
     <div
       className="px-0 py-0 w-full h-[91vh]"
-      style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
+      style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
     >
       <div
         className="flex "

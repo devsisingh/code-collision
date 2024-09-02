@@ -283,7 +283,7 @@ export default function Dashboard() {
 
     <main
       className="flex flex-col items-center justify-between lg:p-20 md:p-20 py-14"
-      style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
+      style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       // style={{ backgroundImage: `url("/launchbg.png")`}}
     >
       {/* Background div with blur */}
