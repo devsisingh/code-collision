@@ -20,6 +20,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ msg: 'Invalid Inputs' }, { status: 411 });
   }
   const { wallet_address, avatar_image_url = '', password } = parsedBody.data;
+
+  const dbUser = await client.user.findUnique({ where: { wallet_address } });
+
+  if (dbUser) {
+    return NextResponse.json({ msg: 'User Already exists' }, { status: 403 });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await client.user.create({
