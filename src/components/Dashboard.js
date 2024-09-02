@@ -33,12 +33,12 @@ const Dashboard = () => {
         const { left, top, width, height } = target.getBoundingClientRect();
         const xPercent = ((clientX - left) / width) * 100;
         const yPercent = ((clientY - top) / height) * 100;
-    
-        target.style.background = `radial-gradient(circle at top, #9b59b6, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, rgba(255, 255, 255, 0.3), transparent)`;
+
+        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, black, transparent)`;
       };
     
       const handleMouseLeave = (e) => {
-        e.currentTarget.style.background = 'radial-gradient(circle at top, #9b59b6, transparent)';
+        e.currentTarget.style.background = 'radial-gradient(circle at top, #539b82, transparent)';
       };
 
       const filteredIdeas = selectedCategory === 'All Categories'
@@ -47,25 +47,27 @@ const Dashboard = () => {
 
   return (
     <div
-      className="px-40 py-20 w-full"
+      className="px-0 py-0 w-full h-[91vh]"
       style={{ background: 'radial-gradient(circle, #312E81 , #000000)' }}
     >
       <div
-        className="flex border border-gray-500 rounded-xl"
+        className="flex "
         style={{
           boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
         }}
       >
-        <div className="w-1/4 pb-8 pt-10 px-8">
-          <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
+        <div className="w-1/4 pb-8 pt-8 px-8" 
+        // style={{ maxHeight: '700px', overflowY: 'auto' }}
+        >
+          <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 mb-2">
             Categories
           </div>
 
           {['All Categories', 'Payment', 'ConsumerDapp', 'Nft', 'DeFi', 'DePin', 'Gaming', 'Social', 'AI', 'Content', 'DeveloperTooling', 'Community'].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 mt-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#9b59b630] to-[#FFFFFF30] border border-gray-500' : ''}`}
+              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500' : ''}`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
@@ -74,7 +76,7 @@ const Dashboard = () => {
 
         </div>
 
-        <div className="w-3/4 border border-gray-500 rounded-lg mt-4 mb-4 mr-4 pt-6 px-8" style={{ maxHeight: '850px', overflowY: 'auto' }}>
+        <div className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 pt-6 px-8" style={{ maxHeight: '800px', overflowY: 'auto' }}>
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
             {selectedCategory}
           </div>
@@ -92,7 +94,7 @@ const Dashboard = () => {
                 href={`/ideas/${idea.id}`}
                 className="relative cursor-pointer"
                 style={{
-                  background: 'radial-gradient(circle at top, #9b59b6, transparent)',
+                  background: 'radial-gradient(circle at top, #539b82, transparent)',
                   transition: 'background 0.5s ease-out',
                   width: 'calc(50% - 1rem)', // Adjust width to ensure wrapping
                   boxSizing: 'border-box',
