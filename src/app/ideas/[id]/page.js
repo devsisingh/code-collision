@@ -99,7 +99,7 @@ const IdeaPage = ({ params }) => {
                 className="relative p-10 rounded-xl w-full"
                 style={{
                   background:
-                    'radial-gradient(circle at top left, #9b59b6 10%, #312E81 50%, black)',
+                    'radial-gradient(circle at top left, #539b82 10%, #312E81 50%, black)',
                   transition: 'background 0.5s ease-out',
                 }}
               >
