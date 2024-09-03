@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 
 const Dashboard = () => {
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
 
@@ -209,7 +209,7 @@ const Dashboard = () => {
                 </div> */}
               </Link>
             ))}
-            {filteredIdeas.length === 0 && (
+            {filteredIdeas.length === 0 && !loading && (
               // TODO Done: Add No Idea found image or large text
               <div className="flex flex-col justify-center items-center mx-auto">
               <p className='text-white text-3xl text-center'>No Idea Found 😕</p>
