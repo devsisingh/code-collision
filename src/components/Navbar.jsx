@@ -16,6 +16,8 @@ const Navbar = () => {
   const wallet = Cookies.get('idea_wallet');
 
   const [password, setpassword] = useState('');
+  const [registerpassword, setregisterpassword] = useState('');
+  const [confirmpassword, setconfirmpassword] = useState('');
   const [passwordset, setpasswordset] = useState(false);
   const [passwordbox, setpasswordbox] = useState(false);
   const [savedresponse, setsavedresponse] = useState('');
@@ -30,6 +32,16 @@ const Navbar = () => {
   });
 }
 
+const notifysuccess = (msg) =>  {toast.success(msg, {
+  position: "top-right",
+});
+}
+
+const notifyerror = (msg) =>  {toast.error(msg, {
+  position: "top-right",
+});
+}
+
   const modalProps = useSpring({
     opacity: 1,
     from: { opacity: 0 },
@@ -37,11 +49,6 @@ const Navbar = () => {
 
   const logout = {
     color: hovered ? 'red' : 'grey',
-  };
-
-  const handleSubmit = () => {
-    setpasswordset(true);
-    setpasswordbox(false);
   };
 
   const onClose = () => {
@@ -85,8 +92,7 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    const handleLoginOrSignup = async () => {
+    const handleLogin = async () => {
       try {
         // First, try to log in the user
         let res = await fetch('/api/user/login', {
@@ -100,59 +106,64 @@ const Navbar = () => {
           }),
         });
 
-        let data = await res.json();
+        console.log(res);
+
+        const data = await res.json();
+        console.log(data);
 
         if (res.ok) {
           // Successful login
+          notifysuccess(data.message);
           Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
+          setpasswordbox(false);
           window.location.reload();
-        } else if (res.status == 404) {
+        } else {
           // User not found, proceed to sign-up
-          res = await fetch('/api/user', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              wallet_address: savedresponse?.address,
-              password: password,
-              avatar_image_url: 'httpsc://examplesdfg.csom/iamages/avatar1.png', // Optional, adjust as needed
-            }),
-          });
-
-          data = await res.json();
-          console.log('after user create', data);
-
-          if (res.ok) {
-            // Successful registration, now log in
-            res = await fetch('/api/user/login', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                wallet_address: savedresponse?.address,
-                password: password,
-              }),
-            });
-
-            data = await res.json();
-            console.log('done', data);
-            if (res.ok) {
-              Cookies.set('idea_wallet', savedresponse?.address, {
-                expires: 7,
-              });
-              window.location.reload();
-            }
-          }
+          notifyerror(data.msg);
         }
       } catch (error) {
         console.error('Error during login/signup:', error);
       }
     };
 
-    handleLoginOrSignup();
-  }, [passwordset]);
+
+    const handleSignup = async () => {
+
+      if(registerpassword != confirmpassword) {
+        notifyerror("Password didnt match. Please fill correctly")
+        return
+      }
+
+      try {
+          // User not found, proceed to sign-up
+          const res = await fetch('/api/user', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              wallet_address: savedresponse?.address,
+              password: registerpassword,
+              avatar_image_url: '', // Optional, adjust as needed
+            }),
+          });
+
+          const data = await res.json();
+          console.log('after user create', data);
+
+          console.log(res);
+
+          if (res.ok) {
+            // Successful registration, now log in
+            notifysuccess(data.msg);
+        }
+        else{
+          notifyerror(data.msg);
+        }
+      } catch (error) {
+        console.error('Error during login/signup:', error);
+      }
+    };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -351,8 +362,13 @@ const Navbar = () => {
                                 <div className="space-y-1">
                                   <Label htmlFor="password">Password</Label>
                                   <Input
-                                    id="password"
+                                    id="registerpassword"
+                                    type="password"
                                     placeholder="Password"
+                                    value={registerpassword}
+                                    onChange={(e) =>
+                                      setregisterpassword(e.target.value)
+                                    }
                                     style={{ backgroundColor: 'black' }}
                                   />
                                 </div>
@@ -362,7 +378,12 @@ const Navbar = () => {
                                   </Label>
                                   <Input
                                     id="confirmpassword"
+                                    type="password"
                                     placeholder="Confirm Password"
+                                    value={confirmpassword}
+                                    onChange={(e) =>
+                                      setconfirmpassword(e.target.value)
+                                    }
                                     style={{ backgroundColor: 'black' }}
                                   />
                                 </div>
@@ -379,7 +400,7 @@ const Navbar = () => {
                                 </Button>
                                 <Button
                                   style={{ color: 'black' }}
-                                  onClick={handleSubmit}
+                                  onClick={handleSignup}
                                 >
                                   Sign Up
                                 </Button>
@@ -443,7 +464,7 @@ const Navbar = () => {
                                 </Button>
                                 <Button
                                   style={{ color: 'black' }}
-                                  onClick={handleSubmit}
+                                  onClick={handleLogin}
                                 >
                                   Sign In
                                 </Button>
