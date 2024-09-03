@@ -1,4 +1,3 @@
-'use client';
 import Dashboard from '@/components/Dashboard';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 

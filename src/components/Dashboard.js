@@ -102,6 +102,12 @@ const Dashboard = () => {
             {selectedCategory}
           </div>
 
+          {filteredIdeas?.length === 0 && !loading && (
+              <div className="h-[58vh] grid place-items-center w-full">
+                <p className="text-white text-3xl text-center">No Idea Found 😕</p>
+              </div>
+            )}
+
           <div
             className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4"
           >
@@ -141,11 +147,9 @@ const Dashboard = () => {
                 
               </Link>
             ))}
-            {filteredIdeas?.length === 0 && !loading && (
-              <div className="flex flex-col justify-center items-center mx-auto">
-              <p className='text-white text-3xl text-center'>No Idea Found 😕</p>
-              </div>
-            )}
+            
+            <div className="h-[30vh] grid place-items-center w-full">
+            </div>
 
             {loading && (
               <div
