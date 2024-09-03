@@ -155,7 +155,7 @@ const notifyerror = (msg) =>  {toast.error(msg, {
 
           if (res.ok) {
             // Successful registration, now log in
-            notifysuccess(data.msg);
+            notifysuccess(data.message);
         }
         else{
           notifyerror(data.msg);
