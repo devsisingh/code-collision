@@ -183,6 +183,35 @@ const Navbar = () => {
   };
 
   return (
+    <header className={'sticky top-0 z-50'}>
+        <nav
+          className="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh] "
+          style={{
+            borderBottom: '2px solid',
+            borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
+          }}
+        >
+          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <Link href="/" className="flex items-center">
+              {/*TODO done: Please check entire codebase for 'class' must be replaced with 'className'*/}
+              <img src="/sharetos.png" className="mr-3 h-6 sm:h-9" alt="" />
+            </Link>
+            {/*TODO: Show tooltip when user is not logged in, show create-idea btn, don't hide it*/}
+            <div className="flex gap-6">
+              {
+                <div className="flex items-center lg:order-1">
+                  <Link href="/create">
+                    <button className="p-[3px] relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
+                      <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
+                        Create Idea
+                      </div>
+                    </button>
+                  </Link>
+                </div>
+              }
+
+              <div className="flex items-center lg:order-2">
     <div>
       {!wallet && (
 
@@ -332,6 +361,12 @@ className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl sh
   )}
 
     </div>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
   );
 };
 

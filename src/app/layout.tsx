@@ -2,7 +2,7 @@
 import './globals.css';
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
-import Image from 'next/image';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +24,10 @@ Our goal is to create a space where creativity thrives through `real-time commun
         <body
           className={`bg-gradient bg-cover bg-no-repeat w-full min-h-screen flex justify-between h-screen flex-col items-center ${inter.className}`}
         >
-          <div className='w-full'>{children}</div>
+          <div className='w-full'>
+          <Navbar />
+            {children}
+            </div>
         </body>
       </html>
   );
