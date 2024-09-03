@@ -27,20 +27,23 @@ const Navbar = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [loginbox, setloginbox] = useState(false);
 
-  const notify = () =>  {toast.warn("Please connect your wallet", {
-    position: "top-right",
-  });
-}
+  const notify = () => {
+    toast.warn('Please connect your wallet', {
+      position: 'top-right',
+    });
+  };
 
-const notifysuccess = (msg) =>  {toast.success(msg, {
-  position: "top-right",
-});
-}
+  const notifysuccess = (msg) => {
+    toast.success(msg, {
+      position: 'top-right',
+    });
+  };
 
-const notifyerror = (msg) =>  {toast.error(msg, {
-  position: "top-right",
-});
-}
+  const notifyerror = (msg) => {
+    toast.error(msg, {
+      position: 'top-right',
+    });
+  };
 
   const modalProps = useSpring({
     opacity: 1,
@@ -69,7 +72,7 @@ const notifyerror = (msg) =>  {toast.error(msg, {
     const aptosWallet = getAptosWallet();
     try {
       const response = await aptosWallet.connect();
-      console.log(response); // { address: string, publicKey: string }
+      // console.log(response); // { address: string, publicKey: string }
       setsavedresponse(response);
       // Check the connected network
       const network = await aptosWallet.network();
@@ -92,78 +95,75 @@ const notifyerror = (msg) =>  {toast.error(msg, {
     }
   };
 
-    const handleLogin = async () => {
-      try {
-        // First, try to log in the user
-        let res = await fetch('/api/user/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            wallet_address: savedresponse?.address,
-            password: password,
-          }),
-        });
+  const handleLogin = async () => {
+    try {
+      // First, try to log in the user
+      let res = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wallet_address: savedresponse?.address,
+          password: password,
+        }),
+      });
 
-        console.log(res);
+      // console.log(res);
 
-        const data = await res.json();
-        console.log(data);
+      const data = await res.json();
+      // console.log(data);
 
-        if (res.ok) {
-          // Successful login
-          notifysuccess(data.message);
-          Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
-          setpasswordbox(false);
-          window.location.reload();
-        } else {
-          // User not found, proceed to sign-up
-          notifyerror(data.msg);
-        }
-      } catch (error) {
-        console.error('Error during login/signup:', error);
+      if (res.ok) {
+        // Successful login
+        notifysuccess(data.message);
+        Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
+        setpasswordbox(false);
+        window.location.reload();
+      } else {
+        // User not found, proceed to sign-up
+        notifyerror(data.message);
       }
-    };
+    } catch (error) {
+      notifyerror('Error during login/signup:');
+    }
+  };
 
+  const handleSignup = async () => {
+    if (registerpassword != confirmpassword) {
+      notifyerror('Password didnt match. Please fill correctly');
+      return;
+    }
 
-    const handleSignup = async () => {
+    try {
+      // User not found, proceed to sign-up
+      const res = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wallet_address: savedresponse?.address,
+          password: registerpassword,
+          avatar_image_url: '', // Optional, adjust as needed
+        }),
+      });
 
-      if(registerpassword != confirmpassword) {
-        notifyerror("Password didnt match. Please fill correctly")
-        return
+      const data = await res.json();
+      console.log('after user create', data);
+
+      console.log(res);
+
+      if (res.ok) {
+        // Successful registration, now log in
+        notifysuccess(data.message);
+      } else {
+        notifyerror(data.msg);
       }
-
-      try {
-          // User not found, proceed to sign-up
-          const res = await fetch('/api/user', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              wallet_address: savedresponse?.address,
-              password: registerpassword,
-              avatar_image_url: '', // Optional, adjust as needed
-            }),
-          });
-
-          const data = await res.json();
-          console.log('after user create', data);
-
-          console.log(res);
-
-          if (res.ok) {
-            // Successful registration, now log in
-            notifysuccess(data.message);
-        }
-        else{
-          notifyerror(data.msg);
-        }
-      } catch (error) {
-        console.error('Error during login/signup:', error);
-      }
-    };
+    } catch (error) {
+      console.error('Error during login/signup:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,23 +191,22 @@ const notifyerror = (msg) =>  {toast.error(msg, {
 
   return (
     <>
-    <ToastContainer />
-    <header className={'sticky top-0 z-50'}>
-      <nav
-        className="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh] "
-        style={{
-          borderBottom: '2px solid',
-          borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
-        }}
-      >
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+      <ToastContainer />
+      <header className={'sticky top-0 z-50'}>
+        <nav
+          className="flex justify-between items-center bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh] "
+          style={{
+            borderBottom: '2px solid',
+            borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
+          }}
+        >
           <Link href="/" className="flex items-center">
             <img src="/sharetos.png" className="mr-3 h-6 sm:h-9" alt="" />
           </Link>
           {/*TODO: Show tooltip when user is not logged in, show create-idea btn, don't hide it*/}
           <div className="flex gap-6">
-            { wallet ?
-              (<div className="flex items-center lg:order-1">
+            {wallet ? (
+              <div className="flex items-center lg:order-1">
                 <Link href="/create">
                   <button className="p-[3px] relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
@@ -216,18 +215,17 @@ const notifyerror = (msg) =>  {toast.error(msg, {
                     </div>
                   </button>
                 </Link>
-              </div>)
-              :(
-                <div className="flex items-center lg:order-1">
-                  <button className="p-[3px] relative" onClick={notify}>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
-                    <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
-                      Create Idea
-                    </div>
-                  </button>
               </div>
-              )
-            }
+            ) : (
+              <div className="flex items-center lg:order-1">
+                <button className="p-[3px] relative" onClick={notify}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
+                  <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
+                    Create Idea
+                  </div>
+                </button>
+              </div>
+            )}
 
             <div className="flex items-center lg:order-2">
               <div>
@@ -479,9 +477,8 @@ const notifyerror = (msg) =>  {toast.error(msg, {
               </div>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
+      </header>
     </>
   );
 };
