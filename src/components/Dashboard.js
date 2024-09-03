@@ -129,24 +129,24 @@ const Dashboard = () => {
                 {/*TODO: Replace this 3d card with Normal card or something from UI Library*/}
                 {/*TODO: Show Proper Category Names, make mapping for it*/}
                 <CardContainer className="inter-var">
-                  <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] min-w-[480px] h-auto rounded-xl p-6 border">
+                  <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] border-white/[0.2] min-w-[480px] h-auto rounded-xl p-6 border">
                     <div className={'flex justify-between'}>
                       <CardItem
                         translateZ="50"
-                        className="text-xl font-bold text-neutral-600 dark:text-white capitalize"
+                        className="text-xl font-bold text-neutral-600 text-white capitalize"
                       >
                         {idea.title}
                       </CardItem>
-                      <CardItem className="text-xl font-medium border border-white px-3 py-1 bg-gray-700 text-black rounded-full flex justify-center items-center  dark:text-white capitalize">
+                      <CardItem className="text-xl font-medium border border-white px-3 py-1 bg-gray-700 rounded-full flex justify-center items-center text-white capitalize">
                         {idea.vote_count}
                       </CardItem>
                     </div>
                     <CardItem
                       as="p"
                       translateZ="60"
-                      className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
+                      className="text-sm max-w-sm mt-2 text-neutral-300"
                     >
-                      {idea.problem_solved.substring(0, 100)}...
+                      {idea.problem_solved.substring(0, 200)}...
                     </CardItem>
                     {/* <CardItem translateZ="100" className="w-full mt-4">
           <img
@@ -163,14 +163,14 @@ const Dashboard = () => {
                         as={Link}
                         href="https://twitter.com/mannupaaji"
                         target="__blank"
-                        className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
+                        className="px-4 py-2 rounded-xl text-xs font-normal text-white"
                       >
                         Category
                       </CardItem>
                       <CardItem
                         translateZ={20}
                         as="button"
-                        className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
+                        className="px-4 py-2 rounded-xl bg-white text-black text-xs font-bold"
                       >
                         {idea.category}
                       </CardItem>
