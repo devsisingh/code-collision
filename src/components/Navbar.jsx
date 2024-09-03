@@ -193,7 +193,6 @@ const Navbar = () => {
         >
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link href="/" className="flex items-center">
-              {/*TODO done: Please check entire codebase for 'class' must be replaced with 'className'*/}
               <img src="/sharetos.png" className="mr-3 h-6 sm:h-9" alt="" />
             </Link>
             {/*TODO: Show tooltip when user is not logged in, show create-idea btn, don't hide it*/}

@@ -357,7 +357,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>
-                {/*TODO: Category must be radio button, only one category is allowed per idea*/}
+                {/*TODO done: Category must be radio button, only one category is allowed per idea*/}
                 <div className="categories-list mb-10 flex flex-wrap gap-10">
                   {categories.map((category, index) => (
                     <div key={index}>
