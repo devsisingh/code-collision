@@ -1,12 +1,32 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
+import { GoNorthStar } from "react-icons/go";
+import { FaMoneyBillWave, FaGamepad, FaRobot, FaUsers } from 'react-icons/fa';
+import { RiNftLine, RiTeamLine } from 'react-icons/ri';
+import { MdOutlineSmartToy, MdOutlineContentPaste, MdWifiTethering } from 'react-icons/md';
+import { BsFileCode } from 'react-icons/bs';
+import { BiGlobe } from 'react-icons/bi';
 
 const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+
+  const categoryIcons = {
+    'All Categories': <GoNorthStar />,
+    'Payment': <FaMoneyBillWave />,
+    'ConsumerDapp': <BiGlobe />,
+    'Nft': <RiNftLine />,
+    'DeFi': <MdOutlineSmartToy />,
+    'DePin': <MdWifiTethering />,
+    'Gaming': <FaGamepad />,
+    'Social': <FaUsers />,
+    'AI': <FaRobot />,
+    'Content': <MdOutlineContentPaste />,
+    'DeveloperTooling': <BsFileCode />,
+    'Community': <RiTeamLine />,
+  };
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -82,14 +102,15 @@ const Dashboard = () => {
           ].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${
+              className={`text-white py-3 px-4 rounded-lg cursor-pointer flex gap-4 ${
                 selectedCategory === category
                   ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
                   : ''
               }`}
               onClick={() => setSelectedCategory(category)}
             >
-              {category}
+              <div className="mt-1">{categoryIcons[category]}</div>
+              <div>{category}</div>
             </div>
           ))}
         </div>
