@@ -159,8 +159,6 @@ export default function Dashboard() {
         title: ideatitle,
         author: authorname,
         category: ideacategories,
-        twitterid: twitterid,
-        twitterlink: twitterlink,
         description: description,
         creatorWalletAddress: wallet,
       };
@@ -236,15 +234,15 @@ export default function Dashboard() {
           {/*TODO: Try to make one Navbar for the entire application, maybe put it in layout*/}
           <header className={''}>
             <nav
-              class="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
+              className="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
               style={{
                 borderBottom: '2px solid',
                 borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
               }}
             >
-              <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                <Link href="/" class="flex items-center">
-                  <img src="/sharetos.png" class="mr-3 h-6 sm:h-9" alt="" />
+              <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                <Link href="/" className="flex items-center">
+                  <img src="/sharetos.png" className="mr-3 h-6 sm:h-9" alt="" />
                 </Link>
 
                 <div className="flex gap-6">
@@ -261,7 +259,7 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  <div class="flex items-center lg:order-2">
+                  <div className="flex items-center lg:order-2">
                     <Navbar />
                   </div>
                 </div>
@@ -344,8 +342,8 @@ export default function Dashboard() {
                       />
                     </div>
                   </div>
-                  {/*TODO: Comment this Twitter Link and ID field not required for now*/}
-                  <div className="lg:w-1/2 md:w-1/2 mt-10">
+                  {/*TODO Done: Comment this Twitter Link and ID field not required for now*/}
+                  {/* <div className="lg:w-1/2 md:w-1/2 mt-10">
                     <div>
                       <div className="text-white mb-4 text-lg">
                         Twitter ID (optional)
@@ -381,7 +379,7 @@ export default function Dashboard() {
                         }}
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>

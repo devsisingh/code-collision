@@ -97,9 +97,9 @@ export default function Home() {
           }}
         >
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <Link href="/" class="flex items-center">
-              {/*TODO: Please check entire codebase for 'class' must be replaced with 'className'*/}
-              <img src="/sharetos.png" class="mr-3 h-6 sm:h-9" alt="" />
+            <Link href="/" className="flex items-center">
+              {/*TODO done: Please check entire codebase for 'class' must be replaced with 'className'*/}
+              <img src="/sharetos.png" className="mr-3 h-6 sm:h-9" alt="" />
             </Link>
             {/*TODO: Show tooltip when user is not logged in, show create-idea btn, don't hide it*/}
             <div className="flex gap-6">
@@ -116,7 +116,7 @@ export default function Home() {
                 </div>
               }
 
-              <div class="flex items-center lg:order-2">
+              <div className="flex items-center lg:order-2">
                 <Navbar />
               </div>
             </div>

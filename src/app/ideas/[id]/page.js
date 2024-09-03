@@ -42,16 +42,16 @@ const IdeaPage = ({ params }) => {
   return (
     <>
       <header>
-        <nav class="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
+        <nav className="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
         style={{
           borderBottom: '2px solid',
           borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
         }}>
-          <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <Link href="/" class="flex items-center">
+          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <Link href="/" className="flex items-center">
               <img
                 src="/sharetos.png"
-                class="mr-3 h-6 sm:h-9"
+                className="mr-3 h-6 sm:h-9"
                 alt=""
               />
             </Link>
@@ -73,7 +73,7 @@ const IdeaPage = ({ params }) => {
             </div>
             )}
 
-            <div class="flex items-center lg:order-2">
+            <div className="flex items-center lg:order-2">
               <Navbar />
             </div>
 

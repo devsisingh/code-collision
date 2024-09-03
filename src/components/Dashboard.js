@@ -210,8 +210,11 @@ const Dashboard = () => {
               </Link>
             ))}
             {filteredIdeas.length === 0 && (
-              // TODO: Add No Idea found image or large text
-              <p className={'text-white'}>NO Idea Found :(</p>
+              // TODO Done: Add No Idea found image or large text
+              <div className="flex flex-col justify-center items-center mx-auto">
+              <p className='text-white text-3xl text-center'>No Idea Found 😕</p>
+              <img src="https://img.freepik.com/premium-vector/flat-illustration-people-argument_928395-33.jpg" className='w-2/3 mt-10' />
+              </div>
             )}
 
             {loading && (
