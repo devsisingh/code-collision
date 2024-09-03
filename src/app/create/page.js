@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const [ideatitle, setideatitle] = useState('');
   const [authorname, setauthorname] = useState('');
-  const [ideacategories, setideacategories] = useState([]);
+  const [ideacategories, setideacategories] = useState('');
   const [twitterid, settwitterid] = useState('');
   const [twitterlink, settwitterlink] = useState('');
   const [loading, setLoading] = useState(false);
@@ -101,7 +101,7 @@ export default function Dashboard() {
   const handleCategoryChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
-      setideacategories([...ideacategories, value]);
+      setideacategories(value);
     } else {
       setideacategories(
         ideacategories.filter((category) => category !== value)
@@ -171,9 +171,8 @@ export default function Dashboard() {
         extractSections(description);
 
       let postData = {
-        title: ideatitle, // Make sure ideatitle is defined in your state
-        // description: description,
-        category: ideacategories[0], // Assuming ideacategories is an array and you're taking the first category
+        title: ideatitle,
+        category: ideacategories,
         userId: userId,
         problem_solved: problemSolved,
         possible_solution: possibleSolution,
@@ -224,8 +223,6 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
-
-  const { righteous } = useFonts();
 
   return (
     <>
@@ -286,7 +283,26 @@ export default function Dashboard() {
                       />
                     </div>
 
-                    <div>
+                    {/* <div>
+                      <div className="text-white mb-4 text-lg">Author Name</div>
+                      <input
+                        type="text"
+                        placeholder="Author Name"
+                        value={authorname}
+                        onChange={(e) => setauthorname(e.target.value)}
+                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+                        style={{
+                          border: '1px solid #75E2FF',
+                          color: 'black',
+                          backgroundColor: 'white',
+                        }}
+                      />
+                    </div> */}
+                  </div>
+
+                  <div className="lg:w-1/2 md:w-1/2 mt-10">
+
+                  <div>
                       <div className="text-white mb-4 text-lg">Author Name</div>
                       <input
                         type="text"
@@ -301,10 +317,8 @@ export default function Dashboard() {
                         }}
                       />
                     </div>
-                  </div>
-                  {/*TODO Done: Comment this Twitter Link and ID field not required for now*/}
-                  {/* <div className="lg:w-1/2 md:w-1/2 mt-10">
-                    <div>
+
+                    {/* <div>
                       <div className="text-white mb-4 text-lg">
                         Twitter ID (optional)
                       </div>
@@ -338,8 +352,8 @@ export default function Dashboard() {
                           backgroundColor: 'white',
                         }}
                       />
-                    </div>
-                  </div> */}
+                    </div> */}
+                  </div>
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>
@@ -349,13 +363,14 @@ export default function Dashboard() {
                     <div key={index}>
                       <label>
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="ideaCategory"
                           value={category}
                           onChange={handleCategoryChange}
                           checked={ideacategories.includes(category)}
                         />
                         <span
-                          className="ml-3 rounded-full px-3 py-1"
+                          className="ml-2 rounded-full px-3 py-1"
                           style={{
                             backgroundColor: categoryColors[category],
                             fontSize: '12px',
