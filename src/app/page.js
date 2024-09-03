@@ -56,7 +56,6 @@ export default function Home() {
       });
     }
   }, [inView, animation, animation2]);
-  
 
   useEffect(() => {
     const call = () => {
@@ -86,22 +85,23 @@ export default function Home() {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [prevScrollY]);
-  
+
   return (
     <>
-      <header>
+      <header className={'sticky top-0'}>
         <nav
-          class="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh]"
+          className="bg-gradient-to-r from-[#000000] via-gray-800 to-[#000000] dark:bg-gray-800 px-4 lg:px-6 py-2.5 h-[9vh] "
           style={{
             borderBottom: '2px solid',
             borderImage: 'linear-gradient(to right, #a16821, #3596c2) 1',
           }}
         >
-          <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link href="/" class="flex items-center">
+              {/*TODO: Please check entire codebase for 'class' must be replaced with 'className'*/}
               <img src="/sharetos.png" class="mr-3 h-6 sm:h-9" alt="" />
             </Link>
-
+            {/*TODO: Show tooltip when user is not logged in, show create-idea btn, don't hide it*/}
             <div className="flex gap-6">
               {
                 <div className="flex items-center lg:order-1">
@@ -116,10 +116,9 @@ export default function Home() {
                 </div>
               }
 
-            <div class="flex items-center lg:order-2">
-              <Navbar />
-            </div>
-
+              <div class="flex items-center lg:order-2">
+                <Navbar />
+              </div>
             </div>
           </div>
         </nav>

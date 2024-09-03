@@ -1,10 +1,9 @@
-"use client"
-import React, {useState, useEffect} from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 
 const Dashboard = () => {
-
   const [loading, setloading] = useState(false);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
@@ -16,7 +15,7 @@ const Dashboard = () => {
         const res = await fetch('/api/idea');
         const data = await res.json();
         setIdeas(data.ideas);
-        console.log("ideas fetch", data)
+        console.log('ideas fetch', data);
         setloading(false);
       } catch (err) {
         console.error('Failed to fetch ideas:', err);
@@ -27,23 +26,25 @@ const Dashboard = () => {
     fetchIdeas();
   }, []);
 
-    const handleMouseMove = (e) => {
-        const target = e.currentTarget;
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = target.getBoundingClientRect();
-        const xPercent = ((clientX - left) / width) * 100;
-        const yPercent = ((clientY - top) / height) * 100;
+  const handleMouseMove = (e) => {
+    const target = e.currentTarget;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = target.getBoundingClientRect();
+    const xPercent = ((clientX - left) / width) * 100;
+    const yPercent = ((clientY - top) / height) * 100;
 
-        target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #312E81, transparent)`;
-      };
-    
-      const handleMouseLeave = (e) => {
-        e.currentTarget.style.background = 'radial-gradient(circle at top, #539b82, transparent)';
-      };
+    target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #312E81, transparent)`;
+  };
 
-      const filteredIdeas = selectedCategory === 'All Categories'
-    ? ideas
-    : ideas.filter((idea) => idea.category === selectedCategory);
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.background =
+      'radial-gradient(circle at top, #539b82, transparent)';
+  };
+
+  const filteredIdeas =
+    selectedCategory === 'All Categories'
+      ? ideas
+      : ideas.filter((idea) => idea.category === selectedCategory);
 
   return (
     <div
@@ -57,44 +58,67 @@ const Dashboard = () => {
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
         }}
       >
-        <div className="w-1/4 pb-8 pt-8 px-8" 
-        // style={{ maxHeight: '700px', overflowY: 'auto' }}
+        <div
+          className="w-1/4 pb-8 pt-8 px-8"
+          // style={{ maxHeight: '700px', overflowY: 'auto' }}
         >
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 mb-2">
             Categories
           </div>
 
-          {['All Categories', 'Payment', 'ConsumerDapp', 'Nft', 'DeFi', 'DePin', 'Gaming', 'Social', 'AI', 'Content', 'DeveloperTooling', 'Community'].map((category) => (
+          {[
+            'All Categories',
+            'Payment',
+            'ConsumerDapp',
+            'Nft',
+            'DeFi',
+            'DePin',
+            'Gaming',
+            'Social',
+            'AI',
+            'Content',
+            'DeveloperTooling',
+            'Community',
+          ].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${selectedCategory === category ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500' : ''}`}
+              className={`text-white py-3 px-4 rounded-lg cursor-pointer ${
+                selectedCategory === category
+                  ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
+                  : ''
+              }`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
             </div>
           ))}
-
         </div>
 
-        <div className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 pt-6 px-8" style={{ maxHeight: '800px', overflowY: 'auto' }}>
+        <div
+          className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 pt-6 px-8"
+          style={{ maxHeight: '800px', overflowY: 'auto' }}
+        >
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
             {selectedCategory}
           </div>
 
-    <div className="my-10"
-    style={{
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '1rem',
-      maxWidth: '100%',
-    }}>
+          <div
+            className="my-10"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              maxWidth: '100%',
+            }}
+          >
             {filteredIdeas?.map((idea) => (
               <Link
                 key={idea.id}
                 href={`/ideas/${idea.id}`}
-                className="relative cursor-pointer"
+                className="relative cursor-pointer rounded-lg"
                 style={{
-                  background: 'radial-gradient(circle at top, #539b82, transparent)',
+                  background:
+                    'radial-gradient(circle at top, #539b82, transparent)',
                   transition: 'background 0.5s ease-out',
                   width: 'calc(50% - 1rem)', // Adjust width to ensure wrapping
                   boxSizing: 'border-box',
@@ -102,23 +126,29 @@ const Dashboard = () => {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
               >
-
-<CardContainer className="inter-var">
-      <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] w-auto h-auto rounded-xl p-6 border">
-        <CardItem
-          translateZ="50"
-          className="text-xl font-bold text-neutral-600 dark:text-white"
-        >
-          {idea.title}
-        </CardItem>
-        <CardItem
-          as="p"
-          translateZ="60"
-          className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-        >
-          {idea.problem_solved.substring(0, 100)}...
-        </CardItem>
-        {/* <CardItem translateZ="100" className="w-full mt-4">
+                {/*TODO: Replace this 3d card with Normal card or something from UI Library*/}
+                {/*TODO: Show Proper Category Names, make mapping for it*/}
+                <CardContainer className="inter-var">
+                  <CardBody className="relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:border-white/[0.2] border-black/[0.1] min-w-[480px] h-auto rounded-xl p-6 border">
+                    <div className={'flex justify-between'}>
+                      <CardItem
+                        translateZ="50"
+                        className="text-xl font-bold text-neutral-600 dark:text-white capitalize"
+                      >
+                        {idea.title}
+                      </CardItem>
+                      <CardItem className="text-xl font-medium border border-white px-3 py-1 bg-gray-700 text-black rounded-full flex justify-center items-center  dark:text-white capitalize">
+                        {idea.vote_count}
+                      </CardItem>
+                    </div>
+                    <CardItem
+                      as="p"
+                      translateZ="60"
+                      className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
+                    >
+                      {idea.problem_solved.substring(0, 100)}...
+                    </CardItem>
+                    {/* <CardItem translateZ="100" className="w-full mt-4">
           <img
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             height="1000"
@@ -127,26 +157,26 @@ const Dashboard = () => {
             alt="thumbnail"
           />
         </CardItem> */}
-        <div className="flex justify-between items-center mt-10">
-          <CardItem
-            translateZ={20}
-            as={Link}
-            href="https://twitter.com/mannupaaji"
-            target="__blank"
-            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-          >
-            Status
-          </CardItem>
-          <CardItem
-            translateZ={20}
-            as="button"
-            className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-          >
-             {idea.category}
-          </CardItem>
-        </div>
-      </CardBody>
-    </CardContainer>
+                    <div className="flex justify-between items-center mt-10">
+                      <CardItem
+                        translateZ={20}
+                        as={Link}
+                        href="https://twitter.com/mannupaaji"
+                        target="__blank"
+                        className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
+                      >
+                        Category
+                      </CardItem>
+                      <CardItem
+                        translateZ={20}
+                        as="button"
+                        className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
+                      >
+                        {idea.category}
+                      </CardItem>
+                    </div>
+                  </CardBody>
+                </CardContainer>
 
                 {/* <div className="text-white text-lg font-semibold mb-4">
                   {idea.title}
@@ -179,27 +209,30 @@ const Dashboard = () => {
                 </div> */}
               </Link>
             ))}
+            {filteredIdeas.length === 0 && (
+              // TODO: Add No Idea found image or large text
+              <p className={'text-white'}>NO Idea Found :(</p>
+            )}
 
-          {loading && (
-        <div
-          style={{ backgroundColor: "#222944E5" }}
-          className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
-          id="popupmodal"
-        >
-          <div className="relative p-4 w-full max-h-full">
-            <div className="relative rounded-lg">
-              <div className="flex justify-center gap-4">
-                <img
-                  src="/smallloader.gif"
-                  alt="Loading icon"
-                  className='w-20'
-                />
+            {loading && (
+              <div
+                style={{ backgroundColor: '#222944E5' }}
+                className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
+                id="popupmodal"
+              >
+                <div className="relative p-4 w-full max-h-full">
+                  <div className="relative rounded-lg">
+                    <div className="flex justify-center gap-4">
+                      <img
+                        src="/smallloader.gif"
+                        alt="Loading icon"
+                        className="w-20"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
+            )}
           </div>
         </div>
       </div>
