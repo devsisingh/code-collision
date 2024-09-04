@@ -61,7 +61,7 @@ const IdeaPage = ({ params }) => {
                   transition: 'background 0.5s ease-out',
                 }}
               >
-                <div className="text-white text-3xl font-semibold mb-10">
+                <div className="text-white text-3xl font-semibold mb-10 capitalize">
                   {idea?.title}
                 </div>
 
