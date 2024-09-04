@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/76c8b373-fb24-4b74-af60-966fafa6e42a)
+![image](https://github.com/user-attachments/assets/a76a4896-78a5-427b-966a-b6018f7b56c1)
 <br></br>
 # ShareTos
 The Web3 Idea Sharing and Community Platform
