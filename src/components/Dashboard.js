@@ -1,31 +1,40 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { GoNorthStar } from "react-icons/go";
+import { GoNorthStar } from 'react-icons/go';
 import { FaMoneyBillWave, FaGamepad, FaRobot, FaUsers } from 'react-icons/fa';
 import { RiNftLine, RiTeamLine } from 'react-icons/ri';
-import { MdOutlineSmartToy, MdOutlineContentPaste, MdWifiTethering } from 'react-icons/md';
+import {
+  MdOutlineSmartToy,
+  MdOutlineContentPaste,
+  MdWifiTethering,
+} from 'react-icons/md';
 import { BsFileCode } from 'react-icons/bs';
 import { BiGlobe } from 'react-icons/bi';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const router = useRouter();
+  const wallet = Cookies.get('idea_wallet');
 
   const categoryIcons = {
     'All Categories': <GoNorthStar />,
-    'Payment': <FaMoneyBillWave />,
-    'ConsumerDapp': <BiGlobe />,
-    'Nft': <RiNftLine />,
-    'DeFi': <MdOutlineSmartToy />,
-    'DePin': <MdWifiTethering />,
-    'Gaming': <FaGamepad />,
-    'Social': <FaUsers />,
-    'AI': <FaRobot />,
-    'Content': <MdOutlineContentPaste />,
-    'DeveloperTooling': <BsFileCode />,
-    'Community': <RiTeamLine />,
+    Payment: <FaMoneyBillWave />,
+    ConsumerDapp: <BiGlobe />,
+    Nft: <RiNftLine />,
+    DeFi: <MdOutlineSmartToy />,
+    DePin: <MdWifiTethering />,
+    Gaming: <FaGamepad />,
+    Social: <FaUsers />,
+    AI: <FaRobot />,
+    Content: <MdOutlineContentPaste />,
+    DeveloperTooling: <BsFileCode />,
+    Community: <RiTeamLine />,
   };
 
   useEffect(() => {
@@ -53,12 +62,12 @@ const Dashboard = () => {
     const xPercent = ((clientX - left) / width) * 100;
     const yPercent = ((clientY - top) / height) * 100;
 
-    target.style.background = `radial-gradient(circle at top, #539b82, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #312E81, transparent)`;
+    target.style.background = `radial-gradient(circle at top, #061419, transparent), radial-gradient(circle at ${xPercent}% ${yPercent}%, #061419, transparent)`;
   };
 
   const handleMouseLeave = (e) => {
     e.currentTarget.style.background =
-      'radial-gradient(circle at top, #539b82, transparent)';
+      'radial-gradient(circle at top, #032428, transparent)';
   };
 
   const filteredIdeas =
@@ -124,53 +133,77 @@ const Dashboard = () => {
           </div>
 
           {filteredIdeas?.length === 0 && !loading && (
-              <div className="h-[58vh] grid place-items-center w-full">
-                <p className="text-white text-3xl text-center">No Idea Found 😕</p>
-              </div>
-            )}
+            <div className="h-[58vh] grid place-items-center w-full">
+              <p className="text-white text-3xl text-center">
+                No Idea Found 😕
+              </p>
+            </div>
+          )}
 
-          <div
-            className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4"
-          >
+          <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
             {filteredIdeas?.map((idea) => (
-              <Link
+              <div
                 key={idea.id}
-                href={`/ideas/${idea.id}`}
-                className="relative cursor-pointer rounded-lg p-6 border-white/[0.2] border rounded-xl"
+                className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl h-[230px]"
                 style={{
                   background:
-                    'radial-gradient(circle at top, #539b82, transparent)',
+                    'radial-gradient(circle at top, #032428, transparent)',
                   transition: 'background 0.5s ease-out',
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => router.push(`/ideas/${idea.id}`)}
               >
-                
-                <div className="text-white text-xl font-semibold mb-4 capitalize">
-                  {idea.title}
+                <div>
+                  <div className="text-white text-xl font-semibold mb-4 capitalize">
+                    {idea.title}
+                  </div>
+
+                  <div className="text-gray-300 text-sm my-6">
+                    <span className="font-bold">
+                      {idea.problem_solved.length > 100
+                        ? idea.problem_solved.substring(0, 100) + '...'
+                        : idea.problem_solved}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="text-gray-300 text-sm my-6">
-                  <span className="font-bold"></span>{idea.problem_solved.substring(0, 250)}...
-                </div>
-
-                <div className='flex justify-between text-white items-center'>
-                  <div className="flex gap-4">
-                    <div style={{ fontSize: '15px', color: '#FFCAD4', marginTop:'3px'}}>{idea?.vote_count} ❤️</div>
-                  <div className="uppercase px-4 py-1.5 rounded-lg text-center" style={{ fontSize: '12px', backgroundColor: '#22577A', color: '#5DEBD7' }}>
-                    Vote 👍🏽
+                <div className="flex justify-between text-white items-center">
+                  <div className="flex gap-4 items-center">
+                    <div
+                      style={{
+                        fontSize: '15px',
+                        color: '#FFCAD4',
+                        marginTop: '3px',
+                      }}
+                    >
+                      <span className={'mr-1'}>❤️</span> {idea?.vote_count}
+                    </div>
+                    <div
+                      className="capitalize px-2 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!wallet) {
+                          toast.warn('Please connect your wallet to upvote', {
+                            position: 'top-right',
+                          });
+                        }
+                      }}
+                    >
+                      Vote 👍
+                    </div>
                   </div>
-                  </div>
-                  <div className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold" style={{ fontSize: '13px' }}>
+                  <div
+                    className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
+                    style={{ fontSize: '13px' }}
+                  >
                     {idea.category}
                   </div>
                 </div>
-                
-              </Link>
+              </div>
             ))}
-            
-            <div className="h-[30vh] grid place-items-center w-full">
-            </div>
+
+            <div className="h-[30vh] grid place-items-center w-full"></div>
 
             {loading && (
               <div
