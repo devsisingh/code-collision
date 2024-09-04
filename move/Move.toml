@@ -1,0 +1,17 @@
+[package]
+name = "sharetos"
+version = "1.0.0"
+authors = []
+
+[addresses]
+dev_address="0x1801bcc65720aef077114d769829df91a5305ac737cc9e0d4cee1b441e23e8e2"
+
+[dev-addresses]
+dev_address="0x123"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]
