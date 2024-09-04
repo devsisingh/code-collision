@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+"use client"
+import React, { useState, useEffect, useRef } from "react"
 import { motion } from 'framer-motion'
 
 interface Particle {
