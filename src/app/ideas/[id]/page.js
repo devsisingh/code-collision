@@ -108,7 +108,7 @@ const IdeaPage = ({ params }) => {
                       {idea?.vote_count}
                     </div>
                     {/*TODO: Integrate voting flow*/}
-                    <EmojiConfetti />
+                    <EmojiConfetti ideaId={id}/>
                   </div>
                 </div>
 

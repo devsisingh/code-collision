@@ -12,8 +12,10 @@ interface Particle {
   rotationSpeed: number;
 }
 
-const EmojiConfetti = () => {
+const EmojiConfetti = ({ ideaId }: { ideaId: string }) => {
   const [isExploding, setIsExploding] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const buttonRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
@@ -102,20 +104,50 @@ const EmojiConfetti = () => {
     particles.current = [];
   };
 
+  const handleVote = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`/api/idea/vote`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ideaId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong!');
+      }
+
+    } catch (err:any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative">
       <motion.button
         ref={buttonRef}
         className="text-md transform-gpu rounded-lg px-6 py-2 font-semibold"
         whileTap={{ scale: 0.95 }}
-        onClick={handleClick}
+        onClick={() => {
+          handleClick();
+          handleVote();
+        }}
+        disabled={loading} // Disable the button while loading
         style={{
           fontSize: '14px',
           backgroundColor: '#EABF9F',
           color: '#A35709',
         }}
       >
-        Vote 👍🏽
+        {loading ? 'Voting...' : 'Vote 👍🏽'}
       </motion.button>
       {isExploding && (
         <canvas
@@ -124,6 +156,7 @@ const EmojiConfetti = () => {
           style={{ zIndex: 9999 }}
         />
       )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
