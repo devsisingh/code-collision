@@ -3,6 +3,7 @@ import './globals.css';
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
+import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,7 +27,9 @@ Our goal is to create a space where creativity thrives through `real-time commun
         >
           <div className='w-full'>
           <Navbar />
+          <BackgroundBeamsWithCollision>
             {children}
+          </BackgroundBeamsWithCollision>
             </div>
         </body>
       </html>

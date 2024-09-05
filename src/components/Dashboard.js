@@ -125,10 +125,17 @@ const Dashboard = () => {
         </div>
 
         <div
-          className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 pt-6 px-8"
+          className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 px-8"
           style={{ maxHeight: '800px', overflowY: 'auto' }}
         >
-          <div className="text-xl font-bold text-white border-b border-gray-500 pb-4">
+          <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 pt-6"
+          style={{
+            position: 'sticky',
+            top: 0, // Stick to the top of the container
+            backgroundColor: '#000000', // Match the background color to avoid overlap issues
+            zIndex: 50, // Ensure it's on top of other content
+          }}
+          >
             {selectedCategory}
           </div>
 
@@ -203,7 +210,7 @@ const Dashboard = () => {
               </div>
             ))}
 
-            <div className="h-[30vh] grid place-items-center w-full"></div>
+            <div className="h-[15vh] grid place-items-center w-full"></div>
 
             {loading && (
               <div
