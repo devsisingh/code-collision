@@ -195,7 +195,7 @@ export default function Dashboard() {
       boxShadow: 'none', // Remove box shadow
       padding: '6px', // Increase padding
       borderRadius: 10,
-      height: 65,
+      height: 55,
       '&:hover': {
         border: 'none', // Ensure no border on hover
       },
@@ -221,8 +221,8 @@ export default function Dashboard() {
   return (
     <>
       <main
-        className="flex flex-col items-center justify-between lg:p-20 md:p-20 py-14"
-        style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
+        className="flex flex-col items-center justify-between lg:p-10 md:p-10 py-14"
+        // style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       >
         <div
           style={{
@@ -272,7 +272,7 @@ export default function Dashboard() {
                   <div className="lg:w-1/2 md:w-1/2 mt-10">
                     <div>
                       <div className="text-white mb-4 text-lg">
-                        Idea Category
+                        Select Category
                       </div>
                       <Select
                         options={options}
@@ -282,32 +282,6 @@ export default function Dashboard() {
                       />
                     </div>
                   </div>
-                </div>
-
-                <div className="text-white mb-4 text-lg">Select Category</div>
-                <div className="categories-list mb-10 flex flex-wrap gap-10">
-                  {categories.map((category, index) => (
-                    <div key={index}>
-                      <label>
-                        <input
-                          type="radio"
-                          name="ideaCategory"
-                          value={category}
-                          onChange={handleCategoryChange}
-                          checked={ideacategories.includes(category)}
-                        />
-                        <span
-                          className="ml-2 rounded-full px-3 py-1"
-                          style={{
-                            backgroundColor: categoryColors[category],
-                            fontSize: '12px',
-                          }}
-                        >
-                          {category}
-                        </span>
-                      </label>
-                    </div>
-                  ))}
                 </div>
 
                 <div className="mb-10 text-lg">
@@ -390,8 +364,8 @@ export default function Dashboard() {
 
                 <button
                   onClick={createidea}
-                  className="rounded-lg py-2.5 px-14 text-white justify-center flex mx-auto text-xl"
-                  style={{ backgroundColor: '#9B86BD' }}
+                  className="rounded-lg py-2.5 px-14 text-white justify-center flex mx-auto text-xl bg-gradient-to-r from-[#539b82] to-[#aba564]"
+                  // style={{ backgroundColor: '#9B86BD' }}
                 >
                   Submit
                 </button>
