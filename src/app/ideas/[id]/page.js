@@ -18,23 +18,21 @@ const IdeaPage = ({ params }) => {
     call();
   }, []);
 
-  
-    const fetchIdea = async () => {
-      try {
-        setloading(true);
-        const res = await fetch(`/api/idea/${id}`);
-        const data = await res.json();
-        setIdea(data.idea);
-        console.log('ideas fetch', data);
-        setloading(false);
-      } catch (err) {
-        console.error('Failed to fetch ideas:', err);
-        setloading(false);
-      }
-    };
+  const fetchIdea = async () => {
+    try {
+      setloading(true);
+      const res = await fetch(`/api/idea/${id}`);
+      const data = await res.json();
+      setIdea(data.idea);
+      console.log('ideas fetch', data);
+      setloading(false);
+    } catch (err) {
+      console.error('Failed to fetch ideas:', err);
+      setloading(false);
+    }
+  };
 
-    useEffect(() => {
-
+  useEffect(() => {
     fetchIdea();
   }, [id]);
 
@@ -99,8 +97,11 @@ const IdeaPage = ({ params }) => {
                       {idea?.vote_count}
                     </div>
 
-                    <EmojiConfetti ideaId={id} onVoteSuccess={fetchIdea} />
-
+                    <EmojiConfetti
+                      ideaId={id}
+                      onVoteSuccess={fetchIdea}
+                      wallet={wallet}
+                    />
                   </div>
                 </div>
 
@@ -122,18 +123,18 @@ const IdeaPage = ({ params }) => {
                   Resources:
                 </div>
                 <div className="text-gray-300 text-md mt-4 text-[18px]">
-                    {idea?.resources?.length > 0 ? (
-                      <ul className="list-disc ml-5">
-                        {idea.resources.map((resource, index) => (
-                          <li key={index} className="mt-2">
-                            {resource}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No resources available.</p>
-                    )}
-                  </div>
+                  {idea?.resources?.length > 0 ? (
+                    <ul className="list-disc ml-5">
+                      {idea.resources.map((resource, index) => (
+                        <li key={index} className="mt-2">
+                          {resource}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No resources available.</p>
+                  )}
+                </div>
 
                 <div className="text-white text-xl mt-10 font-bold">
                   Additional:
