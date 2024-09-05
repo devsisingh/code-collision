@@ -20,7 +20,7 @@ const IdeaPage = ({ params }) => {
     call();
   }, []);
 
-  useEffect(() => {
+  
     const fetchIdea = async () => {
       try {
         setloading(true);
@@ -35,8 +35,10 @@ const IdeaPage = ({ params }) => {
       }
     };
 
+    useEffect(() => {
+
     fetchIdea();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -108,7 +110,8 @@ const IdeaPage = ({ params }) => {
                       {idea?.vote_count}
                     </div>
                     {/*TODO: Integrate voting flow*/}
-                    <EmojiConfetti ideaId={id}/>
+                    <EmojiConfetti ideaId={id} onVoteSuccess={fetchIdea} />
+
                   </div>
                 </div>
 

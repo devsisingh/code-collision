@@ -12,7 +12,13 @@ interface Particle {
   rotationSpeed: number;
 }
 
-const EmojiConfetti = ({ ideaId }: { ideaId: string }) => {
+interface EmojiConfettiProps {
+  ideaId: string;
+  onVoteSuccess: ()=> void; // Add this prop
+}
+
+const EmojiConfetti: React.FC<EmojiConfettiProps> = ({ ideaId, onVoteSuccess }) => {
+
   const [isExploding, setIsExploding] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -122,6 +128,8 @@ const EmojiConfetti = ({ ideaId }: { ideaId: string }) => {
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong!');
       }
+
+      onVoteSuccess();
 
     } catch (err:any) {
       setError(err.message);
