@@ -308,17 +308,7 @@ const Navbar = () => {
                       className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20"
                     >
                       <div className="bg-black text-white p-10 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
-                        {/* <input
-          type="password"
-          value={password}
-          onChange={(e) => setpassword(e.target.value)}
-          placeholder="Password"
-        />
-        <div className="flex gap-10">
-        <button onClick={handleSubmit}>Submit</button>
-        <button onClick={onClose}>Cancel</button>
-        </div> */}
-
+                        
                         <Tabs defaultValue="register" className="w-[400px]">
                           <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="register">Register</TabsTrigger>

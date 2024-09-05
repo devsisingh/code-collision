@@ -70,6 +70,39 @@ const Dashboard = () => {
       'radial-gradient(circle at top, #032428, transparent)';
   };
 
+
+  const handleVote = async (ideaId) => {
+    if (!wallet) {
+      toast.warn('Please connect your wallet to upvote', {
+        position: 'top-right',
+      });
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/idea/vote`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ideaId }),
+      });
+
+      if (res.ok) {
+        const updatedIdeas = ideas.map((idea) =>
+          idea.id === ideaId ? { ...idea, vote_count: idea.vote_count + 1 } : idea
+        );
+        setIdeas(updatedIdeas);
+        toast.success('Vote recorded successfully!');
+      } else {
+        toast.error('Failed to register vote. Please try again.');
+      }
+    } catch (error) {
+      toast.error('An error occurred while voting. Please try again later.');
+      console.error('Error voting:', error);
+    }
+  };
+
   const filteredIdeas =
     selectedCategory === 'All Categories'
       ? ideas
@@ -133,7 +166,7 @@ const Dashboard = () => {
             position: 'sticky',
             top: 0, // Stick to the top of the container
             backgroundColor: '#000000', // Match the background color to avoid overlap issues
-            zIndex: 50, // Ensure it's on top of other content
+            zIndex: 20, // Ensure it's on top of other content
           }}
           >
             {selectedCategory}
@@ -194,6 +227,9 @@ const Dashboard = () => {
                           toast.warn('Please connect your wallet to upvote', {
                             position: 'top-right',
                           });
+                        }
+                        else{
+                          handleVote(idea.id);
                         }
                       }}
                     >
