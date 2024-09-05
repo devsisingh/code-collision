@@ -117,7 +117,7 @@ export default function Dashboard() {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
 
-    if (!ideatitle || ideacategories.length === 0) {
+    if (!ideatitle) {
       alert('Please fill out all required fields.');
       setLoading(false);
       return;
