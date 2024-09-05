@@ -2,19 +2,15 @@
 import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import MdEditor from 'react-markdown-editor-lite';
-import MarkdownIt from 'markdown-it';
-import 'react-markdown-editor-lite/lib/index.css';
 import Select from 'react-select'
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
 
   const [ideatitle, setideatitle] = useState('');
-  const [authorname, setauthorname] = useState('');
   const [ideacategories, setideacategories] = useState('');
   const [loading, setLoading] = useState(false);
-  const [creategamedone, setcreategamedone] = useState(false);
+  const [createideadone, setcreateideadone] = useState(false);
   const [problemSolved, setProblemSolved] = useState('');
   const [possibleSolution, setPossibleSolution] = useState('');
   const [additional, setAdditional] = useState('');
@@ -117,7 +113,7 @@ export default function Dashboard() {
     }
   }
 
-  const creategame = async () => {
+  const createidea = async () => {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
 
@@ -174,7 +170,7 @@ export default function Dashboard() {
           );
 
           console.log('created idea done:', mintResponse);
-          setcreategamedone(true);
+          setcreateideadone(true);
 
           setTimeout(() => {
             window.location.replace('/');
@@ -225,20 +221,16 @@ export default function Dashboard() {
       <main
         className="flex flex-col items-center justify-between lg:p-20 md:p-20 py-14"
         style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
-        // style={{ backgroundImage: `url("/launchbg.png")`}}
       >
-        {/* Background div with blur */}
         <div
           style={{
-            // filter: 'blur(8px)',
             position: 'absolute',
             width: '100%',
             height: '100%',
             backgroundSize: 'cover',
-            // backgroundImage: `url("${bgImage}")`,
             top: 0,
             left: 0,
-            zIndex: 0, // Ensure the blur layer is below the content
+            zIndex: 0,
           }}
         />
 
@@ -251,11 +243,6 @@ export default function Dashboard() {
                 boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
                 backgroundColor: 'rgba(0, 0, 0, 0.2)',
               }}
-              // style={{
-              //   border: '1px solid #0162FF',
-              //   boxShadow: 'inset -10px -10px 60px 0 rgba(255, 255, 255, 0.4)',
-              //   backgroundColor:'#E5E7EB'
-              // }}
             >
               <div>
                 <div className="font-bold text-2xl text-white">
@@ -286,7 +273,7 @@ export default function Dashboard() {
                       <div className="text-white mb-4 text-lg">Idea Category</div>
                       <Select
                         options={options}
-                        styles={customStyles} // Apply custom styles
+                        styles={customStyles}
                       />
                      </div>
                   </div>
@@ -294,7 +281,6 @@ export default function Dashboard() {
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>
-                {/*TODO done: Category must be radio button, only one category is allowed per idea*/}
                 <div className="categories-list mb-10 flex flex-wrap gap-10">
                   {categories.map((category, index) => (
                     <div key={index}>
@@ -390,7 +376,7 @@ export default function Dashboard() {
                 </div>
 
                 <button
-                  onClick={creategame}
+                  onClick={createidea}
                   className="rounded-lg py-2.5 px-14 text-white justify-center flex mx-auto text-xl"
                   style={{ backgroundColor: '#9B86BD' }}
                 >
@@ -401,7 +387,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {creategamedone && (
+        {createideadone && (
           <div
             style={{ backgroundColor: '#222944E5' }}
             className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
