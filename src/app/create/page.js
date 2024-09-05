@@ -2,7 +2,7 @@
 import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import Select from 'react-select'
+import Select from 'react-select';
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
@@ -38,8 +38,8 @@ export default function Dashboard() {
     { value: 'Social', label: 'Social' },
     { value: 'AI', label: 'AI' },
     { value: 'Content', label: 'Content' },
-    { value: 'DeveloperTooling', label: 'DeveloperTooling' }
-  ]
+    { value: 'DeveloperTooling', label: 'DeveloperTooling' },
+  ];
 
   const categories = [
     'Payment',
@@ -188,13 +188,14 @@ export default function Dashboard() {
     }
   };
 
-
   const customStyles = {
     control: (provided) => ({
       ...provided,
       border: 'none', // Remove border
       boxShadow: 'none', // Remove box shadow
       padding: '6px', // Increase padding
+      borderRadius: 10,
+      height: 65,
       '&:hover': {
         border: 'none', // Ensure no border on hover
       },
@@ -203,6 +204,7 @@ export default function Dashboard() {
     menu: (provided) => ({
       ...provided,
       padding: '6px', // Adjust as needed
+      borderRadius: 10,
     }),
     // Increase padding inside the single value (selected item)
     singleValue: (provided) => ({
@@ -249,7 +251,6 @@ export default function Dashboard() {
                   Share your Idea with Community
                 </div>
                 <div className="lg:flex md:flex justify-between gap-4">
-                  
                   <div className="lg:w-1/2 md:w-1/2 mt-10">
                     <div>
                       <div className="text-white mb-4 text-lg">Idea Title</div>
@@ -269,15 +270,18 @@ export default function Dashboard() {
                   </div>
 
                   <div className="lg:w-1/2 md:w-1/2 mt-10">
-                  <div>
-                      <div className="text-white mb-4 text-lg">Idea Category</div>
+                    <div>
+                      <div className="text-white mb-4 text-lg">
+                        Idea Category
+                      </div>
                       <Select
                         options={options}
                         styles={customStyles}
+                        isSearchable={false}
+                        placeholder={'Select Category'}
                       />
-                     </div>
+                    </div>
                   </div>
-
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>
@@ -307,8 +311,10 @@ export default function Dashboard() {
                 </div>
 
                 <div className="mb-10 text-lg">
-                <div className="mb-6">
-                    <label className="block text-white mb-2">Problem Solved</label>
+                  <div className="mb-6">
+                    <label className="block text-white mb-2">
+                      Problem Solved
+                    </label>
                     <textarea
                       value={problemSolved}
                       onChange={(e) => setProblemSolved(e.target.value)}
@@ -319,7 +325,9 @@ export default function Dashboard() {
                   </div>
 
                   <div className="mb-6">
-                    <label className="block text-white mb-2">Possible Solution</label>
+                    <label className="block text-white mb-2">
+                      Possible Solution
+                    </label>
                     <textarea
                       value={possibleSolution}
                       onChange={(e) => setPossibleSolution(e.target.value)}
@@ -342,15 +350,20 @@ export default function Dashboard() {
                       <button
                         type="button"
                         onClick={handleAddResource}
-                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 text-sm"
                       >
                         Add Resource
                       </button>
                     </div>
                     <ul className="list-disc">
                       {resources.map((resource, index) => (
-                        <li key={index} className="flex justify-between items-center text-white">
-                          <span>{index+1}. {resource}</span>
+                        <li
+                          key={index}
+                          className="flex justify-between items-center text-white"
+                        >
+                          <span>
+                            {index + 1}. {resource}
+                          </span>
                           <button
                             type="button"
                             onClick={() => handleRemoveResource(index)}

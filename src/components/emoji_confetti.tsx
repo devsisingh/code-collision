@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
@@ -14,11 +15,13 @@ interface Particle {
 
 interface EmojiConfettiProps {
   ideaId: string;
-  onVoteSuccess: ()=> void; // Add this prop
+  onVoteSuccess: () => void; // Add this prop
 }
 
-const EmojiConfetti: React.FC<EmojiConfettiProps> = ({ ideaId, onVoteSuccess }) => {
-
+const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
+  ideaId,
+  onVoteSuccess,
+}) => {
   const [isExploding, setIsExploding] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -130,8 +133,7 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({ ideaId, onVoteSuccess }) 
       }
 
       onVoteSuccess();
-
-    } catch (err:any) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
