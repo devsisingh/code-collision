@@ -1,13 +1,11 @@
 'use client';
-import Link from 'next/link';
-import Navbar from '@/components/Navbar';
 import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import useFonts from '@/components/hooks/useFonts';
 import MdEditor from 'react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
+import Select from 'react-select'
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
@@ -15,62 +13,37 @@ export default function Dashboard() {
   const [ideatitle, setideatitle] = useState('');
   const [authorname, setauthorname] = useState('');
   const [ideacategories, setideacategories] = useState('');
-  const [twitterid, settwitterid] = useState('');
-  const [twitterlink, settwitterlink] = useState('');
   const [loading, setLoading] = useState(false);
   const [creategamedone, setcreategamedone] = useState(false);
+  const [problemSolved, setProblemSolved] = useState('');
+  const [possibleSolution, setPossibleSolution] = useState('');
+  const [additional, setAdditional] = useState('');
+  const [resources, setResources] = useState([]);
+  const [newResource, setNewResource] = useState('');
 
-  const [wallet, setwallet] = useState('');
-
-  useEffect(() => {
-    const call = () => {
-      const loggedin = Cookies.get('idea_wallet');
-      setwallet(loggedin);
-    };
-    call();
-  }, []);
-
-  const extractSections = (text) => {
-    const sections = {
-      problemSolved: '',
-      possibleSolution: '',
-      resources: '',
-      additional: '',
-    };
-
-    const sectionsRegex = {
-      problemSolved: /^## Problem Solved\s*([\s\S]*?)(?=##|$)/m,
-      possibleSolution: /^## Possible Solution\s*([\s\S]*?)(?=##|$)/m,
-      resources: /^## Resources\s*([\s\S]*?)(?=##|$)/m,
-      additional: /^## Additional\s*([\s\S]*?)(?=##|$)/m,
-    };
-
-    for (const [key, regex] of Object.entries(sectionsRegex)) {
-      const match = text.match(regex);
-      if (match) {
-        sections[key] = match[1].trim();
-      }
+  const handleAddResource = () => {
+    if (newResource) {
+      setResources([...resources, newResource]);
+      setNewResource('');
     }
-
-    return sections;
   };
 
-  const [description, setDescription] = useState(
-    `## Problem Solved\n\n` +
-      `Describe the problem...\n\n\n` +
-      `## Possible Solution\n\n` +
-      `Describe the possible solution...\n\n\n` +
-      `## Resources\n\n` +
-      `List any resources...\n\n\n` +
-      `## Additional\n\n` +
-      `Anything else you want to share...\n`
-  );
-
-  const mdParser = new MarkdownIt();
-
-  const handleEditorChange = ({ text }) => {
-    setDescription(text);
+  const handleRemoveResource = (index) => {
+    setResources(resources.filter((_, i) => i !== index));
   };
+
+  const options = [
+    { value: 'Payment', label: 'Payment' },
+    { value: 'ConsumerDapp', label: 'ConsumerDapp' },
+    { value: 'Nft', label: 'Nft' },
+    { value: 'DeFi', label: 'DeFi' },
+    { value: 'DePin', label: 'DePin' },
+    { value: 'Gaming', label: 'Gaming' },
+    { value: 'Social', label: 'Social' },
+    { value: 'AI', label: 'AI' },
+    { value: 'Content', label: 'Content' },
+    { value: 'DeveloperTooling', label: 'DeveloperTooling' }
+  ]
 
   const categories = [
     'Payment',
@@ -148,7 +121,7 @@ export default function Dashboard() {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
 
-    if (!ideatitle || !authorname || ideacategories.length === 0) {
+    if (!ideatitle || ideacategories.length === 0) {
       alert('Please fill out all required fields.');
       setLoading(false);
       return;
@@ -157,9 +130,7 @@ export default function Dashboard() {
     try {
       let snlData = {
         title: ideatitle,
-        author: authorname,
         category: ideacategories,
-        description: description,
         creatorWalletAddress: wallet,
       };
 
@@ -167,23 +138,20 @@ export default function Dashboard() {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
 
-      const { problemSolved, possibleSolution, resources, additional } =
-        extractSections(description);
-
       let postData = {
         title: ideatitle,
         category: ideacategories,
         userId: userId,
         problem_solved: problemSolved,
         possible_solution: possibleSolution,
-        resources: [resources],
+        resources: resources,
         additional: additional,
       };
 
       console.log('idea data', snlData, postData);
 
       try {
-        await saveIdea(snlData);
+        // await saveIdea(snlData);
 
         const data_to_contract = await postIdea(postData);
 
@@ -222,6 +190,34 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      border: 'none', // Remove border
+      boxShadow: 'none', // Remove box shadow
+      padding: '6px', // Increase padding
+      '&:hover': {
+        border: 'none', // Ensure no border on hover
+      },
+    }),
+    // Increase padding in the dropdown menu
+    menu: (provided) => ({
+      ...provided,
+      padding: '6px', // Adjust as needed
+    }),
+    // Increase padding inside the single value (selected item)
+    singleValue: (provided) => ({
+      ...provided,
+      padding: '6px', // Adjust as needed
+    }),
+    // Increase padding for the placeholder text
+    placeholder: (provided) => ({
+      ...provided,
+      padding: '6px', // Adjust as needed
+    }),
   };
 
   return (
@@ -266,6 +262,7 @@ export default function Dashboard() {
                   Share your Idea with Community
                 </div>
                 <div className="lg:flex md:flex justify-between gap-4">
+                  
                   <div className="lg:w-1/2 md:w-1/2 mt-10">
                     <div>
                       <div className="text-white mb-4 text-lg">Idea Title</div>
@@ -282,78 +279,18 @@ export default function Dashboard() {
                         }}
                       />
                     </div>
-
-                    {/* <div>
-                      <div className="text-white mb-4 text-lg">Author Name</div>
-                      <input
-                        type="text"
-                        placeholder="Author Name"
-                        value={authorname}
-                        onChange={(e) => setauthorname(e.target.value)}
-                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                        style={{
-                          border: '1px solid #75E2FF',
-                          color: 'black',
-                          backgroundColor: 'white',
-                        }}
-                      />
-                    </div> */}
                   </div>
 
                   <div className="lg:w-1/2 md:w-1/2 mt-10">
-
                   <div>
-                      <div className="text-white mb-4 text-lg">Author Name</div>
-                      <input
-                        type="text"
-                        placeholder="Author Name"
-                        value={authorname}
-                        onChange={(e) => setauthorname(e.target.value)}
-                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                        style={{
-                          border: '1px solid #75E2FF',
-                          color: 'black',
-                          backgroundColor: 'white',
-                        }}
+                      <div className="text-white mb-4 text-lg">Idea Category</div>
+                      <Select
+                        options={options}
+                        styles={customStyles} // Apply custom styles
                       />
-                    </div>
-
-                    {/* <div>
-                      <div className="text-white mb-4 text-lg">
-                        Twitter ID (optional)
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Twitter ID"
-                        value={twitterid}
-                        onChange={(e) => settwitterid(e.target.value)}
-                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                        style={{
-                          border: '1px solid #75E2FF',
-                          color: 'black',
-                          backgroundColor: 'white',
-                        }}
-                      />
-                    </div>
-
-                    <div>
-                      <div className="text-white mb-4 text-lg">
-                        Twitter Post Link (optional)
-                      </div>
-                      <input
-                        type="text"
-                        placeholder="Tweeter Post Link"
-                        value={twitterlink}
-                        onChange={(e) => settwitterlink(e.target.value)}
-                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                        style={{
-                          border: '1px solid #75E2FF',
-                          color: 'black',
-                          backgroundColor: 'white',
-                        }}
-                      />
-                    </div> */}
+                     </div>
                   </div>
+
                 </div>
 
                 <div className="text-white mb-4 text-lg">Select Category</div>
@@ -383,15 +320,73 @@ export default function Dashboard() {
                   ))}
                 </div>
 
-                <div className="text-white mb-4 text-lg">Idea Description</div>
+                <div className="mb-10 text-lg">
+                <div className="mb-6">
+                    <label className="block text-white mb-2">Problem Solved</label>
+                    <textarea
+                      value={problemSolved}
+                      onChange={(e) => setProblemSolved(e.target.value)}
+                      rows="4"
+                      className="w-full p-4 rounded-lg border-gray-300"
+                      placeholder="Describe the problem solved..."
+                    />
+                  </div>
 
-                <div className="editor-container mb-10">
-                  <MdEditor
-                    value={description}
-                    style={{ height: '500px' }}
-                    renderHTML={(text) => mdParser.render(text)}
-                    onChange={handleEditorChange}
-                  />
+                  <div className="mb-6">
+                    <label className="block text-white mb-2">Possible Solution</label>
+                    <textarea
+                      value={possibleSolution}
+                      onChange={(e) => setPossibleSolution(e.target.value)}
+                      rows="4"
+                      className="w-full p-4 rounded-lg border-gray-300"
+                      placeholder="Describe the possible solution..."
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="block text-white mb-2">Resources</label>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        value={newResource}
+                        onChange={(e) => setNewResource(e.target.value)}
+                        className="w-full p-4 rounded-lg border-gray-300"
+                        placeholder="Add a new resource..."
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddResource}
+                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                      >
+                        Add Resource
+                      </button>
+                    </div>
+                    <ul className="list-disc">
+                      {resources.map((resource, index) => (
+                        <li key={index} className="flex justify-between items-center text-white">
+                          <span>{index+1}. {resource}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveResource(index)}
+                            className="text-red-500"
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="block text-white mb-2">Additional</label>
+                    <textarea
+                      value={additional}
+                      onChange={(e) => setAdditional(e.target.value)}
+                      rows="4"
+                      className="w-full p-4 rounded-lg border-gray-300"
+                      placeholder="Anything else you want to share..."
+                    />
+                  </div>
                 </div>
 
                 <button
