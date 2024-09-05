@@ -70,7 +70,6 @@ const Dashboard = () => {
       'radial-gradient(circle at top, #032428, transparent)';
   };
 
-
   const handleVote = async (ideaId) => {
     if (!wallet) {
       toast.warn('Please connect your wallet to upvote', {
@@ -90,7 +89,9 @@ const Dashboard = () => {
 
       if (res.ok) {
         const updatedIdeas = ideas.map((idea) =>
-          idea.id === ideaId ? { ...idea, vote_count: idea.vote_count + 1 } : idea
+          idea.id === ideaId
+            ? { ...idea, vote_count: idea.vote_count + 1 }
+            : idea
         );
         setIdeas(updatedIdeas);
         toast.success('Vote recorded successfully!');
@@ -161,13 +162,14 @@ const Dashboard = () => {
           className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 px-8"
           style={{ maxHeight: '800px', overflowY: 'auto' }}
         >
-          <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 pt-6"
-          style={{
-            position: 'sticky',
-            top: 0, // Stick to the top of the container
-            backgroundColor: '#000000', // Match the background color to avoid overlap issues
-            zIndex: 20, // Ensure it's on top of other content
-          }}
+          <div
+            className="text-xl font-bold text-white border-b border-gray-500 pb-4 pt-6"
+            style={{
+              position: 'sticky',
+              top: 0, // Stick to the top of the container
+              backgroundColor: '#000000', // Match the background color to avoid overlap issues
+              zIndex: 20, // Ensure it's on top of other content
+            }}
           >
             {selectedCategory}
           </div>
@@ -184,7 +186,7 @@ const Dashboard = () => {
             {filteredIdeas?.map((idea) => (
               <div
                 key={idea.id}
-                className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl h-[230px]"
+                className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl "
                 style={{
                   background:
                     'radial-gradient(circle at top, #032428, transparent)',
@@ -227,8 +229,7 @@ const Dashboard = () => {
                           toast.warn('Please connect your wallet to upvote', {
                             position: 'top-right',
                           });
-                        }
-                        else{
+                        } else {
                           handleVote(idea.id);
                         }
                       }}

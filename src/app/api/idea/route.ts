@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({ idea });
   } catch (err) {
+    console.log(err);
     return NextResponse.json({ msg: 'Something went wrong!' }, { status: 500 });
   }
 }
