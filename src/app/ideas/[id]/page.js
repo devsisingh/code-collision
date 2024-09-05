@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Cookies from 'js-cookie';
-import Navbar from '@/components/Navbar';
 import EmojiConfetti from '@/components/emoji_confetti';
 
 const IdeaPage = ({ params }) => {
@@ -43,7 +41,7 @@ const IdeaPage = ({ params }) => {
   return (
     <>
       <div
-        className="px-10 py-20 min-h-screen"
+        className="px-10 py-10 min-h-screen"
         style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       >
         <div className="flex gap-6">
@@ -88,15 +86,6 @@ const IdeaPage = ({ params }) => {
                     </span>{' '}
                     :{idea?.category}
                   </div>
-                  {/*<div*/}
-                  {/*  className="uppercase px-2 py-1 rounded -mt-2"*/}
-                  {/*  style={{*/}
-                  {/*    fontSize: '14px',*/}
-                  {/*    color: '#5DEBD7',*/}
-                  {/*  }}*/}
-                  {/*>*/}
-                  {/*  Status*/}
-                  {/*</div>*/}
 
                   <div
                     className="px-2 py-1 rounded -mt-2 flex items-center gap-3"
@@ -109,7 +98,7 @@ const IdeaPage = ({ params }) => {
                       <span className={'mr-1'}>❤️</span>
                       {idea?.vote_count}
                     </div>
-                    {/*TODO: Integrate voting flow*/}
+
                     <EmojiConfetti ideaId={id} onVoteSuccess={fetchIdea} />
 
                   </div>
@@ -133,8 +122,18 @@ const IdeaPage = ({ params }) => {
                   Resources:
                 </div>
                 <div className="text-gray-300 text-md mt-4 text-[18px]">
-                  {idea?.resources}
-                </div>
+                    {idea?.resources?.length > 0 ? (
+                      <ul className="list-disc ml-5">
+                        {idea.resources.map((resource, index) => (
+                          <li key={index} className="mt-2">
+                            {resource}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No resources available.</p>
+                    )}
+                  </div>
 
                 <div className="text-white text-xl mt-10 font-bold">
                   Additional:
