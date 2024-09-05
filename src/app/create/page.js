@@ -195,7 +195,7 @@ export default function Dashboard() {
       boxShadow: 'none', // Remove box shadow
       padding: '6px', // Increase padding
       borderRadius: 10,
-      height: 55,
+      height: 65,
       '&:hover': {
         border: 'none', // Ensure no border on hover
       },
