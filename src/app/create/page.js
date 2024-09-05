@@ -326,7 +326,7 @@ export default function Dashboard() {
                       <button
                         type="button"
                         onClick={handleAddResource}
-                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 text-sm"
+                        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 focus:ring-cyan-800 text-sm"
                       >
                         Add Resource
                       </button>
@@ -384,7 +384,7 @@ export default function Dashboard() {
           >
             <div className="relative p-4 lg:w-1/3 w-full max-w-2xl max-h-full">
               <div className="relative rounded-lg shadow bg-black text-white">
-                <div className="flex items-center justify-end p-4 md:p-5 rounded-t dark:border-gray-600"></div>
+                <div className="flex items-center justify-end p-4 md:p-5 rounded-t border-gray-600"></div>
 
                 <div className="p-4 space-y-4 pt-10">
                   <p className="text-3xl text-center font-bold text-green-500">
