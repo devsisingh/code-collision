@@ -23,7 +23,7 @@ Our goal is to create a space where creativity thrives through `real-time commun
         />
       </Head>
       <body
-        className={`bg-black w-full min-h-screen flex justify-between h-screen flex-col items-center ${inter.className}`}
+        className={`bg-gradient bg-cover bg-no-repeat w-full min-h-screen flex justify-between h-screen flex-col items-center ${inter.className}`}
       >
         <div className="w-full">
           <Navbar />
