@@ -136,7 +136,7 @@ export default function Dashboard() {
 
       let postData = {
         title: ideatitle,
-        category: ideacategories,
+        category: ideacategories.value,
         userId: userId,
         problem_solved: problemSolved,
         possible_solution: possibleSolution,
@@ -279,6 +279,8 @@ export default function Dashboard() {
                         styles={customStyles}
                         isSearchable={false}
                         placeholder={'Select Category'}
+                        value={ideacategories} // Bind the selected value
+                        onChange={(selectedOption) => setideacategories(selectedOption)}
                       />
                     </div>
                   </div>
