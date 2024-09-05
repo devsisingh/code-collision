@@ -2,6 +2,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 interface Particle {
   x: number;
@@ -21,6 +22,7 @@ interface EmojiConfettiProps {
 const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
   ideaId,
   onVoteSuccess,
+  wallet,
 }) => {
   const [isExploding, setIsExploding] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -147,8 +149,14 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
         className="text-md transform-gpu rounded-lg px-6 py-2 font-semibold"
         whileTap={{ scale: 0.95 }}
         onClick={() => {
-          handleClick();
-          handleVote();
+          if (!wallet) {
+            toast.warn('Please connect your wallet to upvote', {
+              position: 'top-right',
+            });
+          } else {
+            handleClick();
+            handleVote();
+          }
         }}
         disabled={loading} // Disable the button while loading
         style={{
