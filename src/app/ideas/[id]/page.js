@@ -8,6 +8,7 @@ const IdeaPage = ({ params }) => {
 
   const [wallet, setwallet] = useState('');
   const [idea, setIdea] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const IdeaPage = ({ params }) => {
       const res = await fetch(`/api/idea/${id}`);
       const data = await res.json();
       setIdea(data.idea);
+      setComments(data.comments);
       console.log('ideas fetch', data);
       setloading(false);
     } catch (err) {
@@ -156,6 +158,26 @@ const IdeaPage = ({ params }) => {
             <div className="text-center text-white text-lg py-4 border-b">
               Comments
             </div>
+            {comments.length > 0 &&
+              comments.map((comment, idx) => {
+                return (
+                  <div
+                    className={
+                      'p-3 bg-gray-700 m-2 rounded-xl flex items-center gap-2'
+                    }
+                    key={idx}
+                  >
+                    <div
+                      className={
+                        'w-8 h-8 bg-black text-white flex justify-center items-center rounded-full self-start mt-1'
+                      }
+                    >
+                      {comment.user.wallet_address.substring(0, 2)}
+                    </div>
+                    <p className={'text-white w-[80%]'}>{comment.content}</p>
+                  </div>
+                );
+              })}
           </div>
 
           {loading && (
