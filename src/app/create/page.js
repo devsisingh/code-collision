@@ -39,6 +39,7 @@ export default function Dashboard() {
     { value: 'AI', label: 'AI' },
     { value: 'Content', label: 'Content' },
     { value: 'DeveloperTooling', label: 'DeveloperTooling' },
+    { value: 'Community', label: 'Community' },
   ];
 
   const categories = [
@@ -280,7 +281,9 @@ export default function Dashboard() {
                         isSearchable={false}
                         placeholder={'Select Category'}
                         value={ideacategories} // Bind the selected value
-                        onChange={(selectedOption) => setideacategories(selectedOption)}
+                        onChange={(selectedOption) =>
+                          setideacategories(selectedOption)
+                        }
                       />
                     </div>
                   </div>

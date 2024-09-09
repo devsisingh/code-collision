@@ -14,10 +14,19 @@ const updateIdeaSchema = z.object({
 export async function GET(request: NextRequest) {
   try {
     const ideaId = request.nextUrl.pathname.split('/').pop();
+    const comments = await client.comment.findMany({
+      where: { ideaId },
+      select: {
+        content: true,
+        user: {
+          select: { wallet_address: true, avatar_image_url: true },
+        },
+      },
+    });
     const idea = await client.idea.findUnique({
       where: { id: ideaId },
     });
-    return NextResponse.json({ idea });
+    return NextResponse.json({ idea, comments });
   } catch (err) {
     return NextResponse.json({ msg: 'Something went wrong!' }, { status: 500 });
   }
