@@ -196,7 +196,7 @@ export default function Dashboard() {
       boxShadow: 'none', // Remove box shadow
       padding: '6px', // Increase padding
       borderRadius: 10,
-      height: 65,
+      height: 64,
       '&:hover': {
         border: 'none', // Ensure no border on hover
       },
@@ -238,7 +238,7 @@ export default function Dashboard() {
         />
 
         {pagestatus === 'create' && (
-          <div className="w-full z-0 lg:px-60">
+          <div className="w-full z-0 lg:mx-60">
             <div
               className="px-10 py-10 rounded-2xl mt-0"
               style={{
@@ -260,7 +260,7 @@ export default function Dashboard() {
                         placeholder="Idea Title"
                         value={ideatitle}
                         onChange={(e) => setideatitle(e.target.value)}
-                        className="mb-8 shadow border appearance-none rounded-xl w-full py-4 px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+                        className="mb-8 shadow border appearance-none rounded-xl w-full py-[22px] px-6 text-gray-200 leading-tight focus:outline-none focus:shadow-outline"
                         style={{
                           border: '1px solid #75E2FF',
                           color: 'black',
@@ -270,7 +270,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="lg:w-1/2 md:w-1/2 mt-10">
+                  <div className="lg:w-1/2 md:w-1/2 lg:mt-10 md:mt-10 mt-0">
                     <div>
                       <div className="text-white mb-4 text-lg">
                         Select Category
@@ -289,7 +289,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className="mb-10 text-lg">
+                <div className="mb-10 text-lg mt-6 lg:mt-0 md:mt-0">
                   <div className="mb-6">
                     <label className="block text-white mb-2">
                       Problem Solved
