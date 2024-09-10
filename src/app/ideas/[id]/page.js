@@ -41,12 +41,12 @@ const IdeaPage = ({ params }) => {
   return (
     <>
       <div
-        className="px-10 py-10 min-h-screen"
+        className="px-10 py-10 min-h-screen w-full"
         style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       >
-        <div className="flex gap-6">
+        <div className="flex lg:flex-row md:flex-row flex-col gap-6">
           <div
-            className="w-4/5 border border-gray-500 rounded-xl"
+            className="lg:w-4/5 md:w-4/5 w-full border border-gray-500 rounded-xl"
             style={{
               boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -149,7 +149,7 @@ const IdeaPage = ({ params }) => {
           </div>
 
           <div
-            className="w-2/5 border border-gray-500 rounded-xl"
+            className="lg:w-2/5 md:w-2/5 w-full border border-gray-500 rounded-xl"
             style={{
               boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -158,26 +158,25 @@ const IdeaPage = ({ params }) => {
             <div className="text-center text-white text-lg py-4 border-b">
               Comments
             </div>
-            {comments.length > 0 &&
-              comments.map((comment, idx) => {
-                return (
+            {comments?.length > 0 ? (
+                comments.map((comment, idx) => (
                   <div
-                    className={
-                      'p-3 bg-gray-700 m-2 rounded-xl flex items-center gap-2'
-                    }
+                    className="p-3 bg-gray-700 m-2 rounded-xl flex items-center gap-2"
                     key={idx}
                   >
                     <div
-                      className={
-                        'w-8 h-8 bg-black text-white flex justify-center items-center rounded-full self-start mt-1'
-                      }
+                      className="w-8 h-8 bg-black text-white flex justify-center items-center rounded-full self-start mt-1"
                     >
                       {comment.user.wallet_address.substring(0, 2)}
                     </div>
-                    <p className={'text-white w-[80%]'}>{comment.content}</p>
+                    <p className="text-white w-[80%]">{comment.content}</p>
                   </div>
-                );
-              })}
+                ))
+              ) : (
+                <div className="p-4 text-center text-white">
+                  No comments yet. Be the first to add one!
+                </div>
+              )}
           </div>
 
           {loading && (
