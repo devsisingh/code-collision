@@ -22,6 +22,7 @@ const Navbar = () => {
   const [passwordbox, setpasswordbox] = useState(false);
   const [savedresponse, setsavedresponse] = useState('');
   const [savedmessage, setsavedmessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [hovered, setHovered] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -58,6 +59,7 @@ const Navbar = () => {
     setpassword('');
     setpasswordset(false);
     setpasswordbox(false);
+    setLoading(false);
   };
 
   const getAptosWallet = () => {
@@ -69,6 +71,7 @@ const Navbar = () => {
   };
 
   const connectToPetra = async () => {
+    setLoading(true);
     const aptosWallet = getAptosWallet();
     try {
       const response = await aptosWallet.connect();
@@ -91,7 +94,8 @@ const Navbar = () => {
         alert(`Switch to Testnet in your Petra wallet`);
       }
     } catch (error) {
-      console.error(error); // { code: 4001, message: "User rejected the request."}
+      console.error(error);
+      setLoading(false);
     }
   };
 
@@ -124,6 +128,7 @@ const Navbar = () => {
         // User not found, proceed to sign-up
         notifyerror(data.message);
       }
+      setLoading(false);
     } catch (error) {
       notifyerror('Error during login/signup:');
     }
@@ -305,7 +310,7 @@ const Navbar = () => {
                   <>
                     <animated.div
                       style={modalProps}
-                      className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-20"
+                      className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50"
                     >
                       <div className="bg-black text-white p-10 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
                         
@@ -469,6 +474,26 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
+
+      {loading && (
+          <div
+            style={{ backgroundColor: '#222944E5' }}
+            className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-40 justify-center items-center w-full max-h-full"
+            id="popupmodal"
+          >
+            <div className="relative p-4 w-full max-h-full">
+              <div className="relative rounded-lg">
+                <div className="flex justify-center gap-4">
+                  <img
+                    src="/smallloader.gif"
+                    alt="Loading icon"
+                    className="w-20"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
     </>
   );
 };

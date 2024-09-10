@@ -41,7 +41,7 @@ const IdeaPage = ({ params }) => {
   return (
     <>
       <div
-        className="px-10 py-10 min-h-screen w-full"
+        className="px-10 py-10 min-h-[91vh] w-full"
         style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
       >
         <div className="flex lg:flex-row md:flex-row flex-col gap-6">
