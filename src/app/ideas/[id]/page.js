@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import EmojiConfetti from '@/components/emoji_confetti';
+import { jwtDecode } from 'jwt-decode';
 
 const IdeaPage = ({ params }) => {
   const id = params?.id;
@@ -10,6 +11,60 @@ const IdeaPage = ({ params }) => {
   const [idea, setIdea] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setloading] = useState(false);
+
+  const [commentContent, setCommentContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleCommentChange = (event) => {
+    setCommentContent(event.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    if (!commentContent) return; // Do nothing if comment is empty
+
+    setIsSubmitting(true);
+
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId;
+
+    try {
+      const response = await fetch('/api/comment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: commentContent,
+          ideaId: id,
+          userId: userId,
+        }),
+      });
+
+      if (response.ok) {
+        setCommentContent('');
+        await fetchIdeaAfterComment();
+      } else {
+        console.error('Failed to submit comment');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const fetchIdeaAfterComment = async () => {
+    try {
+      const res = await fetch(`/api/idea/${id}`);
+      const data = await res.json();
+      setIdea(data.idea);
+      setComments(data.comments);
+      console.log('ideas fetch', data);
+    } catch (err) {
+      console.error('Failed to fetch ideas:', err);
+    }
+  };
 
   useEffect(() => {
     const call = () => {
@@ -149,7 +204,7 @@ const IdeaPage = ({ params }) => {
           </div>
 
           <div
-            className="lg:w-2/5 md:w-2/5 w-full border border-gray-500 rounded-xl"
+            className="lg:w-2/5 md:w-2/5 w-full border border-gray-500 rounded-xl h-[85vh]"
             style={{
               boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -177,6 +232,23 @@ const IdeaPage = ({ params }) => {
                   No comments yet. Be the first to add one!
                 </div>
               )}
+
+            <div className="p-4 border-t">
+                <textarea
+                  className="w-full p-2 mb-2 border border-gray-600 rounded"
+                  rows="3"
+                  value={commentContent}
+                  onChange={handleCommentChange}
+                  placeholder="Add a comment..."
+                />
+                <button
+                  className={`w-full p-2 bg-blue-500 text-white rounded ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={handleCommentSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Add Comment'}
+                </button>
+              </div>
           </div>
 
           {loading && (
