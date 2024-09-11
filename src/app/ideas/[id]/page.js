@@ -208,11 +208,15 @@ const IdeaPage = ({ params }) => {
             style={{
               boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <div className="text-center text-white text-lg py-4 border-b">
               Comments
             </div>
+
+            <div className="flex-1 overflow-auto">
             {comments?.length > 0 ? (
                 comments.map((comment, idx) => (
                   <div
@@ -232,23 +236,24 @@ const IdeaPage = ({ params }) => {
                   No comments yet. Be the first to add one!
                 </div>
               )}
+              </div>
 
-            <div className="p-4 border-t">
+            <div className="">
                 <textarea
-                  className="w-full p-2 mb-2 border border-gray-600 rounded"
-                  rows="3"
+                  className="w-full p-2 border border-gray-600 bg-black text-white focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-600"
+                  rows="2"
                   value={commentContent}
                   onChange={handleCommentChange}
                   placeholder="Add a comment..."
                 />
                 <button
-                  className={`w-full p-2 bg-blue-500 text-white rounded ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`w-full p-3 -mt-2 bg-gradient-to-r from-[#539b82] to-[#aba564] text-white rounded-b-lg ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                   onClick={handleCommentSubmit}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Submitting...' : 'Add Comment'}
                 </button>
-              </div>
+            </div>
           </div>
 
           {loading && (
