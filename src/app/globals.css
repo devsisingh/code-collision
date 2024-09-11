@@ -27,18 +27,18 @@
 
 ::-webkit-scrollbar {
   width: 5px;
-  background-color: #f5f5f5;
+  background-color: grey;
   border: none;
   border-radius: 30px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: #539b82;
   border-radius: 30px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #93a4b0;
+  background: #1D4E4F;
   border-radius: 30px;
 }
 
