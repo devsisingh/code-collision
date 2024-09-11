@@ -116,29 +116,59 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
   };
 
   const handleVote = async () => {
-    setLoading(true);
-    setError('');
+    if (!wallet) {
+      toast.warn('Please connect your wallet to upvote', {
+        position: 'top-right',
+      });
+      return;
+    }
 
     try {
-      const response = await fetch(`/api/idea/vote`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ideaId }),
-      });
+      const mintTransaction = {
+        arguments: [
+          `${ideaId}`,
+          '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579',
+        ],
+        function:
+          '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::upvote_defi',
+        type: 'entry_function_payload',
+        type_arguments: [],
+      };
 
-      const data = await response.json();
+      const mintResponse = await window.aptos.signAndSubmitTransaction(
+        mintTransaction
+      );
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong!');
+      console.log('vote idea done:', mintResponse);
+
+      if(mintResponse) {
+
+      try {
+        const res = await fetch(`/api/idea/vote`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ideaId }),
+        });
+  
+        if (res.ok) {
+          onVoteSuccess();
+          toast.success('Vote recorded successfully!');
+        } else {
+          toast.error('Failed to register vote. Please try again.');
+          setloading(false);
+        }
+      } catch (error) {
+        toast.error('An error occurred while voting. Please try again later.');
+        console.error('Error voting:', error);
+        setloading(false);
       }
-
-      onVoteSuccess();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    }
+    }
+    catch(error) {
+      toast.error('An error occurred while voting. Please try again later.');
+      console.error('Error voting:', error);
     }
   };
 
