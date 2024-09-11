@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import EmojiConfetti from '@/components/emoji_confetti';
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 const IdeaPage = ({ params }) => {
   const id = params?.id;
@@ -20,6 +21,13 @@ const IdeaPage = ({ params }) => {
   };
 
   const handleCommentSubmit = async () => {
+    if (!wallet) {
+      toast.warn('Please connect your wallet to comment on idea.', {
+        position: 'top-right',
+      });
+      return;
+    }
+
     if (!commentContent) return; // Do nothing if comment is empty
 
     setIsSubmitting(true);
