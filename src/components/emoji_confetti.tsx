@@ -157,12 +157,12 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
           toast.success('Vote recorded successfully!');
         } else {
           toast.error('Failed to register vote. Please try again.');
-          setloading(false);
+          setLoading(false);
         }
       } catch (error) {
         toast.error('An error occurred while voting. Please try again later.');
         console.error('Error voting:', error);
-        setloading(false);
+        setLoading(false);
       }
     }
     }
