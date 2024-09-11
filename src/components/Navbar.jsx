@@ -91,7 +91,8 @@ const Navbar = () => {
 
         setpasswordbox(true);
       } else {
-        alert(`Switch to Testnet in your Petra wallet`);
+        notifyerror(`Switch to Testnet in your Petra wallet`);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -121,7 +122,7 @@ const Navbar = () => {
       if (res.ok) {
         // Successful login
         notifysuccess(data.message);
-        Cookies.set('idea_wallet', savedresponse?.address, { expires: 7 });
+        Cookies.set('idea_wallet', savedresponse?.address, { expires: 30/1440 }); // 30 mins
         setpasswordbox(false);
         window.location.reload();
       } else {
