@@ -224,27 +224,52 @@ const IdeaPage = ({ params }) => {
               Comments
             </div>
 
-            <div className="flex-1 overflow-auto">
-            {comments?.length > 0 ? (
-                comments.map((comment, idx) => (
-                  <div
-                    className="p-3 bg-gray-700 m-2 rounded-xl flex items-center gap-2"
-                    key={idx}
-                  >
-                    <div
-                      className="w-8 h-8 bg-black text-white flex justify-center items-center rounded-full self-start mt-1"
-                    >
-                      {comment.user.wallet_address.substring(0, 2)}
-                    </div>
-                    <p className="text-white w-[80%]">{comment.content}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="p-4 text-center text-white">
-                  No comments yet. Be the first to add one!
-                </div>
-              )}
-              </div>
+            <div className="flex-1 overflow-auto p-4">
+  {comments?.length > 0 ? (
+    comments.map((comment, idx) => (
+      <div
+        className={`flex mb-3 relative ${
+          comment.user.wallet_address === wallet ? 'justify-end' : 'justify-start'
+        }`}
+        key={idx}
+      >
+        {/* Comment Box */}
+        <div
+          className={`p-3 rounded-xl relative max-w-xs break-words ${
+            comment.user.wallet_address === wallet ? 'text-right bg-gray-600' : 'text-left bg-gray-700'
+          }`}
+        >
+          {/* Triangle Pointer */}
+          <div
+            className={`absolute top-1/2 transform -translate-y-1/2 ${
+              comment.user.wallet_address === wallet ? 'right-[-10px]' : 'left-[-10px]'
+            }`}
+          >
+            <div
+              className={`w-0 h-0 border-solid border-t-[10px] border-b-[10px] ${
+                comment.user.wallet_address === wallet
+                  ? 'border-l-[10px] border-l-gray-600 border-t-transparent border-b-transparent'
+                  : 'border-r-[10px] border-r-gray-700 border-t-transparent border-b-transparent'
+              }`}
+            ></div>
+          </div>
+
+          {/* Wallet Address for other users */}
+          {comment.user.wallet_address !== wallet && (
+            <div className="text-gray-400 text-xs font-bold mb-1">
+              {comment.user.wallet_address.substring(0, 5)}...
+            </div>
+          )}
+
+          {/* Comment Content */}
+          <p className="text-white">{comment.content}</p>
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="p-4 text-center text-white">No comments yet. Be the first to add one!</div>
+  )}
+</div>
 
             <div className="">
                 <textarea
