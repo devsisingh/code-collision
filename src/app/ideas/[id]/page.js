@@ -256,7 +256,7 @@ const IdeaPage = ({ params }) => {
 
           {/* Wallet Address for other users */}
           {comment.user.wallet_address !== wallet && (
-            <div className="text-gray-400 text-xs font-bold mb-1">
+            <div className="text-gray-400 text-xs font-bold mb-1 cursor-pointer" title={comment.user.wallet_address}>
               {comment.user.wallet_address.substring(0, 5)}...
             </div>
           )}
