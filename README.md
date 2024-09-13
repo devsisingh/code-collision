@@ -30,7 +30,7 @@ Our goal is to create a space where creativity thrives through `real-time commun
 - A backend process can be run to fetch data from the smart contract and update the idea vote count.
 
 ## Deployed on Aptos Testnet
-- Contract address: [link](https://explorer.aptoslabs.com/account/0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579/modules/code/sharetos?network=testnet)
+- [Contract address link](https://explorer.aptoslabs.com/account/0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579/modules/code/sharetos?network=testnet)
 
 ### Struct  -  IdeasAggregator
 -  stores admins addresses in vector
