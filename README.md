@@ -51,6 +51,7 @@ Our goal is to create a space where creativity thrives through `real-time commun
 - **`upvote(ideaID: String owner_address)`** - increases the vote count of idea in idea map, passing key as ideaID
 
 ## Advance Feature
+- User can comment on particular idea.
 - Users can collaborate on a particular idea by creating chat rooms.
 - Twitter or Google verification can be used for a verified checkmark.
 
