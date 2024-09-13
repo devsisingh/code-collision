@@ -47,11 +47,10 @@ Our goal is to create a space where creativity thrives through `real-time commun
 
 ### Entry functions
 - add_idea(ideaID: String, owner_address) - adds ideaID to global idea map with vote count as zero
--  remove_idea((signer:admin_signature, owner_address) - removes idea from global Idea map, only admins can remove an idea.
--  upvote(ideaID: String owner_address) - increases the vote count of idea in idea map, passing key as ideaID
+- remove_idea((signer:admin_signature, owner_address) - removes idea from global Idea map, only admins can remove an idea.
+- upvote(ideaID: String owner_address) - increases the vote count of idea in idea map, passing key as ideaID
 
-
-**Advance Feature**
+#### Advance Feature
 - Users can collaborate on a particular idea by creating chat rooms.
 - Twitter or Google verification can be used for a verified checkmark.
 
