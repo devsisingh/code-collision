@@ -29,6 +29,28 @@ Our goal is to create a space where creativity thrives through `real-time commun
 - Users can upgrade or edit their ideas, and only database changes are made.
 - A backend process can be run to fetch data from the smart contract and update the idea vote count.
 
+## Deployed on Aptos Testnet
+- Contract address: [link](https://explorer.aptoslabs.com/account/0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579/modules/code/sharetos?network=testnet)
+
+### Struct  -  IdeasAggregator
+-  stores admins addresses in vector
+-  Idea in SimpleMap : ideaID as key, vote _count as value
+
+###  Initialise function
+- init_module - create a struct of IdeaAggregator and transfer to deployed address
+- Only one global IdeaAggregator struct is created
+- Deployed address is the owner here
+- Only one owner is allowed
+
+### View functions
+- get_all_ideas(owner_address) - for getting list of idea map, with ideaID as key and vote count as value
+
+### Entry functions
+- add_idea(ideaID: String, owner_address) - adds ideaID to global idea map with vote count as zero
+-  remove_idea((signer:admin_signature, owner_address) - removes idea from global Idea map, only admins can remove an idea.
+-  upvote(ideaID: String owner_address) - increases the vote count of idea in idea map, passing key as ideaID
+
+
 **Advance Feature**
 - Users can collaborate on a particular idea by creating chat rooms.
 - Twitter or Google verification can be used for a verified checkmark.
