@@ -14,17 +14,18 @@ datasource db {
 }
 
 model Idea {
-  id                String    @id @default(uuid())
-  title             String
-  problem_solved    String
-  possible_solution String
-  resources         String[]
-  additional        String
-  vote_count        Int       @default(0)
-  category          Category
-  user              User      @relation(fields: [userId], references: [id])
-  userId            String
-  Comment           Comment[]
+  id                 String    @id @default(uuid())
+  title              String
+  problem_solved     String
+  possible_solution  String
+  resources          String[]
+  additional         String
+  vote_count         Int       @default(0)
+  category           Category
+  user               User      @relation(fields: [userId], references: [id])
+  userId             String
+  Comment            Comment[]
+  is_stored_on_block Boolean   @default(false)
 }
 
 enum Category {
