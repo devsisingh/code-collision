@@ -66,7 +66,7 @@ export function WalletSelector() {
         <Button>{account?.ansName || truncateAddress(account?.address) || "Unknown"}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={copyAddress} className="gap-2">
+        <DropdownMenuItem onSelect={copyAddress} className="gap-2" style={{color: 'white'}}>
           <Copy className="h-4 w-4" style={{color: 'white'}}/> Copy address
         </DropdownMenuItem>
         {wallet && isAptosConnectWallet(wallet) && (
@@ -76,7 +76,7 @@ export function WalletSelector() {
             </a>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onSelect={disconnect} className="gap-2">
+        <DropdownMenuItem onSelect={disconnect} className="gap-2" style={{color: 'white'}}>
           <LogOut className="h-4 w-4" style={{color: 'white'}}/> Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>
