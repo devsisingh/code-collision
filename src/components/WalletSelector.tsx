@@ -67,7 +67,7 @@ export function WalletSelector() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={copyAddress} className="gap-2">
-          <Copy className="h-4 w-4" /> Copy address
+          <Copy className="h-4 w-4 text-white" /> Copy address
         </DropdownMenuItem>
         {wallet && isAptosConnectWallet(wallet) && (
           <DropdownMenuItem asChild>
@@ -77,7 +77,7 @@ export function WalletSelector() {
           </DropdownMenuItem>
         )}
         <DropdownMenuItem onSelect={disconnect} className="gap-2">
-          <LogOut className="h-4 w-4" /> Disconnect
+          <LogOut className="h-4 w-4 text-white" /> Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
