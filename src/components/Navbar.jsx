@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { WalletSelector } from "./WalletSelector";
 
 const Navbar = () => {
   const wallet = Cookies.get('idea_wallet');
@@ -236,7 +237,10 @@ const Navbar = () => {
             <div className="flex items-center lg:order-2">
               <div>
                 {!wallet && (
-                  <button
+                  <>
+              <WalletSelector />
+
+                   <button
                     onClick={connectToPetra}
                     className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-sm font-semibold leading-6  text-white inline-block"
                   >
@@ -263,6 +267,7 @@ const Navbar = () => {
                     </div>
                     <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40"></span>
                   </button>
+                  </>
                 )}
                 {wallet && (
                   <div className="flex gap-4">

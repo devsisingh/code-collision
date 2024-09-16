@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
+import { WalletProvider } from "@/components/WalletProvider";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,11 +27,13 @@ Our goal is to create a space where creativity thrives through `real-time commun
         className={`bg-gradient bg-cover bg-no-repeat w-full min-h-screen flex justify-between h-screen flex-col items-center ${inter.className}`}
       >
         <div className="w-full">
+        <WalletProvider>
           <Navbar />
           <BackgroundBeamsWithCollision>
             {/*@ts-ignore*/}
             {children}
           </BackgroundBeamsWithCollision>
+        </WalletProvider>
         </div>
       </body>
     </html>
