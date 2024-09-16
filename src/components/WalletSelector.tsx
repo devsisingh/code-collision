@@ -67,7 +67,7 @@ export function WalletSelector() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={copyAddress} className="gap-2">
-          <Copy className="h-4 w-4 text-white" /> Copy address
+          <Copy className="h-4 w-4" style={{color: 'white'}}/> Copy address
         </DropdownMenuItem>
         {wallet && isAptosConnectWallet(wallet) && (
           <DropdownMenuItem asChild>
@@ -77,7 +77,7 @@ export function WalletSelector() {
           </DropdownMenuItem>
         )}
         <DropdownMenuItem onSelect={disconnect} className="gap-2">
-          <LogOut className="h-4 w-4 text-white" /> Disconnect
+          <LogOut className="h-4 w-4" style={{color: 'white'}}/> Disconnect
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -179,7 +179,7 @@ function WalletRow({ wallet, onConnect }: WalletRowProps) {
     <WalletItem
       wallet={wallet}
       onConnect={onConnect}
-      className="flex items-center justify-between px-4 py-3 gap-4 border rounded-md text-white"
+      className="flex items-center justify-between px-4 py-3 gap-4 border rounded-md"
     >
       <div className="flex items-center gap-4">
         <WalletItem.Icon className="h-6 w-6" />
@@ -202,7 +202,7 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
   return (
     <WalletItem wallet={wallet} onConnect={onConnect}>
       <WalletItem.ConnectButton asChild>
-        <Button size="lg" variant="outline" className="w-full gap-4 text-white">
+        <Button size="lg" variant="outline" className="w-full gap-4">
           <WalletItem.Icon className="h-5 w-5" />
           <WalletItem.Name className="text-base font-normal" />
         </Button>
@@ -214,22 +214,22 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
 function renderEducationScreen(screen: AboutAptosConnectEducationScreen) {
   return (
     <>
-      <DialogHeader className="grid grid-cols-[1fr_4fr_1fr] items-center space-y-0 text-white">
+      <DialogHeader className="grid grid-cols-[1fr_4fr_1fr] items-center space-y-0">
         <Button variant="ghost" size="icon" onClick={screen.cancel}>
           <ArrowLeft />
         </Button>
         <DialogTitle className="leading-snug text-base text-center">About Aptos Connect</DialogTitle>
       </DialogHeader>
 
-      <div className="flex h-[162px] pb-3 items-end justify-center text-white">
+      <div className="flex h-[162px] pb-3 items-end justify-center">
         <screen.Graphic />
       </div>
-      <div className="flex flex-col gap-2 text-center pb-4 text-white">
+      <div className="flex flex-col gap-2 text-center pb-4">
         <screen.Title className="text-xl" />
         <screen.Description className="text-sm text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a]:text-foreground" />
       </div>
 
-      <div className="grid grid-cols-3 items-center text-white">
+      <div className="grid grid-cols-3 items-center">
         <Button size="sm" variant="ghost" onClick={screen.back} className="justify-self-start">
           Back
         </Button>
