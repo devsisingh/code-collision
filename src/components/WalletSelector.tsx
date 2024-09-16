@@ -103,7 +103,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
   console.log("hasAptosConnectWallets", hasAptosConnectWallets, aptosConnectWallets);
 
   return (
-    <DialogContent className="max-h-screen overflow-auto text-white">
+    <DialogContent className="max-h-screen overflow-auto text-white bg-black">
       <AboutAptosConnect renderEducationScreen={renderEducationScreen}>
         <DialogHeader>
           <DialogTitle className="flex flex-col text-center leading-snug">
@@ -179,7 +179,7 @@ function WalletRow({ wallet, onConnect }: WalletRowProps) {
     <WalletItem
       wallet={wallet}
       onConnect={onConnect}
-      className="flex items-center justify-between px-4 py-3 gap-4 border rounded-md"
+      className="flex items-center justify-between px-4 py-3 gap-4 border rounded-md text-white"
     >
       <div className="flex items-center gap-4">
         <WalletItem.Icon className="h-6 w-6" />
@@ -202,7 +202,7 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
   return (
     <WalletItem wallet={wallet} onConnect={onConnect}>
       <WalletItem.ConnectButton asChild>
-        <Button size="lg" variant="outline" className="w-full gap-4">
+        <Button size="lg" variant="outline" className="w-full gap-4 text-white">
           <WalletItem.Icon className="h-5 w-5" />
           <WalletItem.Name className="text-base font-normal" />
         </Button>
@@ -214,22 +214,22 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
 function renderEducationScreen(screen: AboutAptosConnectEducationScreen) {
   return (
     <>
-      <DialogHeader className="grid grid-cols-[1fr_4fr_1fr] items-center space-y-0">
+      <DialogHeader className="grid grid-cols-[1fr_4fr_1fr] items-center space-y-0 text-white">
         <Button variant="ghost" size="icon" onClick={screen.cancel}>
           <ArrowLeft />
         </Button>
         <DialogTitle className="leading-snug text-base text-center">About Aptos Connect</DialogTitle>
       </DialogHeader>
 
-      <div className="flex h-[162px] pb-3 items-end justify-center">
+      <div className="flex h-[162px] pb-3 items-end justify-center text-white">
         <screen.Graphic />
       </div>
-      <div className="flex flex-col gap-2 text-center pb-4">
+      <div className="flex flex-col gap-2 text-center pb-4 text-white">
         <screen.Title className="text-xl" />
         <screen.Description className="text-sm text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a]:text-foreground" />
       </div>
 
-      <div className="grid grid-cols-3 items-center">
+      <div className="grid grid-cols-3 items-center text-white">
         <Button size="sm" variant="ghost" onClick={screen.back} className="justify-self-start">
           Back
         </Button>
