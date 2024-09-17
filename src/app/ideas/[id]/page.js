@@ -113,16 +113,14 @@ const IdeaPage = ({ params }) => {
             style={{
               boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              background:
+                    'radial-gradient(circle at top left, #0b262e 10%, #051418 65%, #78aba6)',
+                  transition: 'background 0.5s ease-out',
             }}
           >
             <div className="flex flex-row gap-4">
               <div
                 className="relative p-10 rounded-xl w-full"
-                style={{
-                  background:
-                    'radial-gradient(circle at top left, #0b262e 10%, #051418 65%, #78aba6)',
-                  transition: 'background 0.5s ease-out',
-                }}
               >
                 <div className="text-white text-3xl font-semibold mb-10 capitalize">
                   {idea?.title}

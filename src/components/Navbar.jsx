@@ -272,7 +272,9 @@ const Navbar = () => {
                 {wallet && (
                   <div className="flex gap-4">
                     {avatarUrl && (
+                      <Link href="/profile">
                       <img src={avatarUrl} alt="Avatar" style={{ width: 40 }} />
+                      </Link>
                     )}
                     <div>
                       <div className="rounded-lg text-sm font-semibold text-center text-white">
