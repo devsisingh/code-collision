@@ -238,7 +238,7 @@ const Navbar = () => {
               <div>
                 {!wallet && (
                   <>
-              <WalletSelector />
+              {/* <WalletSelector /> */}
 
                    <button
                     onClick={connectToPetra}
