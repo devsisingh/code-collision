@@ -26,6 +26,7 @@ model Idea {
   userId             String
   Comment            Comment[]
   is_stored_on_block Boolean   @default(false)
+  Vote               Vote[]
 }
 
 enum Category {
@@ -51,6 +52,16 @@ model User {
   is_verified      Boolean   @default(false)
   ideas            Idea[]
   Comment          Comment[]
+  Vote             Vote[]
+}
+
+model Vote {
+  id                 String  @id @default(uuid())
+  idea               Idea    @relation(fields: [ideaId], references: [id])
+  ideaId             String
+  user               User    @relation(fields: [userId], references: [id])
+  userId             String
+  is_stored_on_block Boolean @default(false)
 }
 
 model Comment {
