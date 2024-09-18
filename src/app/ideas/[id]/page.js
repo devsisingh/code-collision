@@ -76,7 +76,9 @@ const IdeaPage = ({ params }) => {
 
   useEffect(() => {
     const call = () => {
-      const loggedin = Cookies.get('idea_wallet');
+      const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+      const decodedToken = jwtDecode(token);
+      const loggedin = decodedToken.wallet_address;
       setwallet(loggedin);
     };
     call();

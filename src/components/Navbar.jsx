@@ -12,10 +12,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { WalletSelector } from "./WalletSelector";
+import { jwtDecode } from 'jwt-decode';
 
 const Navbar = () => {
-  const wallet = Cookies.get('idea_wallet');
 
+  useEffect(() => {
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+    
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setWallet(decodedToken.wallet_address);
+      } catch (error) {
+        console.error('Invalid token:', error);
+      }
+    } else {
+      console.warn('Token not found');
+    }
+  }, []);
+
+  const [wallet, setWallet] = useState(null);
   const [password, setpassword] = useState('');
   const [registerpassword, setregisterpassword] = useState('');
   const [confirmpassword, setconfirmpassword] = useState('');
@@ -123,7 +139,6 @@ const Navbar = () => {
       if (res.ok) {
         // Successful login
         notifysuccess(data.message);
-        Cookies.set('idea_wallet', savedresponse?.address, { expires: 30/1440 }); // 30 mins
         setpasswordbox(false);
         window.location.reload();
       } else {
@@ -192,7 +207,7 @@ const Navbar = () => {
   }, []);
 
   const handleDeleteCookie = () => {
-    Cookies.remove('idea_wallet');
+    Cookies.remove('access-token');
     window.location.href = '/';
   };
 

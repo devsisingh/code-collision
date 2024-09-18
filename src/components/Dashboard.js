@@ -20,8 +20,23 @@ const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [wallet, setWallet] = useState(null);
   const router = useRouter();
-  const wallet = Cookies.get('idea_wallet');
+  
+  useEffect(() => {
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+    
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setWallet(decodedToken.wallet_address);
+      } catch (error) {
+        console.error('Invalid token:', error);
+      }
+    } else {
+      console.warn('Token not found');
+    }
+  }, []);
 
   const categoryIcons = {
     'All Categories': <GoNorthStar />,

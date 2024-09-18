@@ -127,7 +127,10 @@ export default function Dashboard() {
   }
 
   const createidea = async () => {
-    const wallet = Cookies.get('idea_wallet');
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+    const decodedToken = jwtDecode(token);
+    const wallet = decodedToken.wallet_address;
+    
     setLoading(true);
 
     if (!ideatitle) {
