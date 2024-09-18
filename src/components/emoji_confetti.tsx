@@ -175,7 +175,7 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
         }
         }
       } else {
-        toast.error('Failed to register vote. Please try again.');
+        toast.error('Already voted');
         setLoading(false);
       }
     } catch (error) {

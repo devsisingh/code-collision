@@ -135,7 +135,7 @@ const Dashboard = () => {
         }
         }
       } else {
-        toast.error('Failed to register vote. Please try again.');
+        toast.error('Already voted');
         setloading(false);
       }
     } catch (error) {
