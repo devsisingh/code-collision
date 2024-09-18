@@ -4,11 +4,14 @@ import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const getProfile = () => {
