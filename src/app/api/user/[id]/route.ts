@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
   try {
     const user = await client.user.findUnique({
       where: { id: userId },
-      include: { ideas: true },
     });
     if (!user) {
       return NextResponse.json({ message: 'No User found' }, { status: 404 });

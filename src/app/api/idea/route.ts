@@ -34,7 +34,11 @@ export async function GET(request: NextRequest) {
   let ideas: any;
   try {
     ideas = await client.idea.findMany({
-      where: { category: category ?? undefined, userId: userId ?? undefined },
+      where: {
+        category: category ?? undefined,
+        userId: userId ?? undefined,
+        is_stored_on_block: userId ? undefined : true,
+      },
       orderBy: { vote_count: 'desc' },
     });
     return NextResponse.json({ ideas });
