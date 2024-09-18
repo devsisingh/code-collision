@@ -114,6 +114,18 @@ export default function Dashboard() {
     }
   }
 
+  async function verifyIdea(ideaId) {
+    const response = await fetch('/api/idea/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ideaId}),
+    });
+
+    return response;
+  }
+
   const createidea = async () => {
     const wallet = Cookies.get('idea_wallet');
     setLoading(true);
@@ -170,12 +182,21 @@ export default function Dashboard() {
             mintTransaction
           );
 
+          if(mintResponse)
+          {
           console.log('created idea done:', mintResponse);
+
+          const idea_verify = await verifyIdea(data_to_contract.id);
+
+          if(idea_verify.ok)
+          {
           setcreateideadone(true);
 
           setTimeout(() => {
             window.location.replace('/');
           }, 2000);
+        }
+        }
         } catch {
           console.log('error');
         }
