@@ -5,11 +5,20 @@ import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import EditForm from '@/components/Editform'
 
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentIdea, setCurrentIdea] = useState(null);
+
+  const handleEditClick = (idea) => {
+    setCurrentIdea(idea);
+    setIsEditing(true);
+  };
+
 
   const router = useRouter();
 
@@ -27,7 +36,7 @@ const Profile = () => {
     const fetchIdeas = async () => {
       try {
         setloading(true);
-        const res = await fetch('/api/idea');
+        const res = await fetch(`/api/idea?userId=${profileDetails.userId}`);
         const data = await res.json();
         setIdeas(data.ideas);
         console.log('ideas fetch', data);
@@ -39,7 +48,7 @@ const Profile = () => {
     };
 
     fetchIdeas();
-  }, []);
+  }, [profileDetails]);
 
   // Function to copy text to clipboard
   const copyToClipboard = (text) => {
@@ -81,8 +90,49 @@ const Profile = () => {
       'radial-gradient(circle at top, #032428, transparent)';
   };
 
+
+  const handleSave = async (updatedIdea) => {
+    try {
+      const response = await fetch(`/api/idea/${updatedIdea.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: updatedIdea.title,
+          problem_solved: updatedIdea.description1,
+          possible_solution: updatedIdea.description2,
+          resources: updatedIdea.description3,
+          additional: updatedIdea.description4,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update the idea");
+      }
+  
+      const updatedIdeaFromAPI = await response.json();
+      
+      setIdeas((prevIdeas) => {
+        const updatedIdeas = prevIdeas.map((idea) =>
+          idea.id === updatedIdea.id ? updatedIdeaFromAPI.idea : idea
+        );
+        
+        // Log the updated ideas array
+        console.log("Updated Ideas:", updatedIdeas);
+  
+        return updatedIdeas;
+      });
+      
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating idea:", error);
+    }
+  };
+  
+
   return (
-    <div className="mx-20">
+    <div className="mx-20 min-h-screen w-full">
       <div className="flex text-white gap-10 mt-10">
         <div className="relative w-full">
           <img
@@ -162,16 +212,16 @@ const Profile = () => {
             }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            onClick={() => router.push(`/ideas/${idea.id}`)}
+            // onClick={() => router.push(`/ideas/${idea.id}`)}
           >
             <div>
               <div className="text-white text-xl font-semibold mb-4 capitalize">
-                {idea.title}
+                {idea?.title}
               </div>
 
               <div className="text-gray-300 text-sm my-6">
                 <span className="font-bold">
-                  {idea.problem_solved.length > 100
+                  {idea?.problem_solved?.length > 100
                     ? idea.problem_solved.substring(0, 100) + '...'
                     : idea.problem_solved}
                 </span>
@@ -204,6 +254,13 @@ const Profile = () => {
                 >
                   Vote 👍
                 </div> */}
+
+                <div
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  onClick={() => handleEditClick(idea)}
+                >
+                  Edit
+                </div>
               </div>
               <div
                 className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
@@ -215,7 +272,13 @@ const Profile = () => {
           </div>
         ))}
 
-        <div className="h-[15vh] grid place-items-center w-full"></div>
+        {isEditing && (
+      <EditForm
+        idea={currentIdea}
+        onSave={handleSave}
+        onCancel={() => setIsEditing(false)}
+      />
+    )}
 
         {loading && (
           <div
