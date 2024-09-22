@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 import EditForm from '@/components/Editform'
 
 const Profile = () => {
@@ -14,13 +14,33 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentIdea, setCurrentIdea] = useState(null);
 
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const currentUrl = window.location.href;
+  const params = new URLSearchParams(currentUrl.split('?')[1]);
+  const imagenumber = params.get('image');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = `https://api.multiavatar.com/${imagenumber}`;
+
+        const response = await axios.get(apiUrl);
+        const svgDataUri = `data:image/svg+xml,${encodeURIComponent(
+          response.data
+        )}`;
+        setAvatarUrl(svgDataUri);
+      } catch (error) {
+        console.error('Error fetching avatar:', error.message);
+      }
+    };
+
+    fetchData();
+  }, [imagenumber]);
+
   const handleEditClick = (idea) => {
     setCurrentIdea(idea);
     setIsEditing(true);
   };
-
-
-  const router = useRouter();
 
   useEffect(() => {
     const getProfile = () => {
@@ -136,13 +156,13 @@ const Profile = () => {
       <div className="flex text-white gap-10 mt-10">
         <div className="relative w-full">
           <img
-            src="https://www.defineinternational.com/wp-content/uploads/2014/06/dummy-profile.png"
+            src={avatarUrl}
             className="rounded-full w-40 h-40"
             alt="Profile"
           />
 
           {/* Position the userId and wallet_address at the bottom of the image */}
-          <div className="absolute top-20 left-40 w-auto">
+          <div className="absolute top-20 left-48 w-auto">
             <div className="flex justify-start items-start gap-2 ">
               <div>User ID:</div>
               <div>{shortenText(profileDetails.userId)}</div>

@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const [hovered, setHovered] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [imageNumber, setimageNumber] = useState();
   const [loginbox, setloginbox] = useState(false);
 
   useEffect(() => {
@@ -195,13 +196,15 @@ const Navbar = () => {
     const fetchData = async () => {
       try {
         const getRandomNumber = () => Math.floor(Math.random() * 1000);
-        const apiUrl = `https://api.multiavatar.com/${getRandomNumber()}`;
+        const randomnumber = getRandomNumber();
+        const apiUrl = `https://api.multiavatar.com/${randomnumber}`;
 
         const response = await axios.get(apiUrl);
         const svgDataUri = `data:image/svg+xml,${encodeURIComponent(
           response.data
         )}`;
         setAvatarUrl(svgDataUri);
+        setimageNumber(randomnumber);
       } catch (error) {
         console.error('Error fetching avatar:', error.message);
       }
@@ -292,7 +295,7 @@ const Navbar = () => {
                 {wallet && (
                   <div className="flex gap-4">
                     {avatarUrl && (
-                      <Link href="/profile">
+                      <Link href={`/profile?image=${imageNumber}`}>
                       <img src={avatarUrl} alt="Avatar" style={{ width: 40 }} />
                       </Link>
                     )}
