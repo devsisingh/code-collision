@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [wallet, setWallet] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   
   useEffect(() => {
@@ -172,16 +173,58 @@ const Dashboard = () => {
       style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
     >
       <div
-        className="flex "
+        className="lg:flex md:flex"
         style={{
           boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
         }}
       >
-        <div
-          className="w-1/4 pb-8 pt-8 px-8"
-          // style={{ maxHeight: '700px', overflowY: 'auto' }}
-        >
+        {/* Dropdown for small devices */}
+        <div className="block lg:hidden md:hidden w-full pb-8 pt-8 px-8">
+          <button
+            className="text-white py-3.5 px-4 rounded-lg bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500 w-full"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            {selectedCategory}
+          </button>
+          {showDropdown && (
+            <div className="mt-4">
+              {[
+                'All Categories',
+                'Payment',
+                'ConsumerDapp',
+                'Nft',
+                'DeFi',
+                'DePin',
+                'Gaming',
+                'Social',
+                // 'AI',
+                'Content',
+                'DeveloperTooling',
+                'Community',
+              ].map((category) => (
+                <div
+                  key={category}
+                  className={`text-white py-2.5 px-4 rounded-lg cursor-pointer flex gap-4 ${
+                    selectedCategory === category
+                      ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setShowDropdown(false);
+                  }}
+                >
+                  <div className="mt-1">{categoryIcons[category]}</div>
+                  <div>{category}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar for larger devices */}
+        <div className="hidden lg:block md:block lg:w-1/4 md:w-1/4 w-full pb-8 pt-8 px-8">
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 mb-2">
             Categories
           </div>
@@ -216,7 +259,7 @@ const Dashboard = () => {
         </div>
 
         <div
-          className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 px-8"
+          className="lg:w-3/4 md:w-3/4 w-full border border-gray-500 rounded-lg mt-[1vh] mb-4 lg:mr-4 md:mr-4 px-8"
           style={{ maxHeight: '800px', overflowY: 'auto' }}
         >
           <div
