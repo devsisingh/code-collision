@@ -36,7 +36,7 @@ export default function Dashboard() {
     { value: 'DePin', label: 'DePin' },
     { value: 'Gaming', label: 'Gaming' },
     { value: 'Social', label: 'Social' },
-    { value: 'AI', label: 'AI' },
+    // { value: 'AI', label: 'AI' },
     { value: 'Content', label: 'Content' },
     { value: 'DeveloperTooling', label: 'DeveloperTooling' },
     { value: 'Community', label: 'Community' },
@@ -114,8 +114,23 @@ export default function Dashboard() {
     }
   }
 
+  async function verifyIdea(ideaId) {
+    const response = await fetch('/api/idea/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ideaId}),
+    });
+
+    return response;
+  }
+
   const createidea = async () => {
-    const wallet = Cookies.get('idea_wallet');
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+    const decodedToken = jwtDecode(token);
+    const wallet = decodedToken.wallet_address;
+    
     setLoading(true);
 
     if (!ideatitle) {
@@ -170,12 +185,21 @@ export default function Dashboard() {
             mintTransaction
           );
 
+          if(mintResponse)
+          {
           console.log('created idea done:', mintResponse);
+
+          const idea_verify = await verifyIdea(data_to_contract.id);
+
+          if(idea_verify.ok)
+          {
           setcreateideadone(true);
 
           setTimeout(() => {
             window.location.replace('/');
           }, 2000);
+        }
+        }
         } catch {
           console.log('error');
         }

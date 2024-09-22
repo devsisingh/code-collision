@@ -14,13 +14,30 @@ import { BiGlobe } from 'react-icons/bi';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [wallet, setWallet] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  const wallet = Cookies.get('idea_wallet');
+  
+  useEffect(() => {
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+    
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setWallet(decodedToken.wallet_address);
+      } catch (error) {
+        console.error('Invalid token:', error);
+      }
+    } else {
+      console.warn('Token not found');
+    }
+  }, []);
 
   const categoryIcons = {
     'All Categories': <GoNorthStar />,
@@ -78,36 +95,52 @@ const Dashboard = () => {
       return;
     }
 
-    try {
-      const mintTransaction = {
-        arguments: [
-          `${ideaId}`,
-          '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579',
-        ],
-        function:
-          '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::upvote_defi',
-        type: 'entry_function_payload',
-        type_arguments: [],
-      };
-
-      const mintResponse = await window.aptos.signAndSubmitTransaction(
-        mintTransaction
-      );
-
-      console.log('vote idea done:', mintResponse);
-
-      if(mintResponse) {
-
-      try {
-        const res = await fetch(`/api/idea/vote`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ideaId }),
-        });
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId;
   
-        if (res.ok) {
+    try {
+      // First, make the API call to your backend to register the vote.
+      const res = await fetch(`/api/idea/vote`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ideaId, userId }),
+      });
+  
+      if (res.ok) {
+        // If backend API succeeds, proceed to call the Move contract.
+        const mintTransaction = {
+          arguments: [
+            `${ideaId}`,
+            '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579',
+          ],
+          function:
+            '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::upvote_defi',
+          type: 'entry_function_payload',
+          type_arguments: [],
+        };
+  
+        const mintResponse = await window.aptos.signAndSubmitTransaction(
+          mintTransaction
+        );
+  
+        console.log('Vote transaction done:', mintResponse);
+  
+        if (mintResponse) {
+          // Update vote count in the frontend after successful transaction
+
+          const resp = await fetch(`/api/idea/vote/verify`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ideaId, userId }),
+          });
+
+          if(resp.ok){
+
           const updatedIdeas = ideas.map((idea) =>
             idea.id === ideaId
               ? { ...idea, vote_count: idea.vote_count + 1 }
@@ -115,22 +148,19 @@ const Dashboard = () => {
           );
           setIdeas(updatedIdeas);
           toast.success('Vote recorded successfully!');
-        } else {
-          toast.error('Failed to register vote. Please try again.');
-          setloading(false);
         }
-      } catch (error) {
-        toast.error('An error occurred while voting. Please try again later.');
-        console.error('Error voting:', error);
+        }
+      } else {
+        toast.error('Already voted');
         setloading(false);
       }
-    }
-    }
-    catch(error) {
+    } catch (error) {
       toast.error('An error occurred while voting. Please try again later.');
       console.error('Error voting:', error);
+      setloading(false);
     }
   };
+  
 
   const filteredIdeas =
     selectedCategory === 'All Categories'
@@ -143,16 +173,58 @@ const Dashboard = () => {
       style={{ background: 'radial-gradient(circle, #000000 , #000000)' }}
     >
       <div
-        className="flex "
+        className="lg:flex md:flex"
         style={{
           boxShadow: 'inset -10px -10px 60px 0 rgba(0, 0, 0, 0.4)',
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
         }}
       >
-        <div
-          className="w-1/4 pb-8 pt-8 px-8"
-          // style={{ maxHeight: '700px', overflowY: 'auto' }}
-        >
+        {/* Dropdown for small devices */}
+        <div className="block lg:hidden md:hidden w-full pb-8 pt-8 px-8">
+          <button
+            className="text-white py-3.5 px-4 rounded-lg bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500 w-full"
+            onClick={() => setShowDropdown(!showDropdown)}
+          >
+            {selectedCategory}
+          </button>
+          {showDropdown && (
+            <div className="mt-4">
+              {[
+                'All Categories',
+                'Payment',
+                'ConsumerDapp',
+                'Nft',
+                'DeFi',
+                'DePin',
+                'Gaming',
+                'Social',
+                // 'AI',
+                'Content',
+                'DeveloperTooling',
+                'Community',
+              ].map((category) => (
+                <div
+                  key={category}
+                  className={`text-white py-2.5 px-4 rounded-lg cursor-pointer flex gap-4 ${
+                    selectedCategory === category
+                      ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setShowDropdown(false);
+                  }}
+                >
+                  <div className="mt-1">{categoryIcons[category]}</div>
+                  <div>{category}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar for larger devices */}
+        <div className="hidden lg:block md:block lg:w-1/4 md:w-1/4 w-full pb-8 pt-8 px-8">
           <div className="text-xl font-bold text-white border-b border-gray-500 pb-4 mb-2">
             Categories
           </div>
@@ -166,14 +238,14 @@ const Dashboard = () => {
             'DePin',
             'Gaming',
             'Social',
-            'AI',
+            // 'AI',
             'Content',
             'DeveloperTooling',
             'Community',
           ].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 rounded-lg cursor-pointer flex gap-4 ${
+              className={`text-white py-3.5 px-4 rounded-lg cursor-pointer flex gap-4 ${
                 selectedCategory === category
                   ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
                   : ''
@@ -187,7 +259,7 @@ const Dashboard = () => {
         </div>
 
         <div
-          className="w-3/4 border border-gray-500 rounded-lg mt-[1vh] mb-4 mr-4 px-8"
+          className="lg:w-3/4 md:w-3/4 w-full border border-gray-500 rounded-lg mt-[1vh] mb-4 lg:mr-4 md:mr-4 px-8"
           style={{ maxHeight: '800px', overflowY: 'auto' }}
         >
           <div

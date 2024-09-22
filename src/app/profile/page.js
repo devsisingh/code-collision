@@ -1,17 +1,54 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import EditForm from '@/components/Editform'
 
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentIdea, setCurrentIdea] = useState(null);
 
-  const router = useRouter();
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [imagenumber, setimagenumber] = useState();
+  
+  useEffect(() => {
+    const fetchnumber = async () => {
+      const currentUrl = window.location.href;
+      const params = new URLSearchParams(currentUrl.split('?')[1]);
+      const image = params.get('image');
+      setimagenumber(image);
+    }
+    fetchnumber();
+  },[])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = `https://api.multiavatar.com/${imagenumber}`;
+
+        const response = await axios.get(apiUrl);
+        const svgDataUri = `data:image/svg+xml,${encodeURIComponent(
+          response.data
+        )}`;
+        setAvatarUrl(svgDataUri);
+      } catch (error) {
+        console.error('Error fetching avatar:', error.message);
+      }
+    };
+
+    fetchData();
+  }, [imagenumber]);
+
+  const handleEditClick = (idea) => {
+    setCurrentIdea(idea);
+    setIsEditing(true);
+  };
 
   useEffect(() => {
     const getProfile = () => {
@@ -27,7 +64,7 @@ const Profile = () => {
     const fetchIdeas = async () => {
       try {
         setloading(true);
-        const res = await fetch('/api/idea');
+        const res = await fetch(`/api/idea?userId=${profileDetails.userId}`);
         const data = await res.json();
         setIdeas(data.ideas);
         console.log('ideas fetch', data);
@@ -39,7 +76,7 @@ const Profile = () => {
     };
 
     fetchIdeas();
-  }, []);
+  }, [profileDetails]);
 
   // Function to copy text to clipboard
   const copyToClipboard = (text) => {
@@ -81,18 +118,59 @@ const Profile = () => {
       'radial-gradient(circle at top, #032428, transparent)';
   };
 
+
+  const handleSave = async (updatedIdea) => {
+    try {
+      const response = await fetch(`/api/idea/${updatedIdea.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: updatedIdea.title,
+          problem_solved: updatedIdea.description1,
+          possible_solution: updatedIdea.description2,
+          resources: updatedIdea.description3,
+          additional: updatedIdea.description4,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update the idea");
+      }
+  
+      const updatedIdeaFromAPI = await response.json();
+      
+      setIdeas((prevIdeas) => {
+        const updatedIdeas = prevIdeas.map((idea) =>
+          idea.id === updatedIdea.id ? updatedIdeaFromAPI.idea : idea
+        );
+        
+        // Log the updated ideas array
+        console.log("Updated Ideas:", updatedIdeas);
+  
+        return updatedIdeas;
+      });
+      
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating idea:", error);
+    }
+  };
+  
+
   return (
-    <div className="mx-20">
+    <div className="mx-20 min-h-screen w-full">
       <div className="flex text-white gap-10 mt-10">
         <div className="relative w-full">
           <img
-            src="https://www.defineinternational.com/wp-content/uploads/2014/06/dummy-profile.png"
+            src={avatarUrl}
             className="rounded-full w-40 h-40"
             alt="Profile"
           />
 
           {/* Position the userId and wallet_address at the bottom of the image */}
-          <div className="absolute top-20 left-40 w-auto">
+          <div className="absolute top-20 left-48 w-auto">
             <div className="flex justify-start items-start gap-2 ">
               <div>User ID:</div>
               <div>{shortenText(profileDetails.userId)}</div>
@@ -126,7 +204,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
+          {/* <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
             <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
               Total Chat
             </h6>
@@ -134,7 +212,7 @@ const Profile = () => {
               <FaComments style={{ width: '30px', height: '30px' }} />
               <p className="text-[42px]  leading-tight Graph-normal">{10}</p>
             </div>
-          </div>
+          </div> */}
 
           <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
             <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
@@ -162,16 +240,16 @@ const Profile = () => {
             }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            onClick={() => router.push(`/ideas/${idea.id}`)}
+            // onClick={() => router.push(`/ideas/${idea.id}`)}
           >
             <div>
               <div className="text-white text-xl font-semibold mb-4 capitalize">
-                {idea.title}
+                {idea?.title}
               </div>
 
               <div className="text-gray-300 text-sm my-6">
                 <span className="font-bold">
-                  {idea.problem_solved.length > 100
+                  {idea?.problem_solved?.length > 100
                     ? idea.problem_solved.substring(0, 100) + '...'
                     : idea.problem_solved}
                 </span>
@@ -204,6 +282,13 @@ const Profile = () => {
                 >
                   Vote 👍
                 </div> */}
+
+                <div
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  onClick={() => handleEditClick(idea)}
+                >
+                  Edit
+                </div>
               </div>
               <div
                 className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
@@ -215,7 +300,13 @@ const Profile = () => {
           </div>
         ))}
 
-        <div className="h-[15vh] grid place-items-center w-full"></div>
+        {isEditing && (
+      <EditForm
+        idea={currentIdea}
+        onSave={handleSave}
+        onCancel={() => setIsEditing(false)}
+      />
+    )}
 
         {loading && (
           <div

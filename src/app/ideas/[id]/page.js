@@ -76,7 +76,9 @@ const IdeaPage = ({ params }) => {
 
   useEffect(() => {
     const call = () => {
-      const loggedin = Cookies.get('idea_wallet');
+      const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+      const decodedToken = jwtDecode(token);
+      const loggedin = decodedToken.wallet_address;
       setwallet(loggedin);
     };
     call();
@@ -126,7 +128,7 @@ const IdeaPage = ({ params }) => {
                   {idea?.title}
                 </div>
 
-                <div className="flex justify-between text-white items-center">
+                <div className="flex flex-col lg:gap-0 md:gap-0 gap-4 lg:flex-row md:flex-row lg:justify-between md:justify-between justify-start text-white lg:items-center md:items-center items-start">
                   <div
                     className={
                       'bg-[#1D4E4F] text-white font-bold text-xs p-2 rounded-lg'
@@ -135,7 +137,7 @@ const IdeaPage = ({ params }) => {
                     {idea?.userId}
                   </div>
                   <div
-                    className="px-2 py-1 rounded -mt-2 capitalize"
+                    className="px-2 py-1 rounded -mt-2 lg:-ml-0 md:-ml-0 -ml-2 capitalize"
                     style={{ fontSize: '15px' }}
                   >
                     <span
@@ -143,13 +145,13 @@ const IdeaPage = ({ params }) => {
                         'inline-block bg-[#1D4E4F] text-white font-bold text-xs p-2 rounded-lg'
                       }
                     >
-                      Category
+                      {idea?.category}
                     </span>{' '}
-                    :{idea?.category}
+                    {/* :{idea?.category} */}
                   </div>
 
                   <div
-                    className="px-2 py-1 rounded -mt-2 flex items-center gap-3"
+                    className="px-2 py-1 rounded -mt-2 lg:-ml-0 md:-ml-0 -ml-2 flex items-center gap-3"
                     style={{
                       fontSize: '15px',
                       color: '#FFCAD4',

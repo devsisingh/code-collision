@@ -12,10 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { WalletSelector } from "./WalletSelector";
+import { jwtDecode } from 'jwt-decode';
 
 const Navbar = () => {
-  const wallet = Cookies.get('idea_wallet');
 
+  const [wallet, setWallet] = useState(null);
   const [password, setpassword] = useState('');
   const [registerpassword, setregisterpassword] = useState('');
   const [confirmpassword, setconfirmpassword] = useState('');
@@ -24,10 +25,28 @@ const Navbar = () => {
   const [savedresponse, setsavedresponse] = useState('');
   const [savedmessage, setsavedmessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
   const [hovered, setHovered] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [imageNumber, setimageNumber] = useState();
   const [loginbox, setloginbox] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+    
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setWallet(decodedToken.wallet_address);
+      } catch (error) {
+        console.error('Invalid token:', error);
+      }
+    } else {
+      console.warn('Token not found');
+      setWallet(null);
+    }
+  }, [loading2]);
 
   const notify = () => {
     toast.warn('Please connect your wallet', {
@@ -102,6 +121,7 @@ const Navbar = () => {
   };
 
   const handleLogin = async () => {
+    setLoading2(true);
     try {
       // First, try to log in the user
       let res = await fetch('/api/user/login', {
@@ -123,13 +143,13 @@ const Navbar = () => {
       if (res.ok) {
         // Successful login
         notifysuccess(data.message);
-        Cookies.set('idea_wallet', savedresponse?.address, { expires: 30/1440 }); // 30 mins
         setpasswordbox(false);
-        window.location.reload();
+        // window.location.reload();
       } else {
         // User not found, proceed to sign-up
         notifyerror(data.message);
       }
+      setLoading2(false);
       setLoading(false);
     } catch (error) {
       notifyerror('Error during login/signup:');
@@ -176,13 +196,15 @@ const Navbar = () => {
     const fetchData = async () => {
       try {
         const getRandomNumber = () => Math.floor(Math.random() * 1000);
-        const apiUrl = `https://api.multiavatar.com/${getRandomNumber()}`;
+        const randomnumber = getRandomNumber();
+        const apiUrl = `https://api.multiavatar.com/${randomnumber}`;
 
         const response = await axios.get(apiUrl);
         const svgDataUri = `data:image/svg+xml,${encodeURIComponent(
           response.data
         )}`;
         setAvatarUrl(svgDataUri);
+        setimageNumber(randomnumber);
       } catch (error) {
         console.error('Error fetching avatar:', error.message);
       }
@@ -192,8 +214,9 @@ const Navbar = () => {
   }, []);
 
   const handleDeleteCookie = () => {
-    Cookies.remove('idea_wallet');
-    window.location.href = '/';
+    Cookies.remove('access-token');
+    setWallet(null);
+    // window.location.href = '/';
   };
 
   return (
@@ -272,7 +295,7 @@ const Navbar = () => {
                 {wallet && (
                   <div className="flex gap-4">
                     {avatarUrl && (
-                      <Link href="/profile">
+                      <Link href={`/profile?image=${imageNumber}`}>
                       <img src={avatarUrl} alt="Avatar" style={{ width: 40 }} />
                       </Link>
                     )}
@@ -487,6 +510,26 @@ const Navbar = () => {
           <div
             style={{ backgroundColor: '#222944E5' }}
             className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-40 justify-center items-center w-full max-h-full"
+            id="popupmodal"
+          >
+            <div className="relative p-4 w-full max-h-full">
+              <div className="relative rounded-lg">
+                <div className="flex justify-center gap-4">
+                  <img
+                    src="/smallloader.gif"
+                    alt="Loading icon"
+                    className="w-20"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+{loading2 && (
+          <div
+            style={{ backgroundColor: '#222944E5' }}
+            className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
             id="popupmodal"
           >
             <div className="relative p-4 w-full max-h-full">
