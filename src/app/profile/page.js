@@ -160,18 +160,19 @@ const Profile = () => {
   
 
   return (
-    <div className="mx-20 min-h-screen w-full">
-      <div className="flex text-white gap-10 mt-10">
-        <div className="relative w-full">
+    <div className="lg:mx-20 md:mx-20 mx-4 min-h-screen w-full">
+      <div className="flex lg:flex-row md:flex-row flex-col justify-center items-center text-white gap-10 mt-10">
+        <div className="relative w-full flex flex-col lg:justify-start md:justify-start justify-center lg:items-start md:items-start items-center">
           <img
             src={avatarUrl}
-            className="rounded-full w-40 h-40"
+            className="rounded-full"
+            style={{ width: '160px', height: '160px' }}
             alt="Profile"
           />
 
           {/* Position the userId and wallet_address at the bottom of the image */}
-          <div className="absolute lg:top-20 lg:left-48 w-auto lg:mt-0 mt-6">
-            <div className="flex justify-start items-start gap-2 ">
+          <div className="lg:absolute md:absolute lg:top-20 lg:left-48 md:top-40 md:left-0 w-auto lg:mt-0 mt-6 flex flex-col lg:justify-start md:justify-start justify-center lg:items-start md:items-start items-center">
+            <div className="flex justify-start items-start gap-2">
               <div>UserID:</div>
               <div>{shortenText(profileDetails.userId)}</div>
               <FaCopy
@@ -226,7 +227,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-20 mt-32">My Ideas</div>
+      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-32 mt-20">My Ideas</div>
 
       <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
         {ideas?.map((idea) => (
