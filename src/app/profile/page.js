@@ -170,9 +170,9 @@ const Profile = () => {
           />
 
           {/* Position the userId and wallet_address at the bottom of the image */}
-          <div className="absolute top-20 left-48 w-auto">
+          <div className="absolute lg:top-20 lg:left-48 w-auto lg:mt-0 mt-6">
             <div className="flex justify-start items-start gap-2 ">
-              <div>User ID:</div>
+              <div>UserID:</div>
               <div>{shortenText(profileDetails.userId)}</div>
               <FaCopy
                 className="cursor-pointer"
@@ -182,7 +182,7 @@ const Profile = () => {
             </div>
 
             <div className="flex justify-start items-start gap-2 mt-2">
-              <div>Wallet Address:</div>
+              <div>Wallet:</div>
               <div>{shortenText(profileDetails.wallet_address)}</div>
               <FaCopy
                 className="cursor-pointer"
@@ -194,13 +194,13 @@ const Profile = () => {
         </div>
 
         <div className="flex gap-4">
-          <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
-            <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
+          <div className="lg:w-[164px] md:w-[164px] w-[100px] pt-[27px] relative lg:pl-[20px] md:pl-[20px] pl-[4px] lg:h-[167px] md:h-[167px] h-[100px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
+            <h6 className="text-white w-max semiBold text-[14px] leading-normal ">
               Total Ideas
             </h6>
-            <div className="flex items-center absolute bottom-[37px] h-max gap-[19px]">
+            <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaLightbulb style={{ width: '30px', height: '30px' }} />
-              <p className="text-[42px]  leading-tight Graph-normal">{10}</p>
+              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">{10}</p>
             </div>
           </div>
 
@@ -214,19 +214,19 @@ const Profile = () => {
             </div>
           </div> */}
 
-          <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
+          <div className="lg:w-[164px] md:w-[164px] w-[100px] pt-[27px] relative lg:pl-[20px] md:pl-[20px] pl-[4px] lg:h-[167px] md:h-[167px] h-[100px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
             <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
               Total Votes
             </h6>
-            <div className="flex items-center absolute bottom-[37px] h-max gap-[19px]">
+            <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaThumbsUp style={{ width: '30px', height: '30px' }} />
-              <p className="text-[42px]  leading-tight Graph-normal">{10}</p>
+              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">{10}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="text-3xl text-white font-bold mt-20">My Ideas</div>
+      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-20 mt-32">My Ideas</div>
 
       <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
         {ideas?.map((idea) => (
