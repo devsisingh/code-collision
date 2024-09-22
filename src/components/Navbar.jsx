@@ -16,6 +16,21 @@ import { jwtDecode } from 'jwt-decode';
 
 const Navbar = () => {
 
+  const [wallet, setWallet] = useState(null);
+  const [password, setpassword] = useState('');
+  const [registerpassword, setregisterpassword] = useState('');
+  const [confirmpassword, setconfirmpassword] = useState('');
+  const [passwordset, setpasswordset] = useState(false);
+  const [passwordbox, setpasswordbox] = useState(false);
+  const [savedresponse, setsavedresponse] = useState('');
+  const [savedmessage, setsavedmessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
+  const [hovered, setHovered] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [loginbox, setloginbox] = useState(false);
+
   useEffect(() => {
     const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
     
@@ -28,22 +43,9 @@ const Navbar = () => {
       }
     } else {
       console.warn('Token not found');
+      setWallet(null);
     }
-  }, []);
-
-  const [wallet, setWallet] = useState(null);
-  const [password, setpassword] = useState('');
-  const [registerpassword, setregisterpassword] = useState('');
-  const [confirmpassword, setconfirmpassword] = useState('');
-  const [passwordset, setpasswordset] = useState(false);
-  const [passwordbox, setpasswordbox] = useState(false);
-  const [savedresponse, setsavedresponse] = useState('');
-  const [savedmessage, setsavedmessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const [hovered, setHovered] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [loginbox, setloginbox] = useState(false);
+  }, [loading2]);
 
   const notify = () => {
     toast.warn('Please connect your wallet', {
@@ -118,6 +120,7 @@ const Navbar = () => {
   };
 
   const handleLogin = async () => {
+    setLoading2(true);
     try {
       // First, try to log in the user
       let res = await fetch('/api/user/login', {
@@ -140,11 +143,12 @@ const Navbar = () => {
         // Successful login
         notifysuccess(data.message);
         setpasswordbox(false);
-        window.location.reload();
+        // window.location.reload();
       } else {
         // User not found, proceed to sign-up
         notifyerror(data.message);
       }
+      setLoading2(false);
       setLoading(false);
     } catch (error) {
       notifyerror('Error during login/signup:');
@@ -208,7 +212,8 @@ const Navbar = () => {
 
   const handleDeleteCookie = () => {
     Cookies.remove('access-token');
-    window.location.href = '/';
+    setWallet(null);
+    // window.location.href = '/';
   };
 
   return (
@@ -502,6 +507,26 @@ const Navbar = () => {
           <div
             style={{ backgroundColor: '#222944E5' }}
             className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-40 justify-center items-center w-full max-h-full"
+            id="popupmodal"
+          >
+            <div className="relative p-4 w-full max-h-full">
+              <div className="relative rounded-lg">
+                <div className="flex justify-center gap-4">
+                  <img
+                    src="/smallloader.gif"
+                    alt="Loading icon"
+                    className="w-20"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+{loading2 && (
+          <div
+            style={{ backgroundColor: '#222944E5' }}
+            className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
             id="popupmodal"
           >
             <div className="relative p-4 w-full max-h-full">
