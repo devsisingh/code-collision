@@ -240,7 +240,7 @@ const Navbar = () => {
                 <Link href="/create">
                   <button className="p-[3px] relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
-                    <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
+                    <div className="text-xs lg:text-sm md:text-sm lg:px-4 md:px-4 px-2 lg:py-1.5 md:py-1.5 py-1 bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
                       Create Idea
                     </div>
                   </button>
@@ -250,7 +250,7 @@ const Navbar = () => {
               <div className="flex items-center lg:order-1">
                 <button className="p-[3px] relative" onClick={notify}>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#539b82] to-[#aba564] rounded-lg" />
-                  <div className="px-4 py-1.5  bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
+                  <div className="text-xs lg:text-sm md:text-sm lg:px-4 md:px-4 px-2 lg:py-1.5 md:py-1.5 py-1 bg-black rounded-[6px] relative group transition duration-200 text-white hover:bg-transparent">
                     Create Idea
                   </div>
                 </button>
@@ -299,7 +299,7 @@ const Navbar = () => {
                       <img src={avatarUrl} alt="Avatar" style={{ width: 40 }} />
                       </Link>
                     )}
-                    <div>
+                    <div className='lg:block md:block hidden'>
                       <div className="rounded-lg text-sm font-semibold text-center text-white">
                         {wallet.slice(0, 4)}...{wallet.slice(-4)}
                       </div>
