@@ -36,7 +36,7 @@ export default function Dashboard() {
     { value: 'DePin', label: 'DePin' },
     { value: 'Gaming', label: 'Gaming' },
     { value: 'Social', label: 'Social' },
-    { value: 'AI', label: 'AI' },
+    // { value: 'AI', label: 'AI' },
     { value: 'Content', label: 'Content' },
     { value: 'DeveloperTooling', label: 'DeveloperTooling' },
     { value: 'Community', label: 'Community' },

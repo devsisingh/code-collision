@@ -15,9 +15,17 @@ const Profile = () => {
   const [currentIdea, setCurrentIdea] = useState(null);
 
   const [avatarUrl, setAvatarUrl] = useState('');
-  const currentUrl = window.location.href;
-  const params = new URLSearchParams(currentUrl.split('?')[1]);
-  const imagenumber = params.get('image');
+  const [imagenumber, setimagenumber] = useState();
+  
+  useEffect(() => {
+    const fetchnumber = async () => {
+      const currentUrl = window.location.href;
+      const params = new URLSearchParams(currentUrl.split('?')[1]);
+      const image = params.get('image');
+      setimagenumber(image);
+    }
+    fetchnumber();
+  },[])
 
   useEffect(() => {
     const fetchData = async () => {
