@@ -195,14 +195,14 @@ const Dashboard = () => {
             'DePin',
             'Gaming',
             'Social',
-            'AI',
+            // 'AI',
             'Content',
             'DeveloperTooling',
             'Community',
           ].map((category) => (
             <div
               key={category}
-              className={`text-white py-3 px-4 rounded-lg cursor-pointer flex gap-4 ${
+              className={`text-white py-3.5 px-4 rounded-lg cursor-pointer flex gap-4 ${
                 selectedCategory === category
                   ? 'bg-gradient-to-r from-[#FFFFFF30] via-[#539b8230] to-[#FFFFFF30] border border-gray-500'
                   : ''

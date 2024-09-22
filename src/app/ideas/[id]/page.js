@@ -145,9 +145,9 @@ const IdeaPage = ({ params }) => {
                         'inline-block bg-[#1D4E4F] text-white font-bold text-xs p-2 rounded-lg'
                       }
                     >
-                      Category
+                      {idea?.category}
                     </span>{' '}
-                    :{idea?.category}
+                    {/* :{idea?.category} */}
                   </div>
 
                   <div

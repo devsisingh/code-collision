@@ -176,7 +176,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
+          {/* <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
             <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
               Total Chat
             </h6>
@@ -184,7 +184,7 @@ const Profile = () => {
               <FaComments style={{ width: '30px', height: '30px' }} />
               <p className="text-[42px]  leading-tight Graph-normal">{10}</p>
             </div>
-          </div>
+          </div> */}
 
           <div className="w-[164px] pt-[27px] relative  pl-[20px] h-[167px] rounded-[12px] bg-gradient-to-b from-[#000000] to-[#10434a] border border-white/[0.2]">
             <h6 className="text-white  w-max  semiBold text-[14px] leading-normal ">
