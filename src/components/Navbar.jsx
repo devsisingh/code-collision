@@ -11,12 +11,17 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { WalletSelector } from "./WalletSelector";
+import { WalletSelector } from './WalletSelector';
 import { jwtDecode } from 'jwt-decode';
-import {useWallet} from "@aptos-labs/wallet-adapter-react";
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const Navbar = () => {
-
   const [walletaddr, setWallet] = useState(null);
   const [password, setpassword] = useState('');
   const [registerpassword, setregisterpassword] = useState('');
@@ -37,7 +42,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
-    
+
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -222,18 +227,14 @@ const Navbar = () => {
     // window.location.href = '/';
   };
 
-
   useEffect(() => {
-    if(wallet)
-    {
+    if (wallet) {
       setpasswordbox(true);
-    }
-    else{
+    } else {
       Cookies.remove('access-token');
       setWallet(null);
     }
-  }, [wallet])
-  
+  }, [wallet]);
 
   return (
     <>
@@ -275,9 +276,6 @@ const Navbar = () => {
 
             <div className="flex items-center lg:order-2">
               <div>
-
-              
-
                 {/* {!wallet && (
                   <>
                    <button
@@ -312,11 +310,30 @@ const Navbar = () => {
                 {walletaddr && wallet ? (
                   <div className="flex gap-4">
                     <WalletSelector />
-                    {avatarUrl && (
-                      <Link href={`/profile?image=${imageNumber}`}>
-                      <img src={avatarUrl} alt="Avatar" style={{ width: 40 }} />
-                      </Link>
-                    )}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          {' '}
+                          {avatarUrl && (
+                            <Link href={`/profile?image=${imageNumber}`}>
+                              <img
+                                src={avatarUrl}
+                                alt="Avatar"
+                                style={{ width: 40 }}
+                              />
+                            </Link>
+                          )}
+                        </TooltipTrigger>
+                        <TooltipContent
+                          className={
+                            'bg-gradient-to-r from-[#6ee7b7] via-[#34d399] to-[#10b981] text-gray-900'
+                          }
+                        >
+                          <p>See Profile</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
                     {/* <div className='lg:block md:block hidden'>
                       <div className="rounded-lg text-sm font-semibold text-center text-white">
                         {walletaddr.slice(0, 4)}...{walletaddr.slice(-4)}
@@ -332,7 +349,9 @@ const Navbar = () => {
                       </button>
                     </div> */}
                   </div>
-                ): <WalletSelector />}
+                ) : (
+                  <WalletSelector />
+                )}
 
                 {loginbox && (
                   <animated.div
@@ -362,7 +381,6 @@ const Navbar = () => {
                       className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50"
                     >
                       <div className="bg-black text-white p-10 rounded-lg flex gap-y-6 justify-center w-[30rem] items-center flex-col text-center relative">
-                        
                         <Tabs defaultValue="register" className="w-[400px]">
                           <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="register">Register</TabsTrigger>
@@ -525,44 +543,44 @@ const Navbar = () => {
       </header>
 
       {loading && (
-          <div
-            style={{ backgroundColor: '#222944E5' }}
-            className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-40 justify-center items-center w-full max-h-full"
-            id="popupmodal"
-          >
-            <div className="relative p-4 w-full max-h-full">
-              <div className="relative rounded-lg">
-                <div className="flex justify-center gap-4">
-                  <img
-                    src="/smallloader.gif"
-                    alt="Loading icon"
-                    className="w-20"
-                  />
-                </div>
+        <div
+          style={{ backgroundColor: '#222944E5' }}
+          className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-40 justify-center items-center w-full max-h-full"
+          id="popupmodal"
+        >
+          <div className="relative p-4 w-full max-h-full">
+            <div className="relative rounded-lg">
+              <div className="flex justify-center gap-4">
+                <img
+                  src="/smallloader.gif"
+                  alt="Loading icon"
+                  className="w-20"
+                />
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-{loading2 && (
-          <div
-            style={{ backgroundColor: '#222944E5' }}
-            className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
-            id="popupmodal"
-          >
-            <div className="relative p-4 w-full max-h-full">
-              <div className="relative rounded-lg">
-                <div className="flex justify-center gap-4">
-                  <img
-                    src="/smallloader.gif"
-                    alt="Loading icon"
-                    className="w-20"
-                  />
-                </div>
+      {loading2 && (
+        <div
+          style={{ backgroundColor: '#222944E5' }}
+          className="flex overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full max-h-full"
+          id="popupmodal"
+        >
+          <div className="relative p-4 w-full max-h-full">
+            <div className="relative rounded-lg">
+              <div className="flex justify-center gap-4">
+                <img
+                  src="/smallloader.gif"
+                  alt="Loading icon"
+                  className="w-20"
+                />
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 };

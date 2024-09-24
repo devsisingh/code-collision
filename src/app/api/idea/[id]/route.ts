@@ -25,6 +25,11 @@ export async function GET(request: NextRequest) {
     });
     const idea = await client.idea.findUnique({
       where: { id: ideaId },
+      include: {
+        user: {
+          select: { wallet_address: true, avatar_image_url: true },
+        },
+      },
     });
     return NextResponse.json({ idea, comments });
   } catch (err) {

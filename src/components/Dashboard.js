@@ -23,10 +23,10 @@ const Dashboard = () => {
   const [wallet, setWallet] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  
+
   useEffect(() => {
     const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
-    
+
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -98,7 +98,7 @@ const Dashboard = () => {
     const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userId;
-  
+
     try {
       // First, make the API call to your backend to register the vote.
       const res = await fetch(`/api/idea/vote`, {
@@ -108,7 +108,7 @@ const Dashboard = () => {
         },
         body: JSON.stringify({ ideaId, userId }),
       });
-  
+
       if (res.ok) {
         // If backend API succeeds, proceed to call the Move contract.
         const mintTransaction = {
@@ -121,13 +121,13 @@ const Dashboard = () => {
           type: 'entry_function_payload',
           type_arguments: [],
         };
-  
+
         const mintResponse = await window.aptos.signAndSubmitTransaction(
           mintTransaction
         );
-  
-        console.log('Vote transaction done:', mintResponse);
-  
+
+        // console.log('Vote transaction done:', mintResponse);
+
         if (mintResponse) {
           // Update vote count in the frontend after successful transaction
 
@@ -139,16 +139,15 @@ const Dashboard = () => {
             body: JSON.stringify({ ideaId, userId }),
           });
 
-          if(resp.ok){
-
-          const updatedIdeas = ideas.map((idea) =>
-            idea.id === ideaId
-              ? { ...idea, vote_count: idea.vote_count + 1 }
-              : idea
-          );
-          setIdeas(updatedIdeas);
-          toast.success('Vote recorded successfully!');
-        }
+          if (resp.ok) {
+            const updatedIdeas = ideas.map((idea) =>
+              idea.id === ideaId
+                ? { ...idea, vote_count: idea.vote_count + 1 }
+                : idea
+            );
+            setIdeas(updatedIdeas);
+            toast.success('Vote recorded successfully!');
+          }
         }
       } else {
         toast.error('Already voted');
@@ -160,12 +159,11 @@ const Dashboard = () => {
       setloading(false);
     }
   };
-  
 
   const filteredIdeas =
     selectedCategory === 'All Categories'
       ? ideas
-      : ideas.filter((idea) => idea.category === selectedCategory);
+      : ideas?.filter((idea) => idea.category === selectedCategory);
 
   return (
     <div
