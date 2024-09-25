@@ -20,6 +20,7 @@ const Profile = () => {
 
   const [ideasOnBlock, setIdeasOnBlock] = useState([]);
   const [ideasNotOnBlock, setIdeasNotOnBlock] = useState([]);
+  const [offchainvotes, setoffchainvotes] = useState([]);
   const [activeTab, setActiveTab] = useState('verified');
 
   useEffect(() => {
@@ -100,6 +101,13 @@ const Profile = () => {
       });
       const data = await res.json();
       setVoteData(data.votesByUser);
+
+       // Separate ideas based on is_stored_on_block value
+       const votesOnBlock = data.votesByUser.filter(vote => vote.is_stored_on_block === true);
+       const votesNotOnBlock = data.votesByUser.filter(vote => vote.is_stored_on_block === false);
+       
+       setoffchainvotes(votesNotOnBlock);
+
       console.log("vote data", data);
     } catch (err) {
       console.error('Failed to fetch ideas:', err);
@@ -182,7 +190,15 @@ const Profile = () => {
           idea.id === updatedIdea.id ? updatedIdeaFromAPI.idea : idea
         );
 
-        // Log the updated ideas array
+        console.log('Updated Ideas:', updatedIdeas);
+
+        return updatedIdeas;
+      });
+
+      setIdeasNotOnBlock((prevIdeas) => {
+        const updatedIdeas = prevIdeas.map((idea) =>
+          idea.id === updatedIdea.id ? updatedIdeaFromAPI.idea : idea
+        );
         console.log('Updated Ideas:', updatedIdeas);
 
         return updatedIdeas;
@@ -275,7 +291,7 @@ const Profile = () => {
           }`}
           onClick={() => setActiveTab('verified')}
         >
-          Verified Ideas
+          All Ideas
         </button>
         <button
           className={`text-lg font-bold py-2 px-4 transition ${
@@ -285,13 +301,23 @@ const Profile = () => {
           }`}
           onClick={() => setActiveTab('unverified')}
         >
-          Unverified Ideas
+          Off Chain Ideas
+        </button>
+        <button
+          className={`text-lg font-bold py-2 px-4 transition ${
+            activeTab === 'offchainvotes' ? 
+              'bg-[#539b82] text-white' 
+              : 'bg-gray-600 text-gray-300'
+          }`}
+          onClick={() => setActiveTab('offchainvotes')}
+        >
+          Off Chain Votes
         </button>
       </div>
 
       {activeTab === 'verified' && (
       <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
-        {ideasOnBlock?.map((idea) => (
+        {ideas?.map((idea) => (
           <div
             key={idea.id}
             className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl "
@@ -346,7 +372,7 @@ const Profile = () => {
                 </div> */}
 
                 <div
-                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-blue-100 z-[10] text-blue-800"
                   onClick={() => handleEditClick(idea)}
                 >
                   Edit
@@ -405,17 +431,91 @@ const Profile = () => {
                 </div>
 
                 <div
-                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-blue-100 z-[10] text-blue-800"
                   onClick={() => handleEditClick(idea)}
                 >
                   Edit
                 </div>
+
+                <div
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  // onClick={() => handleEditClick(idea)}
+                >
+                  Verify Idea
+                </div>
+
               </div>
               <div
                 className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
                 style={{ fontSize: '13px' }}
               >
                 {idea.category}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>)}
+
+      {activeTab === 'offchainvotes' && (
+      <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
+        {offchainvotes?.map((vote) => (
+          <div
+            key={vote.idea.id}
+            className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl "
+            style={{
+              background:
+                'radial-gradient(circle at top, #032428, transparent)',
+              transition: 'background 0.5s ease-out',
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div>
+              <div className="text-white text-xl font-semibold mb-4 capitalize">
+                {vote?.idea?.title}
+              </div>
+
+              <div className="text-gray-300 text-sm my-6">
+                <span className="font-bold">
+                  {vote?.idea?.problem_solved?.length > 100
+                    ? vote?.idea.problem_solved.substring(0, 100) + '...'
+                    : vote?.idea.problem_solved}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-between text-white items-center">
+              <div className="flex gap-4 items-center">
+                <div
+                  style={{
+                    fontSize: '15px',
+                    color: '#FFCAD4',
+                    marginTop: '3px',
+                  }}
+                >
+                  <span className={'mr-1'}>❤️</span> {vote?.idea?.vote_count}
+                </div>
+                <div
+                  className="capitalize px-2 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!wallet) {
+                      toast.warn('Please connect your wallet to upvote', {
+                        position: 'top-right',
+                      });
+                    } else {
+                      // handleVote(idea.id);
+                    }
+                  }}
+                >
+                  Verify Vote 👍
+                </div>
+              </div>
+              <div
+                className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
+                style={{ fontSize: '13px' }}
+              >
+                {vote?.idea.category}
               </div>
             </div>
           </div>
