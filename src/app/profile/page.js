@@ -268,16 +268,20 @@ const Profile = () => {
 
       <div className="flex justify-start space-x-8 mt-10 pb-4 border-b-2 border-gray-500">
         <button
-          className={`text-xl font-bold py-2 px-4 transition ${
-            activeTab === 'verified' ? 'text-white border-b-4 border-indigo-500' : 'text-gray-400'
+          className={`text-lg font-bold py-2 px-4 transition ${
+            activeTab === 'verified' ? 
+              'bg-[#539b82] text-white'
+              : 'bg-gray-600 text-gray-300'
           }`}
           onClick={() => setActiveTab('verified')}
         >
           Verified Ideas
         </button>
         <button
-          className={`text-xl font-bold py-2 px-4 transition ${
-            activeTab === 'unverified' ? 'text-white border-b-4 border-indigo-500' : 'text-gray-400'
+          className={`text-lg font-bold py-2 px-4 transition ${
+            activeTab === 'unverified' ? 
+              'bg-[#539b82] text-white' 
+              : 'bg-gray-600 text-gray-300'
           }`}
           onClick={() => setActiveTab('unverified')}
         >
