@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import EditForm from '@/components/Editform'
+import EditForm from '@/components/Editform';
 
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
@@ -13,19 +13,20 @@ const Profile = () => {
   const [ideas, setIdeas] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentIdea, setCurrentIdea] = useState(null);
+  const [voteData, setVoteData] = useState([]);
 
   const [avatarUrl, setAvatarUrl] = useState('');
   const [imagenumber, setimagenumber] = useState();
-  
+
   useEffect(() => {
     const fetchnumber = async () => {
       const currentUrl = window.location.href;
       const params = new URLSearchParams(currentUrl.split('?')[1]);
       const image = params.get('image');
       setimagenumber(image);
-    }
+    };
     fetchnumber();
-  },[])
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +58,7 @@ const Profile = () => {
       console.log(decodedToken);
       setProfileDetails(decodedToken);
     };
+
     getProfile();
   }, []);
 
@@ -75,7 +77,22 @@ const Profile = () => {
       }
     };
 
+    const getVoteData = async () => {
+      try {
+        const res = await fetch(`/api/vote`, {
+          method: 'POST',
+          body: JSON.stringify({ userId: profileDetails.userId }),
+        });
+        const data = await res.json();
+        setVoteData(data.votesByUser);
+      } catch (err) {
+        console.error('Failed to fetch ideas:', err);
+        // setloading(false);
+      }
+    };
+
     fetchIdeas();
+    getVoteData();
   }, [profileDetails]);
 
   // Function to copy text to clipboard
@@ -118,13 +135,12 @@ const Profile = () => {
       'radial-gradient(circle at top, #032428, transparent)';
   };
 
-
   const handleSave = async (updatedIdea) => {
     try {
       const response = await fetch(`/api/idea/${updatedIdea.id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: updatedIdea.title,
@@ -134,30 +150,29 @@ const Profile = () => {
           additional: updatedIdea.description4,
         }),
       });
-  
+
       if (!response.ok) {
-        throw new Error("Failed to update the idea");
+        throw new Error('Failed to update the idea');
       }
-  
+
       const updatedIdeaFromAPI = await response.json();
-      
+
       setIdeas((prevIdeas) => {
         const updatedIdeas = prevIdeas.map((idea) =>
           idea.id === updatedIdea.id ? updatedIdeaFromAPI.idea : idea
         );
-        
+
         // Log the updated ideas array
-        console.log("Updated Ideas:", updatedIdeas);
-  
+        console.log('Updated Ideas:', updatedIdeas);
+
         return updatedIdeas;
       });
-      
+
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating idea:", error);
+      console.error('Error updating idea:', error);
     }
   };
-  
 
   return (
     <div className="lg:mx-20 md:mx-20 mx-4 min-h-screen w-full">
@@ -201,7 +216,9 @@ const Profile = () => {
             </h6>
             <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaLightbulb style={{ width: '30px', height: '30px' }} />
-              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">{10}</p>
+              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">
+                {ideas.length}
+              </p>
             </div>
           </div>
 
@@ -221,13 +238,17 @@ const Profile = () => {
             </h6>
             <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaThumbsUp style={{ width: '30px', height: '30px' }} />
-              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">{10}</p>
+              <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">
+                {voteData.length}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-32 mt-20">My Ideas</div>
+      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-32 mt-20">
+        My Ideas
+      </div>
 
       <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
         {ideas?.map((idea) => (
@@ -302,12 +323,12 @@ const Profile = () => {
         ))}
 
         {isEditing && (
-      <EditForm
-        idea={currentIdea}
-        onSave={handleSave}
-        onCancel={() => setIsEditing(false)}
-      />
-    )}
+          <EditForm
+            idea={currentIdea}
+            onSave={handleSave}
+            onCancel={() => setIsEditing(false)}
+          />
+        )}
 
         {loading && (
           <div
