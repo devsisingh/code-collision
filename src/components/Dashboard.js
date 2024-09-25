@@ -333,7 +333,7 @@ const Dashboard = () => {
                           });
                         } else if(network.name == "mainnet")
                           {
-                            toast.warn('Please connect to Testnet', {
+                            toast.warn('Please change your network to Testnet', {
                               position: 'top-right',
                             });
                           }

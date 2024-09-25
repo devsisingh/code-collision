@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Select from 'react-select';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
@@ -17,6 +19,8 @@ export default function Dashboard() {
   const [additional, setAdditional] = useState('');
   const [resources, setResources] = useState([]);
   const [newResource, setNewResource] = useState('');
+
+  const { account, connected, disconnect, wallet, network } = useWallet();
 
   const handleAddResource = () => {
     if (newResource) {
@@ -134,10 +138,19 @@ export default function Dashboard() {
     
     setLoading(true);
 
-    if (!ideatitle) {
-      alert('Please fill out all required fields.');
+    if (!ideatitle || !ideacategories.value || !problemSolved || !possibleSolution || !resources) {
+      toast.warn('Please fill out all required fields.', {
+        position: 'top-right',
+      });
       setLoading(false);
       return;
+    }
+    else if(network.name == "mainnet"){
+        toast.warn('Please change your network to Testnet', {
+          position: 'top-right',
+        });
+        setLoading(false);
+        return;
     }
 
     try {

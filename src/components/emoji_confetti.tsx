@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 interface Particle {
   x: number;
@@ -32,6 +33,8 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
+
+  const { account, connected, disconnect, network } = useWallet();
 
   const emojis = ['👍🏽', '❤️'];
 
@@ -118,7 +121,7 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
   };
 
   const handleVote = async () => {
-    if (!wallet) {
+    if (!account?.address) {
       toast.warn('Please connect your wallet to upvote', {
         position: 'top-right',
       });
@@ -192,11 +195,18 @@ const EmojiConfetti: React.FC<EmojiConfettiProps> = ({
         className="text-md transform-gpu rounded-lg px-6 py-2 font-semibold"
         whileTap={{ scale: 0.95 }}
         onClick={() => {
-          if (!wallet) {
+          if (!account?.address) {
             toast.warn('Please connect your wallet to upvote', {
               position: 'top-right',
             });
-          } else {
+          } 
+          else if(network.name == "mainnet")
+            {
+              toast.warn('Please change your network to Testnet', {
+                position: 'top-right',
+              });
+            }
+            else {
             handleClick();
             handleVote();
           }
