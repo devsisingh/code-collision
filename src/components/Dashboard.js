@@ -92,7 +92,7 @@ const Dashboard = () => {
   };
 
   const handleVote = async (ideaId) => {
-    if (!account.address) {
+    if (!account?.address) {
       toast.warn('Please connect your wallet to upvote', {
         position: 'top-right',
       });
@@ -327,7 +327,7 @@ const Dashboard = () => {
                       className="capitalize px-2 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (!account.address) {
+                        if (!account?.address) {
                           toast.warn('Please connect your wallet to upvote', {
                             position: 'top-right',
                           });
