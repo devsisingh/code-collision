@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Select from 'react-select';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const [pagestatus, setpagestatus] = useState('create');
@@ -195,9 +196,9 @@ export default function Dashboard() {
           {
           setcreateideadone(true);
 
-          setTimeout(() => {
-            window.location.replace('/');
-          }, 2000);
+          // setTimeout(() => {
+          //   window.location.replace('/');
+          // }, 2000);
         }
         }
         } catch {
@@ -417,9 +418,11 @@ export default function Dashboard() {
                   <p className="text-3xl text-center font-bold text-green-500">
                     Successfully Submitted!!
                   </p>
-                  <p className="text-sm text-center pt-4 pb-20">
-                    Redirecting you back to view your submitted idea.
+                  <Link href="/">
+                  <p className="text-sm text-center mt-10 mb-20 bg-white rounded-full py-2 px-10 mx-auto w-1/2 text-black">
+                    Go to Dashboard
                   </p>
+                  </Link>
                 </div>
               </div>
             </div>

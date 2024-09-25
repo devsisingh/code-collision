@@ -18,6 +18,10 @@ const Profile = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [imagenumber, setimagenumber] = useState();
 
+  const [ideasOnBlock, setIdeasOnBlock] = useState([]);
+  const [ideasNotOnBlock, setIdeasNotOnBlock] = useState([]);
+  const [activeTab, setActiveTab] = useState('verified');
+
   useEffect(() => {
     const fetchnumber = async () => {
       const currentUrl = window.location.href;
@@ -54,44 +58,60 @@ const Profile = () => {
   useEffect(() => {
     const getProfile = () => {
       const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+      if(token)
+      {
       const decodedToken = jwtDecode(token);
       console.log(decodedToken);
       setProfileDetails(decodedToken);
+      }
     };
 
     getProfile();
   }, []);
 
+  const fetchIdeas = async () => {
+    try {
+      setloading(true);
+      const res = await fetch(`/api/idea?userId=${profileDetails.userId}`);
+      const data = await res.json();
+      setIdeas(data.ideas);
+
+      // Separate ideas based on is_stored_on_block value
+      const ideasOnBlock = data.ideas.filter(idea => idea.is_stored_on_block === true);
+      const ideasNotOnBlock = data.ideas.filter(idea => idea.is_stored_on_block === false);
+      
+      // Set the respective state for both
+      setIdeasOnBlock(ideasOnBlock);
+      setIdeasNotOnBlock(ideasNotOnBlock);
+
+      console.log('ideas fetch', data);
+      setloading(false);
+    } catch (err) {
+      console.error('Failed to fetch ideas:', err);
+      setloading(false);
+    }
+  };
+
+  const getVoteData = async () => {
+    try {
+      const res = await fetch(`/api/vote`, {
+        method: 'POST',
+        body: JSON.stringify({ userId: profileDetails.userId }),
+      });
+      const data = await res.json();
+      setVoteData(data.votesByUser);
+      console.log("vote data", data);
+    } catch (err) {
+      console.error('Failed to fetch ideas:', err);
+      // setloading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchIdeas = async () => {
-      try {
-        setloading(true);
-        const res = await fetch(`/api/idea?userId=${profileDetails.userId}`);
-        const data = await res.json();
-        setIdeas(data.ideas);
-        console.log('ideas fetch', data);
-        setloading(false);
-      } catch (err) {
-        console.error('Failed to fetch ideas:', err);
-        setloading(false);
-      }
-    };
-
-    const getVoteData = async () => {
-      try {
-        const res = await fetch(`/api/vote`, {
-          method: 'POST',
-          body: JSON.stringify({ userId: profileDetails.userId }),
-        });
-        const data = await res.json();
-        setVoteData(data.votesByUser);
-      } catch (err) {
-        console.error('Failed to fetch ideas:', err);
-        // setloading(false);
-      }
-    };
-
     fetchIdeas();
+  }, [profileDetails]);
+
+  useEffect(() => {
     getVoteData();
   }, [profileDetails]);
 
@@ -217,7 +237,7 @@ const Profile = () => {
             <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaLightbulb style={{ width: '30px', height: '30px' }} />
               <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">
-                {ideas.length}
+                {ideas?.length}
               </p>
             </div>
           </div>
@@ -239,19 +259,35 @@ const Profile = () => {
             <div className="flex items-center absolute lg:bottom-[37px] md:bottom-[37px] bottom-[10px] h-max gap-[19px]">
               <FaThumbsUp style={{ width: '30px', height: '30px' }} />
               <p className="lg:text-[42px] md:text-[42px] text-[20px] leading-tight Graph-normal">
-                {voteData.length}
+                {voteData?.length}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="text-3xl text-white font-bold lg:mt-20 md:mt-32 mt-20">
-        My Ideas
+      <div className="flex justify-start space-x-8 mt-10 pb-4 border-b-2 border-gray-500">
+        <button
+          className={`text-xl font-bold py-2 px-4 transition ${
+            activeTab === 'verified' ? 'text-white border-b-4 border-indigo-500' : 'text-gray-400'
+          }`}
+          onClick={() => setActiveTab('verified')}
+        >
+          Verified Ideas
+        </button>
+        <button
+          className={`text-xl font-bold py-2 px-4 transition ${
+            activeTab === 'unverified' ? 'text-white border-b-4 border-indigo-500' : 'text-gray-400'
+          }`}
+          onClick={() => setActiveTab('unverified')}
+        >
+          Unverified Ideas
+        </button>
       </div>
 
+      {activeTab === 'verified' && (
       <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
-        {ideas?.map((idea) => (
+        {ideasOnBlock?.map((idea) => (
           <div
             key={idea.id}
             className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl "
@@ -321,6 +357,66 @@ const Profile = () => {
             </div>
           </div>
         ))}
+      </div>)}
+
+
+      {activeTab === 'unverified' && (
+      <div className="my-10 grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4">
+        {ideasNotOnBlock?.map((idea) => (
+          <div
+            key={idea.id}
+            className="flex flex-col  justify-between relative cursor-pointer p-6 border-white/[0.2] border rounded-xl "
+            style={{
+              background:
+                'radial-gradient(circle at top, #032428, transparent)',
+              transition: 'background 0.5s ease-out',
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div>
+              <div className="text-white text-xl font-semibold mb-4 capitalize">
+                {idea?.title}
+              </div>
+
+              <div className="text-gray-300 text-sm my-6">
+                <span className="font-bold">
+                  {idea?.problem_solved?.length > 100
+                    ? idea.problem_solved.substring(0, 100) + '...'
+                    : idea.problem_solved}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-between text-white items-center">
+              <div className="flex gap-4 items-center">
+                <div
+                  style={{
+                    fontSize: '15px',
+                    color: '#FFCAD4',
+                    marginTop: '3px',
+                  }}
+                >
+                  <span className={'mr-1'}>❤️</span> {idea?.vote_count}
+                </div>
+
+                <div
+                  className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
+                  onClick={() => handleEditClick(idea)}
+                >
+                  Edit
+                </div>
+              </div>
+              <div
+                className="px-4 py-1.5 rounded-lg text-center bg-white text-black font-bold"
+                style={{ fontSize: '13px' }}
+              >
+                {idea.category}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>)}
 
         {isEditing && (
           <EditForm
@@ -349,7 +445,7 @@ const Profile = () => {
             </div>
           </div>
         )}
-      </div>
+      
     </div>
   );
 };
