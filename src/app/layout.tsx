@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 import { WalletProvider } from "@/components/WalletProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,6 +30,7 @@ Our goal is to create a space where creativity thrives through `real-time commun
         <div className="w-full">
         <WalletProvider>
           <Navbar />
+          <Toaster />
           <BackgroundBeamsWithCollision>
             {/*@ts-ignore*/}
             {children}

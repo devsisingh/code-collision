@@ -350,7 +350,9 @@ const Navbar = () => {
                     </div> */}
                   </div>
                 ) : (
+                  <div onClick={() => setLoading(true)} >
                   <WalletSelector />
+                  </div>
                 )}
 
                 {loginbox && (
