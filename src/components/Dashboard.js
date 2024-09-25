@@ -15,29 +15,33 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
-  const [wallet, setWallet] = useState(null);
+  // const [wallet, setWallet] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+  const { network , account} = useWallet();
+  console.log("network", network);
 
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        setWallet(decodedToken.wallet_address);
-      } catch (error) {
-        console.error('Invalid token:', error);
-      }
-    } else {
-      console.warn('Token not found');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = Cookies.get('access-token'); // Assuming JWT is stored as 'access-token'
+
+  //   if (token) {
+  //     try {
+  //       const decodedToken = jwtDecode(token);
+  //       setWallet(decodedToken.wallet_address);
+  //     } catch (error) {
+  //       console.error('Invalid token:', error);
+  //     }
+  //   } else {
+  //     console.warn('Token not found');
+  //   }
+  // }, []);
 
   const categoryIcons = {
     'All Categories': <GoNorthStar />,
@@ -88,7 +92,7 @@ const Dashboard = () => {
   };
 
   const handleVote = async (ideaId) => {
-    if (!wallet) {
+    if (!account.address) {
       toast.warn('Please connect your wallet to upvote', {
         position: 'top-right',
       });
@@ -323,11 +327,17 @@ const Dashboard = () => {
                       className="capitalize px-2 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (!wallet) {
+                        if (!account.address) {
                           toast.warn('Please connect your wallet to upvote', {
                             position: 'top-right',
                           });
-                        } else {
+                        } else if(network.name == "mainnet")
+                          {
+                            toast.warn('Please connect to Testnet', {
+                              position: 'top-right',
+                            });
+                          }
+                          else {
                           handleVote(idea.id);
                         }
                       }}
