@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { FaLightbulb, FaComments, FaThumbsUp, FaCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import EditForm from '@/components/Editform';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
@@ -22,6 +23,8 @@ const Profile = () => {
   const [ideasNotOnBlock, setIdeasNotOnBlock] = useState([]);
   const [offchainvotes, setoffchainvotes] = useState([]);
   const [activeTab, setActiveTab] = useState('verified');
+
+  const { account, connected, disconnect, network } = useWallet();
 
   useEffect(() => {
     const fetchnumber = async () => {
@@ -499,7 +502,7 @@ const Profile = () => {
                   className="capitalize px-2 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (!wallet) {
+                    if (!account?.address) {
                       toast.warn('Please connect your wallet to upvote', {
                         position: 'top-right',
                       });
