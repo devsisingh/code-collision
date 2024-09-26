@@ -3,7 +3,7 @@
 # ShareTos
 The Web3 Idea Sharing and Community Platform
 
-### [ShareTos Platform](https://sharetos.vercel.app/) | [SmartContract](https://explorer.aptoslabs.com/account/0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579/modules/code/sharetos?network=testnet) | [Demo Video](youtu.be/9aRMxZA_bqw)
+### [ShareTos Platform](https://sharetos.vercel.app/) | [SmartContract](https://explorer.aptoslabs.com/account/0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579/modules/code/sharetos?network=testnet) | [Demo Video](https://www.youtube.com/watch?v=9aRMxZA_bqw)
 
 ## Overview
 **ShareTos** is an innovative Web3 platform designed to enable users to share, `vote`, and collaborate on groundbreaking ideas in a decentralized environment. 
