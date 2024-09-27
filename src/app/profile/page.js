@@ -24,6 +24,8 @@ const Profile = () => {
   const [offchainvotes, setoffchainvotes] = useState([]);
   const [activeTab, setActiveTab] = useState('verified');
 
+  const [createideadone, setcreateideadone] = useState(false);
+
   const { account, connected, disconnect, network } = useWallet();
 
   useEffect(() => {
@@ -120,7 +122,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchIdeas();
-  }, [profileDetails]);
+  }, [profileDetails, createideadone]);
 
   useEffect(() => {
     getVoteData();
@@ -210,6 +212,63 @@ const Profile = () => {
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating idea:', error);
+    }
+  };
+
+
+  async function verifyIdea(ideaId) {
+    const response = await fetch('/api/idea/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ideaId}),
+    });
+
+    return response;
+  }
+
+  const handleVerifyIdea = async (idea) => { 
+    setloading(true);
+
+    if(network.name == "mainnet"){
+        toast.warn('Please change your network to Testnet', {
+          position: 'top-right',
+        });
+        setloading(false);
+        return;
+    }
+      try {
+          const mintTransaction = {
+            arguments: [
+              `${idea.id}`,
+              '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579',
+            ],
+            function:
+              '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::add_idea',
+            type: 'entry_function_payload',
+            type_arguments: [],
+          };
+
+          const mintResponse = await window.aptos.signAndSubmitTransaction(
+            mintTransaction
+          );
+
+          if(mintResponse)
+          {
+          console.log('created idea done:', mintResponse);
+
+          const idea_verify = await verifyIdea(idea.id);
+
+          if(idea_verify.ok)
+          {
+          setcreateideadone(true);
+           }
+          }
+      setloading(false);
+    } catch (error) {
+      console.error('Error handling', error);
+      setloading(false);
     }
   };
 
@@ -440,12 +499,12 @@ const Profile = () => {
                   Edit
                 </div>
 
-                <div
+                <button
                   className="capitalize px-6 py-1 rounded-lg text-center text-[14px] bg-green-100 z-[10] text-green-800"
-                  // onClick={() => handleEditClick(idea)}
+                  onClick={() => handleVerifyIdea(idea)}
                 >
                   Verify Idea
-                </div>
+                </button>
 
               </div>
               <div
