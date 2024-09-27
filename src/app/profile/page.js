@@ -272,6 +272,81 @@ const Profile = () => {
     }
   };
 
+
+
+  const handleVerifyVote = async (ideaId) => {
+    if (!account?.address) {
+      toast.warn('Please connect your wallet to upvote', {
+        position: 'top-right',
+      });
+      return;
+    }
+
+    const token = Cookies.get('access-token'); // Assuming JWT is stored as 'idea_token'
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId;
+
+    try {
+      // First, make the API call to your backend to register the vote.
+      const res = await fetch(`/api/idea/vote`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ideaId, userId }),
+      });
+
+      if (res.ok) {
+        // If backend API succeeds, proceed to call the Move contract.
+        const mintTransaction = {
+          arguments: [
+            `${ideaId}`,
+            '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579',
+          ],
+          function:
+            '0x8ccc0aaa87309ab8c7f8c1c68e87e33732c03289a289701a3eaf75c78f283579::sharetos::upvote_defi',
+          type: 'entry_function_payload',
+          type_arguments: [],
+        };
+
+        const mintResponse = await window.aptos.signAndSubmitTransaction(
+          mintTransaction
+        );
+
+        // console.log('Vote transaction done:', mintResponse);
+
+        if (mintResponse) {
+          // Update vote count in the frontend after successful transaction
+
+          const resp = await fetch(`/api/idea/vote/verify`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ideaId, userId }),
+          });
+
+          if (resp.ok) {
+            const updatedIdeas = ideas.map((idea) =>
+              idea.id === ideaId
+                ? { ...idea, vote_count: idea.vote_count + 1 }
+                : idea
+            );
+            setIdeas(updatedIdeas);
+            toast.success('Vote recorded successfully!');
+          }
+        }
+      } else {
+        toast.error('Already voted');
+        setloading(false);
+      }
+    } catch (error) {
+      toast.error('An error occurred while voting. Please try again later.');
+      console.error('Error voting:', error);
+      setloading(false);
+    }
+  };
+
   return (
     <div className="lg:mx-20 md:mx-20 mx-4 min-h-screen w-full">
       <div className="flex lg:flex-row md:flex-row flex-col justify-center items-center text-white gap-10 mt-10">
@@ -566,7 +641,7 @@ const Profile = () => {
                         position: 'top-right',
                       });
                     } else {
-                      // handleVote(idea.id);
+                      handleVerifyVote(vote?.idea?.id);
                     }
                   }}
                 >
